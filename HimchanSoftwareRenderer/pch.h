@@ -1,8 +1,6 @@
 ﻿#pragma once
 
-#include <array>
-#include <assert.h>
-
 #include "HCCore.h"
+#include "HCMath.h"
 
 using namespace HC;

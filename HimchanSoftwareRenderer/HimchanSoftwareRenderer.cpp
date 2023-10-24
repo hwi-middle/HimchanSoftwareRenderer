@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <Windows.h>
-#include "HCCore.h"
+#include "pch.h"
 
 #ifdef _DEBUG
 #pragma comment(linker,"/entry:WinMainCRTStartup /subsystem:console")
@@ -48,7 +48,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 	{
-
+		
 		return 0;
 	}
 
@@ -65,7 +65,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case 'r':
-			std::cout << "Hello";
+			Vector2 A(1.f, 1.f);
+			Vector2 B(1.f, 1.f);
+			std::cout << (A+B).X << " " << (A+B).Y;
 			break;
 		}
 		return 0;
