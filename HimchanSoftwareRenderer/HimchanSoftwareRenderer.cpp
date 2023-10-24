@@ -1,8 +1,6 @@
 ﻿#include <iostream>
-#include <queue>
-#include <string>
-#include <vector>
 #include <Windows.h>
+#include "HCCore.h"
 
 #ifdef _DEBUG
 #pragma comment(linker,"/entry:WinMainCRTStartup /subsystem:console")
@@ -60,7 +58,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		SetPixel(hdc, 10, 10, RGB(255, 0, 0));
 		SetPixel(hdc, 12, 12, RGB(255, 0, 0));
 		EndPaint(hWnd, &ps);
-			break;
+		break;
 	}
 	case WM_CHAR:
 	{
