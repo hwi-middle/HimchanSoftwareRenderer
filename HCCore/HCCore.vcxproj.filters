@@ -15,11 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Types.h">
+    <ClCompile Include="HCCore.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HCCore.h">
+    </ClCompile>
+    <ClCompile Include="Types.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
 </Project>

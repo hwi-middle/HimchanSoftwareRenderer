@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="HCMath.h" />
+    <ClInclude Include="MathUtil.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
