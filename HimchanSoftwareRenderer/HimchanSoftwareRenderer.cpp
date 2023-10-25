@@ -65,9 +65,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case 'r':
-			Vector2 A(1.f, 1.f);
-			Vector2 B(1.f, 1.f);
-			std::cout << (A+B).X << " " << (A+B).Y;
+			Vector2 A(0.f, 2.f);
+			A.Normalize();
+			std::cout << A.ToString();
 			break;
 		}
 		return 0;

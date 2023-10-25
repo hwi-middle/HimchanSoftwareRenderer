@@ -41,6 +41,8 @@ namespace HC
 		[[nodiscard]] FORCEINLINE Vector2 GetNormalized() const;
 
 		FORCEINLINE static constexpr Vector2 Dot(const Vector2& InVector1, const Vector2& InVector2);
+
+		[[nodiscard]] std::string ToString() const;
 	};
 }
 
@@ -126,6 +128,13 @@ FORCEINLINE void Vector2::Normalize()
 FORCEINLINE Vector2 Vector2::GetNormalized() const
 {
 	return Vector2(X, Y) * MathUtil::GetInvSqrt(GetSquaredMagnitude());
+}
+
+FORCEINLINE std::string Vector2::ToString() const
+{
+	std::ostringstream ss;
+	ss << "(" << X << ", " << Y << ")";
+	return ss.str();
 }
 
 FORCEINLINE constexpr Vector2 Vector2::Dot(const Vector2& InVector1, const Vector2& InVector2)
