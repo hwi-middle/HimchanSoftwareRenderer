@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <sstream>
 #include "pch.h"
 
 namespace HC
@@ -31,12 +32,13 @@ namespace HC
 		FORCEINLINE constexpr Vector2 operator/(const float InScalar) const;
 		FORCEINLINE constexpr Vector2& operator+=(const Vector2& InVector);
 		FORCEINLINE constexpr Vector2& operator-=(const Vector2& InVector);
+		FORCEINLINE constexpr Vector2& operator*=(const Vector2& InVector);
+		FORCEINLINE constexpr Vector2& operator/=(const Vector2& InVector);
 
-		[[nodiscard]] FORCEINLINE float GetMagnitude();
-		[[nodiscard]] FORCEINLINE constexpr float GetSquaredMagnitude();
-		FORCEINLINE constexpr void Normalize();
-		[[nodiscard]] FORCEINLINE Vector2 GetNormalized();
-
+		[[nodiscard]] FORCEINLINE float GetMagnitude() const;
+		[[nodiscard]] FORCEINLINE constexpr float GetSquaredMagnitude() const;
+		FORCEINLINE void Normalize();
+		[[nodiscard]] FORCEINLINE Vector2 GetNormalized() const;
 
 		FORCEINLINE static constexpr Vector2 Dot(const Vector2& InVector1, const Vector2& InVector2);
 	};
@@ -58,22 +60,22 @@ FORCEINLINE constexpr Vector2 Vector2::operator-(const Vector2& InVector) const
 	return Vector2(X - InVector.X, Y - InVector.Y);
 }
 
-constexpr Vector2 Vector2::operator*(const Vector2& InVector) const
+FORCEINLINE constexpr Vector2 Vector2::operator*(const Vector2& InVector) const
 {
 	return Vector2(X * InVector.X, Y * InVector.Y);
 }
 
-constexpr Vector2 Vector2::operator*(const float InScalar) const
+FORCEINLINE constexpr Vector2 Vector2::operator*(const float InScalar) const
 {
 	return Vector2(X * InScalar, Y * InScalar);
 }
 
-constexpr Vector2 Vector2::operator/(const Vector2& InVector) const
+FORCEINLINE constexpr Vector2 Vector2::operator/(const Vector2& InVector) const
 {
 	return Vector2(X / InVector.X, Y / InVector.Y);
 }
 
-constexpr Vector2 Vector2::operator/(const float InScalar) const
+FORCEINLINE constexpr Vector2 Vector2::operator/(const float InScalar) const
 {
 	return Vector2(X / InScalar, Y / InScalar);
 }
@@ -92,22 +94,36 @@ FORCEINLINE constexpr Vector2& Vector2::operator-=(const Vector2& InVector)
 	return *this;
 }
 
-FORCEINLINE float Vector2::GetMagnitude()
+FORCEINLINE constexpr Vector2& Vector2::operator*=(const Vector2& InVector)
+{
+	X *= InVector.X;
+	Y *= InVector.Y;
+	return *this;
+}
+
+FORCEINLINE constexpr Vector2& Vector2::operator/=(const Vector2& InVector)
+{
+	X /= InVector.X;
+	Y /= InVector.Y;
+	return *this;
+}
+
+FORCEINLINE float Vector2::GetMagnitude() const
 {
 	return sqrtf(GetSquaredMagnitude());
 }
 
-FORCEINLINE constexpr float Vector2::GetSquaredMagnitude()
+FORCEINLINE constexpr float Vector2::GetSquaredMagnitude() const
 {
 	return X * X + Y * Y;
 }
 
-constexpr void Vector2::Normalize()
+FORCEINLINE void Vector2::Normalize()
 {
 	*this = GetNormalized();
 }
 
-Vector2 Vector2::GetNormalized()
+FORCEINLINE Vector2 Vector2::GetNormalized() const
 {
 	return Vector2(X, Y) * MathUtil::GetInvSqrt(GetSquaredMagnitude());
 }
