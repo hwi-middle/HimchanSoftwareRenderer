@@ -5,21 +5,25 @@ namespace HC
 {
 	struct MathUtil
 	{
-		FORCEINLINE constexpr static float GetInvSqrt(float InValue);
+		static constexpr uint8 NewtonRaphsonIteration = 3;
+
+		FORCEINLINE static float GetInvSqrt(float InValue)
+		{
+			const float ThreeHalfs = 1.5f;
+
+			float X2 = InValue * 0.5f;
+			float Y = InValue;
+			int32 I = *(int32*)&Y;
+			I = 0x5f3759df - (I >> 1);
+			Y = *(float*)&I;
+
+			for (uint8 Iter = 0; Iter < NewtonRaphsonIteration; ++Iter)
+			{
+				Y = Y * (ThreeHalfs - (X2 * Y * Y));
+			}
+
+			return Y;
+		}
 	};
 }
 
-FORCEINLINE constexpr static float GetInvSqrt(float InValue)
-{
-	const float ThreeHalfs = 1.5f;
-
-	float X2 = InValue * 0.5f;
-	float Y = InValue;
-	int32 i = *(int32*)&Y;                    
-	i = 0x5f3759df - (i >> 1);         
-	Y = *(float*)&i;
-	Y = Y * (ThreeHalfs - (X2 * Y * Y));
-	//	y = y * ( threehalfs - ( x2 * y * y ) );
-
-	return Y;
-}
