@@ -5,10 +5,9 @@ namespace HC
 {
 	struct MathUtil
 	{
-		static constexpr uint8 NewtonRaphsonIteration = 3;
-
 		FORCEINLINE static float GetInvSqrt(float InValue)
 		{
+			constexpr uint8 NewtonRaphsonIteration = 3;
 			const float ThreeHalfs = 1.5f;
 
 			float X2 = InValue * 0.5f;
