@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <vector>
 #include <Windows.h>
 #include "pch.h"
 
@@ -9,6 +10,8 @@
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 HINSTANCE g_hInst;
 LPCTSTR lpszClass = TEXT("HimchanRenderer");
+uint16 Width = 640;
+uint16 Height = 480;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
@@ -27,8 +30,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	WndClass.lpszMenuName = NULL;
 	WndClass.style = CS_HREDRAW | CS_VREDRAW;
 	RegisterClass(&WndClass);
+
+	RECT windowRect = { 0, 0, Width, Height };
+	AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
+
+	const uint16 ActualWindowWidth = windowRect.right - windowRect.left;
+	const uint16 ActualWindowHeight = windowRect.bottom - windowRect.top;
+
 	hWnd = CreateWindow(lpszClass, lpszClass, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, 640, 480,
+		CW_USEDEFAULT, CW_USEDEFAULT, ActualWindowWidth, ActualWindowHeight,
 		NULL, (HMENU)NULL, hInstance, NULL);
 	ShowWindow(hWnd, nCmdShow);
 
@@ -48,15 +58,55 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 	{
-		
+
 		return 0;
 	}
 
 	case WM_PAINT:
 	{
 		hdc = BeginPaint(hWnd, &ps);
-		SetPixel(hdc, 10, 10, RGB(255, 0, 0));
-		SetPixel(hdc, 12, 12, RGB(255, 0, 0));
+		// ----- Draw below -----
+
+		constexpr float Radius = 50.f;
+		std::vector<Vector2> Circles;
+
+		if (Circles.empty())
+		{
+			for (float x = -Radius; x <= Radius; x++)
+			{
+				for (float y = -Radius; y <= Radius; y++)
+				{
+					Vector2 PointToTest = Vector2(x, y);
+					float SquaredLength = PointToTest.GetSquaredMagnitude();
+					if (SquaredLength <= Radius * Radius)
+					{
+						Circles.push_back(Vector2(x, y));
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < Width; i++)
+		{
+			auto Point = ScreenPoint::CartesianToScreen(Vector2(i, 0), 640, 480);
+			SetPixel(hdc, Point.X, Point.Y, RGB(255, 0, 0));
+			SetPixel(hdc, i, Height / 2, RGB(255, 0, 0));
+		}
+
+		for (int i = 0; i < Height; i++)
+		{
+			SetPixel(hdc, Width / 2, i, RGB(0, 255, 0));
+		}
+
+		for (auto& v : Circles)
+		{
+			v.X += 100;
+			v.Y += 100;
+			auto Point = ScreenPoint::CartesianToScreen(v, 640, 480);
+			SetPixel(hdc, Point.X, Point.Y, RGB(255, 0, 0));
+		}
+
+		// ----- Draw above -----
 		EndPaint(hWnd, &ps);
 		break;
 	}
@@ -65,9 +115,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case 'r':
-			Vector2 A(0.f, 2.f);
-			A.Normalize();
-			std::cout << A.ToString();
+			RECT rect;
+			if (GetWindowRect(hWnd, &rect))
+			{
+				int width = rect.right - rect.left;
+				int height = rect.bottom - rect.top;
+				std::cout << "Width: " << width << std::endl;
+				std::cout << "Height: " << height << std::endl;
+			}
 			break;
 		}
 		return 0;
