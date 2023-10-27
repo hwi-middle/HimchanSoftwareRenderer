@@ -132,6 +132,7 @@
     <ClInclude Include="HCMath.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ScreenPoint.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
