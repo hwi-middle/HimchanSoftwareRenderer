@@ -67,29 +67,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		hdc = BeginPaint(hWnd, &ps);
 		// ----- Draw below -----
 
-		constexpr float Radius = 50.f;
-		std::vector<Vector2> Circles;
-
-		if (Circles.empty())
-		{
-			for (float x = -Radius; x <= Radius; x++)
-			{
-				for (float y = -Radius; y <= Radius; y++)
-				{
-					Vector2 PointToTest = Vector2(x, y);
-					float SquaredLength = PointToTest.GetSquaredMagnitude();
-					if (SquaredLength <= Radius * Radius)
-					{
-						Circles.push_back(Vector2(x, y));
-					}
-				}
-			}
-		}
-
 		for (int i = 0; i < Width; i++)
 		{
-			auto Point = ScreenPoint::CartesianToScreen(Vector2(i, 0), 640, 480);
-			SetPixel(hdc, Point.X, Point.Y, RGB(255, 0, 0));
 			SetPixel(hdc, i, Height / 2, RGB(255, 0, 0));
 		}
 
@@ -98,12 +77,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			SetPixel(hdc, Width / 2, i, RGB(0, 255, 0));
 		}
 
-		for (auto& v : Circles)
+		for (int i = -320; i < 320; i++)
 		{
-			v.X += 100;
-			v.Y += 100;
-			auto Point = ScreenPoint::CartesianToScreen(v, 640, 480);
-			SetPixel(hdc, Point.X, Point.Y, RGB(255, 0, 0));
+			auto Point = ScreenPoint::CartesianToScreen(Vector2(i, Math::SmoothStep(0, 100, i / 320.f)), 640, 480);
+			SetPixel(hdc, Point.X, Point.Y, RGB(0, 0, 0));
 		}
 
 		// ----- Draw above -----
