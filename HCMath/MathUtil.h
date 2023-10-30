@@ -3,8 +3,16 @@
 
 namespace HC
 {
-	struct MathUtil
+	struct Math
 	{
+		static constexpr float PI = 3.1415926535897932f;
+		static constexpr float TwoPI = 2 * PI;
+		static constexpr float HalfPI = 0.5 * PI;
+		static constexpr float InvPI = 1 / PI;
+
+		static constexpr float Rad2Deg = PI / 180.f;
+		static constexpr float Deg2Rad = 180.f / PI;
+
 		FORCEINLINE static float GetInvSqrt(float InValue)
 		{
 			constexpr uint8 NewtonRaphsonIteration = 3;

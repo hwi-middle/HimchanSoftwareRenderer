@@ -129,7 +129,7 @@ FORCEINLINE void Vector2::Normalize()
 
 FORCEINLINE Vector2 Vector2::GetNormalized() const
 {
-	return Vector2(X, Y) * MathUtil::GetInvSqrt(GetSquaredMagnitude());
+	return Vector2(X, Y) * Math::GetInvSqrt(GetSquaredMagnitude());
 }
 
 FORCEINLINE std::string Vector2::ToString() const
