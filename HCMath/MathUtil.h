@@ -49,7 +49,7 @@ namespace HC
 		FORCEINLINE static constexpr T SmoothStep(const T& InMin, const T& InMax, float InAlpha)
 		{
 			InAlpha = Clamp(InAlpha, 0.f, 1.f);
-			return Lerp(Square(InAlpha), 1 - Square(InAlpha - 1), InAlpha) * (InMax - InMin) + InMin;
+			return Square(InAlpha) * (-2 * InAlpha + 3) * (InMax - InMin) + InMin;
 		}
 
 		template <class T>
