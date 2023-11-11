@@ -22,8 +22,13 @@ namespace HC
 			std::array<float, Dimension> Components = { 0.f, 0.f };
 		};
 
+		static const Vector2 UnitX;
+		static const Vector2 UnitY;
+		static const Vector2 Zero;
+		static const Vector2 One;
+
 		FORCEINLINE constexpr Vector2() = default;
-		FORCEINLINE constexpr Vector2(const float InX, const float InY) : X(InX), Y(InY) {}
+		FORCEINLINE explicit constexpr Vector2(const float InX, const float InY) : X(InX), Y(InY) {}
 
 		FORCEINLINE constexpr float operator[](const uint8 InIndex) const;
 		FORCEINLINE constexpr Vector2 operator+(const Vector2& InVector) const;

@@ -23,8 +23,14 @@ namespace HC
 			std::array<float, Dimension> Components = { 0.f, 0.f, 0.f };
 		};
 
+		static const Vector3 UnitX;
+		static const Vector3 UnitY;
+		static const Vector3 UnitZ;
+		static const Vector3 Zero;
+		static const Vector3 One;
+
 		FORCEINLINE constexpr Vector3() = default;
-		FORCEINLINE constexpr Vector3(const float InX, const float InY, const float InZ) : X(InX), Y(InY), Z(InZ) {}
+		FORCEINLINE explicit constexpr Vector3(const float InX, const float InY, const float InZ) : X(InX), Y(InY), Z(InZ) {}
 
 		FORCEINLINE constexpr float operator[](const uint8 InIndex) const;
 		FORCEINLINE constexpr Vector3 operator+(const Vector3& InVector) const;
