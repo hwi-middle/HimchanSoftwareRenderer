@@ -131,11 +131,17 @@
   <ItemGroup>
     <ClInclude Include="HCMath.h" />
     <ClInclude Include="MathUtil.h" />
+    <ClInclude Include="Maxtrix2x2.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ScreenPoint.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Vector4.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
