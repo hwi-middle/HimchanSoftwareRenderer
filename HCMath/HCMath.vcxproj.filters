@@ -32,7 +32,7 @@
     <ClInclude Include="Vector4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Maxtrix2x2.h">
+    <ClInclude Include="Matrix2x2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
