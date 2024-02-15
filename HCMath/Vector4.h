@@ -51,7 +51,7 @@ namespace HC
 		FORCEINLINE void Normalize();
 		[[nodiscard]] FORCEINLINE Vector4 GetNormalized() const;
 
-		FORCEINLINE static constexpr Vector4 Dot(const Vector4& InVector1, const Vector4& InVector2);
+		FORCEINLINE static constexpr float Dot(const Vector4& InVector1, const Vector4& InVector2);
 
 		[[nodiscard]] std::string ToString() const;
 	};
@@ -156,7 +156,7 @@ FORCEINLINE std::string Vector4::ToString() const
 	return ss.str();
 }
 
-FORCEINLINE constexpr Vector4 Vector4::Dot(const Vector4& InVector1, const Vector4& InVector2)
+FORCEINLINE constexpr float Vector4::Dot(const Vector4& InVector1, const Vector4& InVector2)
 {
-	return Vector4(InVector1.X * InVector2.X, InVector1.Y * InVector2.Y, InVector1.Z * InVector2.Z, InVector1.W * InVector2.W);
+	return InVector1.X * InVector2.X + InVector1.Y * InVector2.Y + InVector1.Z * InVector2.Z + InVector1.W * InVector2.W;
 }
