@@ -53,7 +53,7 @@ FORCEINLINE constexpr Matrix2x2 Matrix2x2::operator*(const Matrix2x2& InMatrix) 
 	Matrix2x2 transposedMatrix = Transpose();
 	return Matrix2x2(
 		Vector2(Vector2::Dot(transposedMatrix[0], InMatrix[0]), Vector2::Dot(transposedMatrix[1], InMatrix[0])),
-		Vector2(Vector2::Dot(transposedMatrix[1], InMatrix[0]), Vector2::Dot(transposedMatrix[1], InMatrix[1]))
+		Vector2(Vector2::Dot(transposedMatrix[0], InMatrix[1]), Vector2::Dot(transposedMatrix[1], InMatrix[1]))
 	);
 }
 
