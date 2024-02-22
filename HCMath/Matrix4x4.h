@@ -20,8 +20,8 @@ namespace HC
 		FORCEINLINE constexpr const Vector4& operator[](const uint8 InIndex) const;
 		FORCEINLINE constexpr Vector4& operator[](const uint8 InIndex);
 		FORCEINLINE constexpr Matrix4x4 operator*(float InScalar) const;
-		FORCEINLINE constexpr Matrix4x4 operator*(const Matrix4x4& InMatrix) const;
-		FORCEINLINE constexpr Vector4 operator*(const Vector4& InVector) const;
+		FORCEINLINE Matrix4x4 operator*(const Matrix4x4& InMatrix) const;
+		FORCEINLINE Vector4 operator*(const Vector4& InVector) const;
 		FORCEINLINE friend Vector4 operator*=(Vector4& InVector, const Matrix4x4& InMatrix)
 		{
 			InVector = InMatrix * InVector;
@@ -54,7 +54,7 @@ FORCEINLINE constexpr Matrix4x4 Matrix4x4::operator*(float InScalar) const
 }
 
 
-FORCEINLINE constexpr Matrix4x4 Matrix4x4::operator*(const Matrix4x4& InMatrix) const
+FORCEINLINE Matrix4x4 Matrix4x4::operator*(const Matrix4x4& InMatrix) const
 {
 	Matrix4x4 transposedMatrix = Transpose();
 	return Matrix4x4(
@@ -65,7 +65,7 @@ FORCEINLINE constexpr Matrix4x4 Matrix4x4::operator*(const Matrix4x4& InMatrix) 
 	);
 }
 
-FORCEINLINE constexpr Vector4 Matrix4x4::operator*(const Vector4& InVector) const
+FORCEINLINE Vector4 Matrix4x4::operator*(const Vector4& InVector) const
 {
 	Matrix4x4 transposedMatrix = Transpose();
 	return Vector4(

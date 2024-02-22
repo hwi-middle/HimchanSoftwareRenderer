@@ -20,8 +20,8 @@ namespace HC
 		FORCEINLINE constexpr const Vector2& operator[](const uint8 InIndex) const;
 		FORCEINLINE constexpr Vector2& operator[](const uint8 InIndex);
 		FORCEINLINE constexpr Matrix2x2 operator*(float InScalar) const;
-		FORCEINLINE constexpr Matrix2x2 operator*(const Matrix2x2& InMatrix) const;
-		FORCEINLINE constexpr Vector2 operator*(const Vector2& InVector) const;
+		FORCEINLINE Matrix2x2 operator*(const Matrix2x2& InMatrix) const;
+		FORCEINLINE Vector2 operator*(const Vector2& InVector) const;
 		FORCEINLINE friend Vector2 operator*=(Vector2& InVector, const Matrix2x2& InMatrix)
 		{
 			InVector = InMatrix * InVector;
@@ -52,7 +52,7 @@ FORCEINLINE constexpr Matrix2x2 Matrix2x2::operator*(float InScalar) const
 }
 
 
-FORCEINLINE constexpr Matrix2x2 Matrix2x2::operator*(const Matrix2x2& InMatrix) const
+FORCEINLINE Matrix2x2 Matrix2x2::operator*(const Matrix2x2& InMatrix) const
 {
 	Matrix2x2 transposedMatrix = Transpose();
 	return Matrix2x2(
@@ -61,7 +61,7 @@ FORCEINLINE constexpr Matrix2x2 Matrix2x2::operator*(const Matrix2x2& InMatrix) 
 	);
 }
 
-FORCEINLINE constexpr Vector2 Matrix2x2::operator*(const Vector2& InVector) const
+FORCEINLINE Vector2 Matrix2x2::operator*(const Vector2& InVector) const
 {
 	Matrix2x2 transposedMatrix = Transpose();
 	return Vector2(
