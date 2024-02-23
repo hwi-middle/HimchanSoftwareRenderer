@@ -17,7 +17,7 @@ namespace HC
 		FORCEINLINE constexpr Matrix4x4(const Vector4& InCol0, const Vector4& InCol1, const Vector4& InCol2, const Vector4& InCol3) { Cols = { InCol0, InCol1, InCol2, InCol3 }; }
 
 		FORCEINLINE constexpr const Vector4& operator[](const uint8 InIndex) const;
-		FORCEINLINE constexpr Vector4& operator[](const uint8 InIndex);
+		FORCEINLINE Vector4& operator[](const uint8 InIndex);
 		FORCEINLINE constexpr Matrix4x4 operator*(float InScalar) const;
 		FORCEINLINE Matrix4x4 operator*(const Matrix4x4& InMatrix) const;
 		FORCEINLINE Vector4 operator*(const Vector4& InVector) const;
@@ -37,7 +37,7 @@ FORCEINLINE constexpr const Vector4& Matrix4x4::operator[](const uint8 InIndex) 
 	return Cols[InIndex];
 }
 
-FORCEINLINE constexpr Vector4& Matrix4x4::operator[](const uint8 InIndex)
+FORCEINLINE Vector4& Matrix4x4::operator[](const uint8 InIndex)
 {
 	assert(InIndex < Rank);
 	return Cols[InIndex];
