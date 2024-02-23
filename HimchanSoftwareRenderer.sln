@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HCMath", "HCMath\HCMath.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HCCore", "HCCore\HCCore.vcxproj", "{5944EB33-1D82-4607-AC4B-80425F1FD4AE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HCGraphics", "HCGraphics\HCGraphics.vcxproj", "{A6D53A37-C244-45AA-B056-A1CDE5BBAE20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{5944EB33-1D82-4607-AC4B-80425F1FD4AE}.Release|x64.Build.0 = Release|x64
 		{5944EB33-1D82-4607-AC4B-80425F1FD4AE}.Release|x86.ActiveCfg = Release|Win32
 		{5944EB33-1D82-4607-AC4B-80425F1FD4AE}.Release|x86.Build.0 = Release|Win32
+		{A6D53A37-C244-45AA-B056-A1CDE5BBAE20}.Debug|x64.ActiveCfg = Debug|x64
+		{A6D53A37-C244-45AA-B056-A1CDE5BBAE20}.Debug|x64.Build.0 = Debug|x64
+		{A6D53A37-C244-45AA-B056-A1CDE5BBAE20}.Debug|x86.ActiveCfg = Debug|Win32
+		{A6D53A37-C244-45AA-B056-A1CDE5BBAE20}.Debug|x86.Build.0 = Debug|Win32
+		{A6D53A37-C244-45AA-B056-A1CDE5BBAE20}.Release|x64.ActiveCfg = Release|x64
+		{A6D53A37-C244-45AA-B056-A1CDE5BBAE20}.Release|x64.Build.0 = Release|x64
+		{A6D53A37-C244-45AA-B056-A1CDE5BBAE20}.Release|x86.ActiveCfg = Release|Win32
+		{A6D53A37-C244-45AA-B056-A1CDE5BBAE20}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

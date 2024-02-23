@@ -104,13 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\HJ\Desktop\Workspace\PersonalProjects\HimchanSoftwareRenderer\HCMath;C:\Users\HJ\Desktop\Workspace\PersonalProjects\HimchanSoftwareRenderer\HCCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\HJ\Desktop\Workspace\PersonalProjects\HimchanSoftwareRenderer\HCGraphics;C:\Users\HJ\Desktop\Workspace\PersonalProjects\HimchanSoftwareRenderer\HCMath;C:\Users\HJ\Desktop\Workspace\PersonalProjects\HimchanSoftwareRenderer\HCCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\x64\Debug\HCCore.lib;..\x64\Debug\HCMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\x64\Debug\HCCore.lib;..\x64\Debug\HCMath.lib;..\x64\Debug\HCGraphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

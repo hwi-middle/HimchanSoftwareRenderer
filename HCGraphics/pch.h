@@ -1,7 +1,9 @@
 ﻿#pragma once
 
+#include <Windows.h>
+#include <assert.h>
+
 #include "HCCore.h"
 #include "HCMath.h"
-#include "HCGraphics.h"
 
 using namespace HC;
