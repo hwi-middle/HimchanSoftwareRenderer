@@ -3,7 +3,6 @@
 #include <sstream>
 
 #include "pch.h"
-#include "MathUtil.h"
 #include "Vector4.h"
 
 namespace HC
