@@ -64,8 +64,8 @@ namespace HC
 					}
 					else
 					{
-						InOutStartPos = ClippedPos;
-						EndRegion = ComputeViewportRegion(InOutStartPos, InMinPos, InMaxPos);
+						InOutEndPos = ClippedPos;
+						EndRegion = ComputeViewportRegion(InOutEndPos, InMinPos, InMaxPos);
 					}
 				}
 			}
