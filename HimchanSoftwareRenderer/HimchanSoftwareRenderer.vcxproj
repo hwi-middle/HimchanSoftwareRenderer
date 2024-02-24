@@ -139,6 +139,9 @@
     <ProjectReference Include="..\HCCore\HCCore.vcxproj">
       <Project>{5944eb33-1d82-4607-ac4b-80425f1fd4ae}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\HCGraphics\HCGraphics.vcxproj">
+      <Project>{a6d53a37-c244-45aa-b056-a1cde5bbae20}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\HCMath\HCMath.vcxproj">
       <Project>{df39f4bf-c386-4d0c-ae7b-1a2882905389}</Project>
     </ProjectReference>

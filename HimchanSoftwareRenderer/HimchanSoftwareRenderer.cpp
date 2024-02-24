@@ -68,21 +68,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		hdc = BeginPaint(hWnd, &ps);
 		// ----- Draw below -----
 
-		for (int i = 0; i < Width; i++)
-		{
-			SetPixel(hdc, i, Height / 2, RGB(255, 0, 0));
-		}
+		//for (int i = 0; i < Width; i++)
+		//{
+		//	SetPixel(hdc, i, Height / 2, RGB(255, 0, 0));
+		//}
 
-		for (int i = 0; i < Height; i++)
-		{
-			SetPixel(hdc, Width / 2, i, RGB(0, 255, 0));
-		}
+		//for (int i = 0; i < Height; i++)
+		//{
+		//	SetPixel(hdc, Width / 2, i, RGB(0, 255, 0));
+		//}
 
-		for (int i = -320; i < 320; i++)
-		{
-			auto Point = ScreenPoint::CartesianToScreen(Vector2(i, Math::SmoothStep(0, 100, i / 320.f)), 640, 480);
-			SetPixel(hdc, Point.X, Point.Y, RGB(0, 0, 0));
-		}
+		//for (int i = -320; i < 320; i++)
+		//{
+		//	auto Point = ScreenPoint::CartesianToScreen(Vector2(i, Math::SmoothStep(0, 100, i / 320.f)), 640, 480);
+		//	SetPixel(hdc, Point.X, Point.Y, RGB(0, 0, 0));
+		//}
+
+		DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(0, 0), Vector2(0, 800), RGB(255, 0, 0));
+		DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(80, 80), Vector2(180, 150), RGB(0, 255, 0));
+		DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(-450, 950), Vector2(70, -50), RGB(0, 0, 255));
 
 		// ----- Draw above -----
 		EndPaint(hWnd, &ps);
