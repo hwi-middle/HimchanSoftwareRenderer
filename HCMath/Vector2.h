@@ -31,6 +31,7 @@ namespace HC
 		FORCEINLINE explicit constexpr Vector2(const float InX, const float InY) : X(InX), Y(InY) {}
 
 		FORCEINLINE constexpr float operator[](const uint8 InIndex) const;
+		FORCEINLINE constexpr Vector2 operator-() const;
 		FORCEINLINE constexpr Vector2 operator+(const Vector2& InVector) const;
 		FORCEINLINE constexpr Vector2 operator-(const Vector2& InVector) const;
 		FORCEINLINE constexpr Vector2 operator*(const Vector2& InVector) const;
@@ -57,6 +58,11 @@ FORCEINLINE constexpr float Vector2::operator[](const uint8 InIndex) const
 {
 	assert(InIndex < Dimension);
 	return Components[InIndex];
+}
+
+FORCEINLINE constexpr Vector2 Vector2::operator-() const
+{
+	return Vector2(-X, -Y);
 }
 
 FORCEINLINE constexpr Vector2 Vector2::operator+(const Vector2& InVector) const

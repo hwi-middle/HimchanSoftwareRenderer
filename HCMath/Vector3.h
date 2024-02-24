@@ -33,6 +33,7 @@ namespace HC
 		FORCEINLINE explicit constexpr Vector3(const float InX, const float InY, const float InZ) : X(InX), Y(InY), Z(InZ) {}
 
 		FORCEINLINE constexpr float operator[](const uint8 InIndex) const;
+		FORCEINLINE constexpr Vector3 operator-() const;
 		FORCEINLINE constexpr Vector3 operator+(const Vector3& InVector) const;
 		FORCEINLINE constexpr Vector3 operator-(const Vector3& InVector) const;
 		FORCEINLINE constexpr Vector3 operator*(const Vector3& InVector) const;
@@ -60,6 +61,11 @@ FORCEINLINE constexpr float Vector3::operator[](const uint8 InIndex) const
 {
 	assert(InIndex < Dimension);
 	return Components[InIndex];
+}
+
+FORCEINLINE constexpr Vector3 Vector3::operator-() const
+{
+	return Vector3(-X, -Y, -Z);
 }
 
 FORCEINLINE constexpr Vector3 Vector3::operator+(const Vector3& InVector) const
