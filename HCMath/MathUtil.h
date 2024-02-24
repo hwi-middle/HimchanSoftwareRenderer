@@ -33,6 +33,12 @@ namespace HC
 		}
 
 		template <class T>
+		FORCEINLINE static constexpr T Abs(const T& InValue)
+		{
+			return (InValue > (T)0) ? InValue : -InValue;
+		}
+
+		template <class T>
 		FORCEINLINE static constexpr T Square(const T& InValue)
 		{
 			return InValue * InValue;
