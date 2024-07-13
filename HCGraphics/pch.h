@@ -6,4 +6,7 @@
 #include "HCCore.h"
 #include "HCMath.h"
 
+#include "Color32.h"
+#include "Color.h"
+
 using namespace HC;
