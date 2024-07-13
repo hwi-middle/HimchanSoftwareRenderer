@@ -3,6 +3,7 @@ namespace HC
 {
 #define FORCEINLINE __forceinline
 
+	typedef unsigned char byte;
 	typedef __int8 int8;
 	typedef __int16 int16;
 	typedef __int32 int32;
