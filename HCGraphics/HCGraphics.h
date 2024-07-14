@@ -6,9 +6,9 @@
 
 #include "Color32.h"
 #include "Color.h"
-#include "DrawHelper.h"
+//#include "DrawHelper.h"
 
 #include <Windows.h>
-#include"WindowsGraphics.h"
+#include "WinRenderer.h"
 
 using namespace HC;

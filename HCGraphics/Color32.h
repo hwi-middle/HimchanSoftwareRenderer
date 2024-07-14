@@ -24,12 +24,11 @@ namespace HC
 		{
 			struct
 			{
-				byte A, B, G, R;
+				byte B, G, R, A;
 			};
 
 			uint32 ColorValue;
 		};
-
 	};
 
 	FORCEINLINE constexpr Color32 Color32::operator+(const Color32& InColor) const

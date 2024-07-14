@@ -1,8 +1,4 @@
-﻿#include <iostream>
-#include <vector>
-#include <Windows.h>
-
-#include "pch.h"
+﻿#include "pch.h"
 
 #ifdef _DEBUG
 #pragma comment(linker,"/entry:WinMainCRTStartup /subsystem:console")
@@ -43,7 +39,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 		NULL, (HMENU)NULL, hInstance, NULL);
 	ShowWindow(hWnd, nCmdShow);
 
-	Application appliction;
+	Application appliction(Width, Height, new WinRenderer());
 
 	while (true)
 	{
@@ -77,19 +73,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 	}
 
-	case WM_PAINT:
-	{
-		hdc = BeginPaint(hWnd, &ps);
-		// ----- Draw below -----
+	//case WM_PAINT:
+	//{
+	//	hdc = BeginPaint(hWnd, &ps);
+	//	// ----- Draw below -----
 
-		DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(0, 0), Vector2(0, 800), RGB(255, 0, 0));
-		DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(80, 80), Vector2(180, 150), RGB(0, 255, 0));
-		DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(-450, 950), Vector2(70, -50), RGB(0, 0, 255));
+	//	DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(0, 0), Vector2(0, 800), RGB(255, 0, 0));
+	//	DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(80, 80), Vector2(180, 150), RGB(0, 255, 0));
+	//	DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(-450, 950), Vector2(70, -50), RGB(0, 0, 255));
 
-		// ----- Draw above -----
-		EndPaint(hWnd, &ps);
-		break;
-	}
+	//	// ----- Draw above -----
+	//	EndPaint(hWnd, &ps);
+	//	break;
+	//}
 	case WM_CHAR:
 	{
 		switch (wParam)
