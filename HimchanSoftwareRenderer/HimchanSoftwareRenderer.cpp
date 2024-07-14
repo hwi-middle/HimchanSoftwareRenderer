@@ -6,7 +6,7 @@
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 HINSTANCE g_hInst;
-LPCTSTR lpszClass = TEXT("HimchanRenderer");
+LPCTSTR lpszClass = TEXT("Himchan Software Renderer");
 uint16 Width = 640;
 uint16 Height = 480;
 
