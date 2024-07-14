@@ -122,6 +122,12 @@ void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, c
 		}
 	}
 }
+void WinRenderer::DrawPoint(const Vector2& InPos, const Color InColor)
+{
+	Vector2 res = ScreenPoint::CartesianToScreen(Vector2(InPos.X, InPos.Y), Width, Height);
+	SetPixel(res.X, res.Y, InColor);
+}
+
 bool WinRenderer::ClipLine(Vector2& InOutStartPos, Vector2& InOutEndPos, const Vector2& InMinPos, const Vector2& InMaxPos)
 {
 	//std::cout << "line to draw: " << InOutStartPos.ToString() << " to " << InOutEndPos.ToString() << "\n";

@@ -20,32 +20,40 @@ void Application::Tick()
 
 void Application::PreUpdate()
 {
-	//std::cout << "PreUpdate" << std::endl;
 	GetRenderer().FillBuffer();
 }
 
 void Application::Update()
 {
-	//std::cout << "Update" << std::endl;
-	pos = Math::Cos(t++ * 0.02f) * (Height / 2);
-	//std::cout << pos << std::endl;
+	posY = Math::Sin(t * 0.5f) * (Height / 2);
+	posX = Math::Cos(t * 0.5f) * (Width / 2);
 }
 
 void Application::LateUpdate()
 {
-	//std::cout << "LateUpdate" << std::endl;
+	t += 0.02f;
 }
 
 void Application::Render()
 {
-	//std::cout << "Render" << std::endl;
-	std::cout << "pos: " << pos << std::endl;
-	GetRenderer().DrawLine(Vector2(Width, Height), Vector2(-(int)Width, pos), Vector2(Width, pos), Color(1.f, 0.f, 0.f, 1.f));
+	std::cout << "pos: (" << posX << ", " << posY << ")" << std::endl;
+	GetRenderer().DrawLine(Vector2(-(int)Width, posY), Vector2(Width, posY), Color::Red);
+	GetRenderer().DrawLine(Vector2(posX, -(int)Height), Vector2(posX, Height), Color::Green);
+
+	GetRenderer().DrawPoint(Vector2(posX, posY), Color::Blue);
+	GetRenderer().DrawPoint(Vector2(posX + 1, posY), Color::Blue);
+	GetRenderer().DrawPoint(Vector2(posX - 1, posY), Color::Blue);
+	GetRenderer().DrawPoint(Vector2(posX, posY + 1), Color::Blue);
+	GetRenderer().DrawPoint(Vector2(posX, posY - 1), Color::Blue);
+	GetRenderer().DrawPoint(Vector2(posX + 1, posY + 1), Color::Blue);
+	GetRenderer().DrawPoint(Vector2(posX + 1, posY - 1), Color::Blue);
+	GetRenderer().DrawPoint(Vector2(posX - 1, posY + 1), Color::Blue);
+	GetRenderer().DrawPoint(Vector2(posX - 1, posY - 1), Color::Blue);
+
 }
 
 void Application::PostUpdate()
 {
-	//std::cout << "PostUpdate" << std::endl;
 	GetRenderer().SwapBuffer();
 }
 

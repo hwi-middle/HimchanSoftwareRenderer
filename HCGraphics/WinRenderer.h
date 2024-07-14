@@ -16,6 +16,7 @@ namespace HC
 		void FillBuffer();
 
 		void DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color InColor);
+		void DrawPoint(const Vector2& InPos, const Color InColor);
 
 	private:
 		HWND Handle;

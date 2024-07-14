@@ -17,7 +17,8 @@ private:
 	void PostUpdate();
 
 	uint32 Width, Height;
-	float pos;
+	float posY;
+	float posX;
 	float t = 0;
 
 	std::unique_ptr<WinRenderer> Renderer;
