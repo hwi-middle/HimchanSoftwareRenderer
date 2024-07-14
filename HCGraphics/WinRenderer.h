@@ -40,7 +40,7 @@ namespace HC
 		EViewportRegion ComputeViewportRegion(const Vector2& InPos, const Vector2& InMinPos, const Vector2& InMaxPos);
 	};
 
-	void WinRenderer::SetPixel(int32 InX, int32 InY, const Color& InColor)
+	FORCEINLINE void WinRenderer::SetPixel(int32 InX, int32 InY, const Color& InColor)
 	{
 		if (!IsInScreen(InX, InY))
 		{
@@ -51,7 +51,7 @@ namespace HC
 		ScreenBuffer[Index] = InColor.ToColor32();
 	}
 
-	bool WinRenderer::IsInScreen(const int32 InX, const int32 InY) const
+	FORCEINLINE bool WinRenderer::IsInScreen(const int32 InX, const int32 InY) const
 	{
 		if ((InX < 0 || InX >= Width) || (InY < 0 || InY >= Height))
 		{
