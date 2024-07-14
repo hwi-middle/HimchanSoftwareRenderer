@@ -50,9 +50,10 @@ void WinRenderer::FillBuffer()
 	}
 }
 
-void WinRenderer::DrawLine(const Vector2& InScreenSize, const Vector2& InStartPos, const Vector2& InEndPos, const Color InColor)
+void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color InColor)
 {
-	Vector2 HalfScreen = InScreenSize * 0.5f;
+	Vector2 ScreenSize = Vector2(Width, Height);
+	Vector2 HalfScreen = ScreenSize * 0.5f;
 	Vector2 MinScreen = -HalfScreen;
 	Vector2 MaxScreen = HalfScreen;
 	Vector2 ClippedStartPos = InStartPos;
@@ -63,8 +64,8 @@ void WinRenderer::DrawLine(const Vector2& InScreenSize, const Vector2& InStartPo
 		return;
 	}
 
-	Vector2 StartPosScreen = ScreenPoint::CartesianToScreen(ClippedStartPos, InScreenSize.X, InScreenSize.Y);
-	Vector2 EndPosScreen = ScreenPoint::CartesianToScreen(ClippedEndPos, InScreenSize.X, InScreenSize.Y);
+	Vector2 StartPosScreen = ScreenPoint::CartesianToScreen(ClippedStartPos, ScreenSize.X, ScreenSize.Y);
+	Vector2 EndPosScreen = ScreenPoint::CartesianToScreen(ClippedEndPos, ScreenSize.X, ScreenSize.Y);
 
 	int Width = EndPosScreen.X - StartPosScreen.X;
 	int Height = EndPosScreen.Y - StartPosScreen.Y;

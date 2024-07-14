@@ -15,7 +15,7 @@ namespace HC
 		void SwapBuffer();
 		void FillBuffer();
 
-		void DrawLine(const Vector2& InScreenSize, const Vector2& InStartPos, const Vector2& InEndPos, const Color InColor);
+		void DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color InColor);
 
 	private:
 		HWND Handle;
