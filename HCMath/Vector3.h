@@ -1,10 +1,5 @@
 ﻿#pragma once
 
-#include <sstream>
-
-#include "pch.h"
-#include "MathUtil.h"
-
 namespace HC
 {
 	struct Vector3
@@ -55,117 +50,117 @@ namespace HC
 
 		[[nodiscard]] std::string ToString() const;
 	};
-}
 
-FORCEINLINE constexpr float Vector3::operator[](const uint8 InIndex) const
-{
-	assert(InIndex < Dimension);
-	return Components[InIndex];
-}
+	FORCEINLINE constexpr float Vector3::operator[](const uint8 InIndex) const
+	{
+		assert(InIndex < Dimension);
+		return Components[InIndex];
+	}
 
-FORCEINLINE constexpr Vector3 Vector3::operator-() const
-{
-	return Vector3(-X, -Y, -Z);
-}
+	FORCEINLINE constexpr Vector3 Vector3::operator-() const
+	{
+		return Vector3(-X, -Y, -Z);
+	}
 
-FORCEINLINE constexpr Vector3 Vector3::operator+(const Vector3& InVector) const
-{
-	return Vector3(X + InVector.X, Y + InVector.Y, Z + InVector.Z);
-}
+	FORCEINLINE constexpr Vector3 Vector3::operator+(const Vector3& InVector) const
+	{
+		return Vector3(X + InVector.X, Y + InVector.Y, Z + InVector.Z);
+	}
 
-FORCEINLINE constexpr Vector3 Vector3::operator-(const Vector3& InVector) const
-{
-	return Vector3(X - InVector.X, Y - InVector.Y, Z - InVector.Z);
-}
+	FORCEINLINE constexpr Vector3 Vector3::operator-(const Vector3& InVector) const
+	{
+		return Vector3(X - InVector.X, Y - InVector.Y, Z - InVector.Z);
+	}
 
-FORCEINLINE constexpr Vector3 Vector3::operator*(const Vector3& InVector) const
-{
-	return Vector3(X * InVector.X, Y * InVector.Y, Z * InVector.Z);
-}
+	FORCEINLINE constexpr Vector3 Vector3::operator*(const Vector3& InVector) const
+	{
+		return Vector3(X * InVector.X, Y * InVector.Y, Z * InVector.Z);
+	}
 
-FORCEINLINE constexpr Vector3 Vector3::operator*(const float InScalar) const
-{
-	return Vector3(X * InScalar, Y * InScalar, Z * InScalar);
-}
+	FORCEINLINE constexpr Vector3 Vector3::operator*(const float InScalar) const
+	{
+		return Vector3(X * InScalar, Y * InScalar, Z * InScalar);
+	}
 
-FORCEINLINE constexpr Vector3 Vector3::operator/(const Vector3& InVector) const
-{
-	return Vector3(X / InVector.X, Y / InVector.Y, Z / InVector.Z);
-}
+	FORCEINLINE constexpr Vector3 Vector3::operator/(const Vector3& InVector) const
+	{
+		return Vector3(X / InVector.X, Y / InVector.Y, Z / InVector.Z);
+	}
 
-FORCEINLINE constexpr Vector3 Vector3::operator/(const float InScalar) const
-{
-	return Vector3(X / InScalar, Y / InScalar, Z / InScalar);
-}
+	FORCEINLINE constexpr Vector3 Vector3::operator/(const float InScalar) const
+	{
+		return Vector3(X / InScalar, Y / InScalar, Z / InScalar);
+	}
 
-FORCEINLINE constexpr Vector3& Vector3::operator+=(const Vector3& InVector)
-{
-	X += InVector.X;
-	Y += InVector.Y;
-	Z += InVector.Z;
-	return *this;
-}
+	FORCEINLINE constexpr Vector3& Vector3::operator+=(const Vector3& InVector)
+	{
+		X += InVector.X;
+		Y += InVector.Y;
+		Z += InVector.Z;
+		return *this;
+	}
 
-FORCEINLINE constexpr Vector3& Vector3::operator-=(const Vector3& InVector)
-{
-	X -= InVector.X;
-	Y -= InVector.Y;
-	Z -= InVector.Z;
-	return *this;
-}
+	FORCEINLINE constexpr Vector3& Vector3::operator-=(const Vector3& InVector)
+	{
+		X -= InVector.X;
+		Y -= InVector.Y;
+		Z -= InVector.Z;
+		return *this;
+	}
 
-FORCEINLINE constexpr Vector3& Vector3::operator*=(const Vector3& InVector)
-{
-	X *= InVector.X;
-	Y *= InVector.Y;
-	Z *= InVector.Z;
-	return *this;
-}
+	FORCEINLINE constexpr Vector3& Vector3::operator*=(const Vector3& InVector)
+	{
+		X *= InVector.X;
+		Y *= InVector.Y;
+		Z *= InVector.Z;
+		return *this;
+	}
 
-FORCEINLINE constexpr Vector3& Vector3::operator/=(const Vector3& InVector)
-{
-	X /= InVector.X;
-	Y /= InVector.Y;
-	Z /= InVector.Z;
-	return *this;
-}
+	FORCEINLINE constexpr Vector3& Vector3::operator/=(const Vector3& InVector)
+	{
+		X /= InVector.X;
+		Y /= InVector.Y;
+		Z /= InVector.Z;
+		return *this;
+	}
 
-FORCEINLINE float Vector3::GetMagnitude() const
-{
-	return sqrtf(GetSquaredMagnitude());
-}
+	FORCEINLINE float Vector3::GetMagnitude() const
+	{
+		return sqrtf(GetSquaredMagnitude());
+	}
 
-FORCEINLINE constexpr float Vector3::GetSquaredMagnitude() const
-{
-	return X * X + Y * Y + Z * Z;
-}
+	FORCEINLINE constexpr float Vector3::GetSquaredMagnitude() const
+	{
+		return X * X + Y * Y + Z * Z;
+	}
 
-FORCEINLINE void Vector3::Normalize()
-{
-	*this = GetNormalized();
-}
+	FORCEINLINE void Vector3::Normalize()
+	{
+		*this = GetNormalized();
+	}
 
-FORCEINLINE Vector3 Vector3::GetNormalized() const
-{
-	return Vector3(X, Y, Z) * Math::GetInvSqrt(GetSquaredMagnitude());
-}
+	FORCEINLINE Vector3 Vector3::GetNormalized() const
+	{
+		return Vector3(X, Y, Z) * Math::GetInvSqrt(GetSquaredMagnitude());
+	}
 
-FORCEINLINE std::string Vector3::ToString() const
-{
-	std::ostringstream ss;
-	ss << "(" << X << ", " << Y << ", " << Z << ")";
-	return ss.str();
-}
+	FORCEINLINE std::string Vector3::ToString() const
+	{
+		std::ostringstream ss;
+		ss << "(" << X << ", " << Y << ", " << Z << ")";
+		return ss.str();
+	}
 
-FORCEINLINE constexpr float Vector3::Dot(const Vector3& InVector1, const Vector3& InVector2)
-{
-	return InVector1.X * InVector2.X + InVector1.Y * InVector2.Y + InVector1.Z * InVector2.Z;
-}
+	FORCEINLINE constexpr float Vector3::Dot(const Vector3& InVector1, const Vector3& InVector2)
+	{
+		return InVector1.X * InVector2.X + InVector1.Y * InVector2.Y + InVector1.Z * InVector2.Z;
+	}
 
-FORCEINLINE constexpr Vector3 Vector3::Cross(const Vector3& InVector1, const Vector3& InVector2)
-{
-	return Vector3(
-		InVector1.Y * InVector2.Z - InVector1.Z * InVector2.Y,
-		InVector1.Z * InVector2.X - InVector1.X * InVector2.Z,
-		InVector1.X * InVector2.Y - InVector1.Y * InVector2.X);
+	FORCEINLINE constexpr Vector3 Vector3::Cross(const Vector3& InVector1, const Vector3& InVector2)
+	{
+		return Vector3(
+			InVector1.Y * InVector2.Z - InVector1.Z * InVector2.Y,
+			InVector1.Z * InVector2.X - InVector1.X * InVector2.Z,
+			InVector1.X * InVector2.Y - InVector1.Y * InVector2.X);
+	}
 }

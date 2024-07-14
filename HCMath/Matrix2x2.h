@@ -1,10 +1,5 @@
 ﻿#pragma once
 
-#include <sstream>
-
-#include "pch.h"
-#include "Vector2.h"
-
 namespace HC
 {
 	struct Matrix2x2
@@ -29,50 +24,50 @@ namespace HC
 
 		Matrix2x2 Transpose() const;
 	};
-}
 
-FORCEINLINE constexpr const Vector2& Matrix2x2::operator[](const uint8 InIndex) const
-{
-	assert(InIndex < Rank);
-	return Cols[InIndex];
-}
+	FORCEINLINE constexpr const Vector2& Matrix2x2::operator[](const uint8 InIndex) const
+	{
+		assert(InIndex < Rank);
+		return Cols[InIndex];
+	}
 
-FORCEINLINE Vector2& Matrix2x2::operator[](const uint8 InIndex)
-{
-	assert(InIndex < Rank);
-	return Cols[InIndex];
-}
-FORCEINLINE constexpr Matrix2x2 Matrix2x2::operator*(float InScalar) const
-{
-	return Matrix2x2(
-		Cols[0] * InScalar,
-		Cols[1] * InScalar
-	);
-}
+	FORCEINLINE Vector2& Matrix2x2::operator[](const uint8 InIndex)
+	{
+		assert(InIndex < Rank);
+		return Cols[InIndex];
+	}
+	FORCEINLINE constexpr Matrix2x2 Matrix2x2::operator*(float InScalar) const
+	{
+		return Matrix2x2(
+			Cols[0] * InScalar,
+			Cols[1] * InScalar
+		);
+	}
 
 
-FORCEINLINE Matrix2x2 Matrix2x2::operator*(const Matrix2x2& InMatrix) const
-{
-	Matrix2x2 transposedMatrix = Transpose();
-	return Matrix2x2(
-		Vector2(Vector2::Dot(transposedMatrix[0], InMatrix[0]), Vector2::Dot(transposedMatrix[1], InMatrix[0])),
-		Vector2(Vector2::Dot(transposedMatrix[0], InMatrix[1]), Vector2::Dot(transposedMatrix[1], InMatrix[1]))
-	);
-}
+	FORCEINLINE Matrix2x2 Matrix2x2::operator*(const Matrix2x2& InMatrix) const
+	{
+		Matrix2x2 transposedMatrix = Transpose();
+		return Matrix2x2(
+			Vector2(Vector2::Dot(transposedMatrix[0], InMatrix[0]), Vector2::Dot(transposedMatrix[1], InMatrix[0])),
+			Vector2(Vector2::Dot(transposedMatrix[0], InMatrix[1]), Vector2::Dot(transposedMatrix[1], InMatrix[1]))
+		);
+	}
 
-FORCEINLINE Vector2 Matrix2x2::operator*(const Vector2& InVector) const
-{
-	Matrix2x2 transposedMatrix = Transpose();
-	return Vector2(
-		Vector2::Dot(transposedMatrix[0], InVector),
-		Vector2::Dot(transposedMatrix[1], InVector)
-	);
-}
+	FORCEINLINE Vector2 Matrix2x2::operator*(const Vector2& InVector) const
+	{
+		Matrix2x2 transposedMatrix = Transpose();
+		return Vector2(
+			Vector2::Dot(transposedMatrix[0], InVector),
+			Vector2::Dot(transposedMatrix[1], InVector)
+		);
+	}
 
-FORCEINLINE Matrix2x2 Matrix2x2::Transpose() const
-{
-	return Matrix2x2(
-		Vector2(Cols[0].X, Cols[1].X),
-		Vector2(Cols[0].Y, Cols[1].Y)
-	);
+	FORCEINLINE Matrix2x2 Matrix2x2::Transpose() const
+	{
+		return Matrix2x2(
+			Vector2(Cols[0].X, Cols[1].X),
+			Vector2(Cols[0].Y, Cols[1].Y)
+		);
+	}
 }

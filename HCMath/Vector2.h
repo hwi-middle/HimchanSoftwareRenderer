@@ -1,10 +1,5 @@
 ﻿#pragma once
 
-#include <sstream>
-
-#include "pch.h"
-#include "MathUtil.h"
-
 namespace HC
 {
 	struct Vector2
@@ -52,105 +47,105 @@ namespace HC
 
 		[[nodiscard]] std::string ToString() const;
 	};
-}
 
-FORCEINLINE constexpr float Vector2::operator[](const uint8 InIndex) const
-{
-	assert(InIndex < Dimension);
-	return Components[InIndex];
-}
+	FORCEINLINE constexpr float Vector2::operator[](const uint8 InIndex) const
+	{
+		assert(InIndex < Dimension);
+		return Components[InIndex];
+	}
 
-FORCEINLINE constexpr Vector2 Vector2::operator-() const
-{
-	return Vector2(-X, -Y);
-}
+	FORCEINLINE constexpr Vector2 Vector2::operator-() const
+	{
+		return Vector2(-X, -Y);
+	}
 
-FORCEINLINE constexpr Vector2 Vector2::operator+(const Vector2& InVector) const
-{
-	return Vector2(X + InVector.X, Y + InVector.Y);
-}
+	FORCEINLINE constexpr Vector2 Vector2::operator+(const Vector2& InVector) const
+	{
+		return Vector2(X + InVector.X, Y + InVector.Y);
+	}
 
-FORCEINLINE constexpr Vector2 Vector2::operator-(const Vector2& InVector) const
-{
-	return Vector2(X - InVector.X, Y - InVector.Y);
-}
+	FORCEINLINE constexpr Vector2 Vector2::operator-(const Vector2& InVector) const
+	{
+		return Vector2(X - InVector.X, Y - InVector.Y);
+	}
 
-FORCEINLINE constexpr Vector2 Vector2::operator*(const Vector2& InVector) const
-{
-	return Vector2(X * InVector.X, Y * InVector.Y);
-}
+	FORCEINLINE constexpr Vector2 Vector2::operator*(const Vector2& InVector) const
+	{
+		return Vector2(X * InVector.X, Y * InVector.Y);
+	}
 
-FORCEINLINE constexpr Vector2 Vector2::operator*(const float InScalar) const
-{
-	return Vector2(X * InScalar, Y * InScalar);
-}
+	FORCEINLINE constexpr Vector2 Vector2::operator*(const float InScalar) const
+	{
+		return Vector2(X * InScalar, Y * InScalar);
+	}
 
-FORCEINLINE constexpr Vector2 Vector2::operator/(const Vector2& InVector) const
-{
-	return Vector2(X / InVector.X, Y / InVector.Y);
-}
+	FORCEINLINE constexpr Vector2 Vector2::operator/(const Vector2& InVector) const
+	{
+		return Vector2(X / InVector.X, Y / InVector.Y);
+	}
 
-FORCEINLINE constexpr Vector2 Vector2::operator/(const float InScalar) const
-{
-	return Vector2(X / InScalar, Y / InScalar);
-}
+	FORCEINLINE constexpr Vector2 Vector2::operator/(const float InScalar) const
+	{
+		return Vector2(X / InScalar, Y / InScalar);
+	}
 
-FORCEINLINE constexpr Vector2& Vector2::operator+=(const Vector2& InVector)
-{
-	X += InVector.X;
-	Y += InVector.Y;
-	return *this;
-}
+	FORCEINLINE constexpr Vector2& Vector2::operator+=(const Vector2& InVector)
+	{
+		X += InVector.X;
+		Y += InVector.Y;
+		return *this;
+	}
 
-FORCEINLINE constexpr Vector2& Vector2::operator-=(const Vector2& InVector)
-{
-	X -= InVector.X;
-	Y -= InVector.Y;
-	return *this;
-}
+	FORCEINLINE constexpr Vector2& Vector2::operator-=(const Vector2& InVector)
+	{
+		X -= InVector.X;
+		Y -= InVector.Y;
+		return *this;
+	}
 
-FORCEINLINE constexpr Vector2& Vector2::operator*=(const Vector2& InVector)
-{
-	X *= InVector.X;
-	Y *= InVector.Y;
-	return *this;
-}
+	FORCEINLINE constexpr Vector2& Vector2::operator*=(const Vector2& InVector)
+	{
+		X *= InVector.X;
+		Y *= InVector.Y;
+		return *this;
+	}
 
-FORCEINLINE constexpr Vector2& Vector2::operator/=(const Vector2& InVector)
-{
-	X /= InVector.X;
-	Y /= InVector.Y;
-	return *this;
-}
+	FORCEINLINE constexpr Vector2& Vector2::operator/=(const Vector2& InVector)
+	{
+		X /= InVector.X;
+		Y /= InVector.Y;
+		return *this;
+	}
 
-FORCEINLINE float Vector2::GetMagnitude() const
-{
-	return sqrtf(GetSquaredMagnitude());
-}
+	FORCEINLINE float Vector2::GetMagnitude() const
+	{
+		return sqrtf(GetSquaredMagnitude());
+	}
 
-FORCEINLINE constexpr float Vector2::GetSquaredMagnitude() const
-{
-	return X * X + Y * Y;
-}
+	FORCEINLINE constexpr float Vector2::GetSquaredMagnitude() const
+	{
+		return X * X + Y * Y;
+	}
 
-FORCEINLINE void Vector2::Normalize()
-{
-	*this = GetNormalized();
-}
+	FORCEINLINE void Vector2::Normalize()
+	{
+		*this = GetNormalized();
+	}
 
-FORCEINLINE Vector2 Vector2::GetNormalized() const
-{
-	return Vector2(X, Y) * Math::GetInvSqrt(GetSquaredMagnitude());
-}
+	FORCEINLINE Vector2 Vector2::GetNormalized() const
+	{
+		return Vector2(X, Y) * Math::GetInvSqrt(GetSquaredMagnitude());
+	}
 
-FORCEINLINE std::string Vector2::ToString() const
-{
-	std::ostringstream ss;
-	ss << "(" << X << ", " << Y << ")";
-	return ss.str();
-}
+	FORCEINLINE std::string Vector2::ToString() const
+	{
+		std::ostringstream ss;
+		ss << "(" << X << ", " << Y << ")";
+		return ss.str();
+	}
 
-FORCEINLINE constexpr float Vector2::Dot(const Vector2& InVector1, const Vector2& InVector2)
-{
-	return InVector1.X * InVector2.X + InVector1.Y * InVector2.Y;
+	FORCEINLINE constexpr float Vector2::Dot(const Vector2& InVector1, const Vector2& InVector2)
+	{
+		return InVector1.X * InVector2.X + InVector1.Y * InVector2.Y;
+	}
 }
