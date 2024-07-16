@@ -7,6 +7,8 @@ public:
 	~Application();
 	void Tick();
 
+	void Resize(uint32 InWidth, uint32 InHeight);
+
 	FORCEINLINE WinRenderer& GetRenderer() { return *Renderer.get(); }
 
 private:

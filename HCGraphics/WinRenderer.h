@@ -10,6 +10,8 @@ namespace HC
 
 		bool Initialize(uint32 InWidth, uint32 InHeight);
 		void Release();
+		
+		void Resize(uint32 InWidth, uint32 InHeight);
 
 		FORCEINLINE void SetPixel(int32 InX, int32 InY, const Color& InColor);
 		void SwapBuffer();

@@ -5,10 +5,11 @@
 #endif
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+
 HINSTANCE g_hInst;
-LPCTSTR lpszClass = TEXT("Himchan Software Renderer");
-uint16 Width = 640;
-uint16 Height = 480;
+LPCTSTR g_lpszClass = TEXT("Himchan Software Renderer");
+std::function<void(uint32 Width, uint32 Height)> g_OnResize;
+std::function<void(void)> g_Tick;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
@@ -23,23 +24,27 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	WndClass.hInstance = hInstance;
 	WndClass.lpfnWndProc = WndProc;
-	WndClass.lpszClassName = lpszClass;
+	WndClass.lpszClassName = g_lpszClass;
 	WndClass.lpszMenuName = NULL;
 	WndClass.style = CS_HREDRAW | CS_VREDRAW;
 	RegisterClass(&WndClass);
 
-	RECT windowRect = { 0, 0, Width, Height };
+	uint32 InitWidth = 640;
+	uint32 InitHeight = 480;
+	RECT windowRect = { 0, 0, InitWidth, InitHeight };
 	AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
-	const uint16 ActualWindowWidth = windowRect.right - windowRect.left;
-	const uint16 ActualWindowHeight = windowRect.bottom - windowRect.top;
+	const uint32 ActualWindowWidth = windowRect.right - windowRect.left;
+	const uint32 ActualWindowHeight = windowRect.bottom - windowRect.top;
 
-	hWnd = CreateWindow(lpszClass, lpszClass, WS_OVERLAPPEDWINDOW,
+	hWnd = CreateWindow(g_lpszClass, g_lpszClass, WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, ActualWindowWidth, ActualWindowHeight,
 		NULL, (HMENU)NULL, hInstance, NULL);
 	ShowWindow(hWnd, nCmdShow);
 
-	Application appliction(Width, Height, new WinRenderer());
+	Application appliction(InitWidth, InitHeight, new WinRenderer());
+	g_OnResize = std::bind(&Application::Resize, &appliction, std::placeholders::_1, std::placeholders::_2);
+	g_Tick = std::bind(&Application::Tick, &appliction);
 
 	while (true)
 	{
@@ -62,44 +67,20 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
-	HDC hdc;
-	PAINTSTRUCT ps;
-
 	switch (iMessage)
 	{
-	case WM_CREATE:
+	case WM_SIZE:
 	{
-
-		return 0;
-	}
-
-	//case WM_PAINT:
-	//{
-	//	hdc = BeginPaint(hWnd, &ps);
-	//	// ----- Draw below -----
-
-	//	DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(0, 0), Vector2(0, 800), RGB(255, 0, 0));
-	//	DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(80, 80), Vector2(180, 150), RGB(0, 255, 0));
-	//	DrawHelper::DrawLine(hdc, Vector2(Width, Height), Vector2(-450, 950), Vector2(70, -50), RGB(0, 0, 255));
-
-	//	// ----- Draw above -----
-	//	EndPaint(hWnd, &ps);
-	//	break;
-	//}
-	case WM_CHAR:
-	{
-		switch (wParam)
+		uint32 Width = LOWORD(lParam);
+		uint32 Height = HIWORD(lParam);
+		if (g_OnResize)
 		{
-		case 'r':
-			RECT rect;
-			if (GetWindowRect(hWnd, &rect))
-			{
-				int width = rect.right - rect.left;
-				int height = rect.bottom - rect.top;
-				std::cout << "Width: " << width << std::endl;
-				std::cout << "Height: " << height << std::endl;
-			}
-			break;
+			g_OnResize(Width, Height);
+		}
+
+		if (g_Tick)
+		{
+			g_Tick();
 		}
 		return 0;
 	}

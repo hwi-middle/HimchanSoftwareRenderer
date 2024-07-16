@@ -37,6 +37,12 @@ void WinRenderer::Release()
 	::ReleaseDC(Handle, ScreenDC);
 }
 
+void WinRenderer::Resize(uint32 InWidth, uint32 InHeight)
+{
+	Release();
+	Initialize(InWidth, InHeight);
+}
+
 void WinRenderer::SwapBuffer()
 {
 	::BitBlt(ScreenDC, 0, 0, Width, Height, MemDC, 0, 0, SRCCOPY);
