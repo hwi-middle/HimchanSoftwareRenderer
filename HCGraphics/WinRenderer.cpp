@@ -33,8 +33,8 @@ void WinRenderer::Release()
 {
 	::DeleteObject(OriginalBitmap);
 	::DeleteObject(MemBitmap);
-	::ReleaseDC(Handle, MemDC);
-	::ReleaseDC(Handle, ScreenDC);
+	::DeleteDC(MemDC);
+	::DeleteDC(ScreenDC);
 }
 
 void WinRenderer::Resize(uint32 InWidth, uint32 InHeight)
@@ -50,10 +50,8 @@ void WinRenderer::SwapBuffer()
 
 void WinRenderer::FillBuffer()
 {
-	for (uint32 i = 0; i < Width * Height; i++)
-	{
-		ScreenBuffer[i] = Color::White.ToColor32();
-	}
+	Color32 ClearColor = Color::White.ToColor32();
+	std::fill(ScreenBuffer, ScreenBuffer + Width * Height, ClearColor);
 }
 
 void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color InColor)
