@@ -80,10 +80,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		if (g_Tick)
 		{
-			g_Tick();
+			//g_Tick();
 		}
 		return 0;
 	}
+
+	case WM_ENTERSIZEMOVE:
+		SetTimer(hWnd, 1, USER_TIMER_MINIMUM, NULL);
+		return 0;
+
+	case WM_EXITSIZEMOVE:
+		KillTimer(hWnd, 1);
+		return 0;
+
+	case WM_TIMER:
+		std::cout << "WM_TIMER" << std::endl;
+		g_Tick();
+		return 0;
 
 	case WM_DESTROY:
 		PostQuitMessage(0);
