@@ -3,6 +3,8 @@
 Application::Application(uint32 InWidth, uint32 InHeight, WinRenderer* InRenderer) : Renderer(InRenderer), Width(InWidth), Height(InHeight)
 {
 	Renderer->Initialize(Width, Height);
+	QueryPerformanceFrequency(&Frequency);
+	QueryPerformanceCounter(&PrevTime);
 }
 
 Application::~Application()
@@ -29,25 +31,24 @@ void Application::Resize(uint32 InWidth, uint32 InHeight)
 void Application::PreUpdate()
 {
 	GetRenderer().FillBuffer();
+
+
+
 }
 
 void Application::Update()
 {
-	//posY = Math::Sin(t * 0.5f) * (Height / 2);
-	//posX = Math::Cos(t * 0.5f) * (Width / 2);
-
-	posY = 0;
-	posX = 0;
+	posY = Math::Sin(t * 0.5f) * (Height / 2);
+	posX = Math::Cos(t * 0.5f) * (Width / 2);
 }
 
 void Application::LateUpdate()
 {
-	t += 0.02f;
+	t += DeltaTime;
 }
 
 void Application::Render()
 {
-	//std::cout << "pos: (" << posX << ", " << posY << ")" << std::endl;
 	GetRenderer().DrawLine(Vector2(-(int)Width, posY), Vector2(Width, posY), Color::Red);
 	GetRenderer().DrawLine(Vector2(posX, -(int)Height), Vector2(posX, Height), Color::Green);
 
@@ -65,5 +66,10 @@ void Application::Render()
 void Application::PostUpdate()
 {
 	GetRenderer().SwapBuffer();
+
+	QueryPerformanceCounter(&CurrentTime);
+	DeltaTime = static_cast<float>(CurrentTime.QuadPart - PrevTime.QuadPart) / Frequency.QuadPart;
+	PrevTime = CurrentTime;
+	Fps = 1.0f / DeltaTime;
 }
 

@@ -5,6 +5,8 @@
 #include <iostream>
 #include <functional>
 #include <vector>
+#include <tchar.h>
+#include <cstdio>
 
 #include "HCCore.h"
 #include "HCMath.h"

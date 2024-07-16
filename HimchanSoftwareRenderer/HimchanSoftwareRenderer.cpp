@@ -8,6 +8,7 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 HINSTANCE g_hInst;
 LPCTSTR g_lpszClass = TEXT("Himchan Software Renderer");
+TCHAR g_title[256];
 std::function<void(uint32 Width, uint32 Height)> g_OnResize;
 std::function<void(void)> g_Tick;
 
@@ -60,6 +61,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 		}
 
 		appliction.Tick();
+		_stprintf_s(g_title, _T("Himchan Software Renderer (%.2f fps)"), appliction.GetFps());
+		SetWindowText(hWnd, g_title);
 	}
 
 	return (int)Message.wParam;
@@ -78,10 +81,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			g_OnResize(Width, Height);
 		}
 
-		if (g_Tick)
-		{
-			//g_Tick();
-		}
 		return 0;
 	}
 
@@ -94,7 +93,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 
 	case WM_TIMER:
-		std::cout << "WM_TIMER" << std::endl;
 		g_Tick();
 		return 0;
 
