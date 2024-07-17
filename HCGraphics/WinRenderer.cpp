@@ -50,8 +50,7 @@ void WinRenderer::SwapBuffer()
 
 void WinRenderer::FillBuffer()
 {
-	Color32 ClearColor = Color::White.ToColor32();
-	std::fill(ScreenBuffer, ScreenBuffer + Width * Height, ClearColor);
+	memset(ScreenBuffer, 255, Width * Height * sizeof(Color32));
 }
 
 void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color InColor)
