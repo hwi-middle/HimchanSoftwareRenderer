@@ -14,7 +14,7 @@ namespace HC
 
 		FORCEINLINE static Vector2 CartesianToScreen(const Vector2& InPoint, const uint32 Width, const uint32 Height)
 		{
-			return Vector2(InPoint.X + Width * 0.5f, -InPoint.Y + Height * 0.5f);
+			return Vector2(static_cast<int>(InPoint.X + Width * 0.5f), static_cast<int>(- InPoint.Y + Height * 0.5f));
 		}
 	};
 }
