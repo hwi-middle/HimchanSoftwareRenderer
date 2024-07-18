@@ -22,7 +22,6 @@ void Application::Tick()
 
 void Application::Resize(uint32 InWidth, uint32 InHeight)
 {
-	std::cout << "Resize: (" << Width << ", " << Height << ") -> (" << InWidth << ", " << InHeight << ")" << std::endl;
 	Width = InWidth;
 	Height = InHeight;
 	Renderer->Resize(Width, Height);
@@ -31,36 +30,31 @@ void Application::Resize(uint32 InWidth, uint32 InHeight)
 void Application::PreUpdate()
 {
 	GetRenderer().FillBuffer();
-
-
-
 }
 
 void Application::Update()
 {
-	posY = Math::Sin(t * 0.5f) * (Height / 2);
-	posX = Math::Cos(t * 0.5f) * (Width / 2);
+	auto& Renderer = GetRenderer();
+	Color LineColor = Color::Blue;
+	for (uint32 ti = 0; ti < TRI_CNT; ++ti)
+	{
+		uint32 bi = ti * 3;
+
+		Renderer.DrawLine(VertexBuffer[IndexBuffer[bi]], VertexBuffer[IndexBuffer[bi + 1]], LineColor);
+		Renderer.DrawLine(VertexBuffer[IndexBuffer[bi]], VertexBuffer[IndexBuffer[bi + 2]], LineColor);
+		Renderer.DrawLine(VertexBuffer[IndexBuffer[bi + 1]], VertexBuffer[IndexBuffer[bi + 2]], LineColor);
+	}
+
 }
 
 void Application::LateUpdate()
 {
-	t += DeltaTime;
 }
 
 void Application::Render()
 {
-	GetRenderer().DrawLine(Vector2(-(int)Width, posY), Vector2(Width, posY), Color::Red);
-	GetRenderer().DrawLine(Vector2(posX, -(int)Height), Vector2(posX, Height), Color::Green);
-
-	GetRenderer().DrawPoint(Vector2(posX, posY), Color::Blue);
-	GetRenderer().DrawPoint(Vector2(posX + 1, posY), Color::Blue);
-	GetRenderer().DrawPoint(Vector2(posX - 1, posY), Color::Blue);
-	GetRenderer().DrawPoint(Vector2(posX, posY + 1), Color::Blue);
-	GetRenderer().DrawPoint(Vector2(posX, posY - 1), Color::Blue);
-	GetRenderer().DrawPoint(Vector2(posX + 1, posY + 1), Color::Blue);
-	GetRenderer().DrawPoint(Vector2(posX + 1, posY - 1), Color::Blue);
-	GetRenderer().DrawPoint(Vector2(posX - 1, posY + 1), Color::Blue);
-	GetRenderer().DrawPoint(Vector2(posX - 1, posY - 1), Color::Blue);
+	GetRenderer().DrawLine(Vector2(-(int)Width, 0), Vector2(Width, 0), Color::Red);
+	GetRenderer().DrawLine(Vector2(0, -(int)Height), Vector2(0, Height), Color::Green);
 }
 
 void Application::PostUpdate()
