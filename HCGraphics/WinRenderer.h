@@ -8,10 +8,10 @@ namespace HC
 		WinRenderer() = default;
 		~WinRenderer();
 
-		bool Initialize(uint32 InWidth, uint32 InHeight);
+		bool Initialize(int32 InWidth, int32 InHeight);
 		void Release();
 		
-		void Resize(uint32 InWidth, uint32 InHeight);
+		void Resize(int32 InWidth, int32 InHeight);
 
 		FORCEINLINE void SetPixel(int32 InX, int32 InY, const Color& InColor);
 		void SwapBuffer();
@@ -26,7 +26,7 @@ namespace HC
 		HBITMAP OriginalBitmap, MemBitmap;
 		Color32* ScreenBuffer;
 
-		uint32 Width, Height;
+		int32 Width, Height;
 
 		FORCEINLINE bool IsInScreen(const int32 InX, const int32 InY) const;
 
