@@ -24,7 +24,18 @@ bool WinRenderer::Initialize(int32 InWidth, int32 InHeight)
 	bmi.bmiHeader.biCompression = BI_RGB;
 
 	MemBitmap = ::CreateDIBSection(MemDC, &bmi, DIB_RGB_COLORS, (void**)&ScreenBuffer, NULL, 0);
+	if (MemBitmap == NULL)
+	{
+		Release();
+		return false;
+	}
+
 	OriginalBitmap = (HBITMAP)::SelectObject(MemDC, MemBitmap);
+	if (OriginalBitmap == NULL)
+	{
+		Release();
+		return false;
+	}
 
 	return true;
 }
