@@ -165,6 +165,12 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 	int32 X3 = Vertices[2].X;
 	int32 Y3 = Vertices[2].Y;
 
+	// Degenerate triangle
+	if ((X2 - X1) * (Y3 - Y1) == (X3 - X1) * (Y2 - Y1))
+	{
+		return;
+	}
+
 	float A12 = Y1 != Y2 ? (X2 - X1) / static_cast<float>(Y2 - Y1) : 0.f;
 	float A13 = (X3 - X1) / static_cast<float>(Y3 - Y1);
 	float A23 = Y2 != Y3 ? (X3 - X2) / static_cast<float>(Y3 - Y2) : 0.f;
