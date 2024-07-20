@@ -10,16 +10,17 @@ namespace HC
 
 		bool Initialize(int32 InWidth, int32 InHeight);
 		void Release();
-		
+
 		void Resize(int32 InWidth, int32 InHeight);
 
 		FORCEINLINE void SetPixel(int32 InX, int32 InY, const Color& InColor);
 		void SwapBuffer();
 		void FillBuffer();
 
-		void DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color InColor);
+		void DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color& InColor);
+		void DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const std::function<Color(float X, float Y)> InColorFunc);
 		void DrawPoint(const Vector2& InPos, const Color InColor);
-		void DrawTriangle(const Vector2& InPos1, const Vector2& InPos2, const Vector2& InPos3, const Color InColor);
+		void DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2, const Vertex& InVertex3, const Color InColor);
 
 	private:
 		HWND Handle;

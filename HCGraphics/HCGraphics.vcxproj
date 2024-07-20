@@ -144,6 +144,7 @@
     <ClInclude Include="Color32.h" />
     <ClInclude Include="HCGraphics.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="WinRenderer.h" />
   </ItemGroup>
   <ItemGroup>

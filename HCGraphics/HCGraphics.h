@@ -8,6 +8,8 @@
 #include "Color.h"
 //#include "DrawHelper.h"
 
+#include "Vertex.h"
+
 #include <Windows.h>
 #include "WinRenderer.h"
 

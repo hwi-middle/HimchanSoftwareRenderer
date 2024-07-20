@@ -34,16 +34,6 @@ void Application::PreUpdate()
 
 void Application::Update()
 {
-	auto& Renderer = GetRenderer();
-	Color LineColor = Color::Blue;
-	for (uint32 ti = 0; ti < TRI_CNT; ++ti)
-	{
-		uint32 bi = ti * 3;
-
-		Renderer.DrawLine(VertexBuffer[IndexBuffer[bi]], VertexBuffer[IndexBuffer[bi + 1]], LineColor);
-		Renderer.DrawLine(VertexBuffer[IndexBuffer[bi]], VertexBuffer[IndexBuffer[bi + 2]], LineColor);
-		Renderer.DrawLine(VertexBuffer[IndexBuffer[bi + 1]], VertexBuffer[IndexBuffer[bi + 2]], LineColor);
-	}
 
 }
 
@@ -55,6 +45,15 @@ void Application::Render()
 {
 	GetRenderer().DrawLine(Vector2(-(int)Width, 0), Vector2(Width, 0), Color::Red);
 	GetRenderer().DrawLine(Vector2(0, -(int)Height), Vector2(0, Height), Color::Green);
+
+	auto& Renderer = GetRenderer();
+	Color LineColor = Color::Blue;
+
+	for (uint32 ti = 0; ti < TRI_CNT; ++ti)
+	{
+		uint32 bi = ti * 3;
+		Renderer.DrawTriangle(VertexBuffer[IndexBuffer[bi]], VertexBuffer[IndexBuffer[bi + 1]], VertexBuffer[IndexBuffer[bi + 2]], LineColor);
+	}
 }
 
 void Application::PostUpdate()

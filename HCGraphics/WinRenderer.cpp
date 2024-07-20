@@ -64,7 +64,12 @@ void WinRenderer::FillBuffer()
 	memset(ScreenBuffer, 255, Width * Height * sizeof(Color32));
 }
 
-void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color InColor)
+void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color& InColor)
+{
+	DrawLine(InStartPos, InEndPos, [&](float X, float Y) -> Color { return InColor; });
+}
+
+void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const std::function<Color(float X, float Y)> InColorFunc)
 {
 	Vector2 ScreenSize = Vector2(Width, Height);
 	Vector2 HalfScreen = ScreenSize * 0.5f;
@@ -101,7 +106,7 @@ void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, c
 	{
 		while (X != EndPosScreen.X)
 		{
-			SetPixel(X, Y, InColor);
+			SetPixel(X, Y, InColorFunc(X, Y));
 
 			if (Discriminant < 0)
 			{
@@ -120,7 +125,7 @@ void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, c
 	{
 		while (Y != EndPosScreen.Y)
 		{
-			SetPixel(X, Y, InColor);
+			SetPixel(X, Y, InColorFunc(X, Y));
 
 			if (Discriminant < 0)
 			{
@@ -143,46 +148,71 @@ void WinRenderer::DrawPoint(const Vector2& InPos, const Color InColor)
 	SetPixel(res.X, res.Y, InColor);
 }
 
-void WinRenderer::DrawTriangle(const Vector2& InPos1, const Vector2& InPos2, const Vector2& InPos3, const Color InColor)
+void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2, const Vertex& InVertex3, const Color InColor)
 {
-	std::array<Vector2, 3> Points = { InPos1, InPos2, InPos3 };
-	std::sort(Points.begin(), Points.end(), [](const Vector2& InLhs, const Vector2& InRhs) { return InLhs.Y < InRhs.Y; });
-
-	float x1 = Points[0].X;
-	float y1 = Points[0].Y;
-	float x2 = Points[1].X;
-	float y2 = Points[1].Y;
-	float x3 = Points[2].X;
-	float y3 = Points[2].Y;
-
-	float a12 = y1 != y2 ? (float)(x2 - x1) / (float)(y2 - y1) : 0.f;
-	float a13 = (float)(x3 - x1) / (float)(y3 - y1);
-	float a23 = y2 != y3 ? (float)(x3 - x2) / (float)(y3 - y2) : 0.f;
-
-	for (int y = y1; y <= y2; ++y)
+	std::array<Vector2, 3> Vertices =
 	{
-		float xLeft = x1 + a12 * (y - y1);
-		float xRight = x1 + a13 * (y - y1);
+		ScreenPoint::CartesianToScreen(InVertex1.Position, Width, Height),
+		ScreenPoint::CartesianToScreen(InVertex2.Position, Width, Height),
+		ScreenPoint::CartesianToScreen(InVertex3.Position, Width, Height)
+	};
+	std::sort(Vertices.begin(), Vertices.end(), [](const Vector2& InLhs, const Vector2& InRhs) { return InLhs.Y < InRhs.Y; });
 
-		if (xLeft > xRight)
+	int32 X1 = Vertices[0].X;
+	int32 Y1 = Vertices[0].Y;
+	int32 X2 = Vertices[1].X;
+	int32 Y2 = Vertices[1].Y;
+	int32 X3 = Vertices[2].X;
+	int32 Y3 = Vertices[2].Y;
+
+	float A12 = Y1 != Y2 ? (X2 - X1) / static_cast<float>(Y2 - Y1) : 0.f;
+	float A13 = (X3 - X1) / static_cast<float>(Y3 - Y1);
+	float A23 = Y2 != Y3 ? (X3 - X2) / static_cast<float>(Y3 - Y2) : 0.f;
+
+	for (int Y = Y1; Y <= Y2; ++Y)
+	{
+		int32 XLeft = X1 + A12 * (Y - Y1);
+		int32 XRight = X1 + A13 * (Y - Y1);
+
+		if (XLeft > XRight)
 		{
-			std::swap(xLeft, xRight);
+			std::swap(XLeft, XRight);
 		}
 
-		DrawLine(Vector2(xLeft, y), Vector2(xRight, y), InColor);
+		float AlphaLeft = Y2 != Y1 ? (Y - Y1) / static_cast<float>(Y2 - Y1) : 0.f;
+		Color ColorLeft = Math::Lerp(InVertex1.Color, InVertex2.Color, AlphaLeft);
+		float AlphaRight = Y3 != Y1 ? (Y - Y1) / static_cast<float>(Y3 - Y1) : 1.f;
+		Color ColorRight = Math::Lerp(InVertex1.Color, InVertex3.Color, AlphaRight);
+
+		DrawLine(
+			ScreenPoint::ScreenToCartesian(Vector2(XLeft, Y), Width, Height),
+			ScreenPoint::ScreenToCartesian(Vector2(XRight, Y), Width, Height),
+			[&](float InX, float InY) -> Color {
+				return Math::Lerp(ColorLeft, ColorRight, (InX - XLeft) / static_cast<float>(XRight - XLeft));
+			});
 	}
 
-	for (int y = y2; y <= y3; ++y)
+	for (int Y = Y2; Y <= Y3; ++Y)
 	{
-		float xLeft = x2 + a23 * (y - y2);
-		float xRight = x1 + a13 * (y - y1);
+		int32 XLeft = X2 + A23 * static_cast<float>(Y - Y2);
+		int32 XRight = X1 + A13 * static_cast<float>(Y - Y1);
 
-		if (xLeft > xRight)
+		if (XLeft > XRight)
 		{
-			std::swap(xLeft, xRight);
+			std::swap(XLeft, XRight);
 		}
 
-		DrawLine(Vector2(xLeft, y), Vector2(xRight, y), InColor);
+		float AlphaLeft = Y3 != Y2 ? (Y - Y2) / static_cast<float>(Y3 - Y2) : 0.f;
+		Color ColorLeft = Math::Lerp(InVertex2.Color, InVertex3.Color, AlphaLeft);
+		float AlphaRight = Y3 != Y1 ? (Y - Y1) / static_cast<float>(Y3 - Y1) : 1.f;
+		Color ColorRight = Math::Lerp(InVertex1.Color, InVertex3.Color, (Y - Y1) / static_cast<float>(Y3 - Y1));
+
+		DrawLine(
+			ScreenPoint::ScreenToCartesian(Vector2(XLeft, Y), Width, Height),
+			ScreenPoint::ScreenToCartesian(Vector2(XRight, Y), Width, Height),
+			[&](float InX, float InY) -> Color {
+				return Math::Lerp(ColorLeft, ColorRight, (InX - XLeft) / static_cast<float>(XRight - XLeft));
+			});
 	}
 }
 

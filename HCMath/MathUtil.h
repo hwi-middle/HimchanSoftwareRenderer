@@ -48,7 +48,7 @@ namespace HC
 		FORCEINLINE static constexpr T Lerp(const T& InFrom, const T& InTo, float InAlpha)
 		{
 			InAlpha = Clamp(InAlpha, 0.f, 1.f);
-			return (1 - InAlpha) * InFrom + InAlpha * InTo;
+			return InFrom * (1 - InAlpha) + InTo * InAlpha;
 		}
 
 		template <class T>
