@@ -143,6 +143,49 @@ void WinRenderer::DrawPoint(const Vector2& InPos, const Color InColor)
 	SetPixel(res.X, res.Y, InColor);
 }
 
+void WinRenderer::DrawTriangle(const Vector2& InPos1, const Vector2& InPos2, const Vector2& InPos3, const Color InColor)
+{
+	std::array<Vector2, 3> Points = { InPos1, InPos2, InPos3 };
+	std::sort(Points.begin(), Points.end(), [](const Vector2& InLhs, const Vector2& InRhs) { return InLhs.Y < InRhs.Y; });
+
+	float x1 = Points[0].X;
+	float y1 = Points[0].Y;
+	float x2 = Points[1].X;
+	float y2 = Points[1].Y;
+	float x3 = Points[2].X;
+	float y3 = Points[2].Y;
+
+	float a12 = y1 != y2 ? (float)(x2 - x1) / (float)(y2 - y1) : 0.f;
+	float a13 = (float)(x3 - x1) / (float)(y3 - y1);
+	float a23 = y2 != y3 ? (float)(x3 - x2) / (float)(y3 - y2) : 0.f;
+
+	for (int y = y1; y <= y2; ++y)
+	{
+		float xLeft = x1 + a12 * (y - y1);
+		float xRight = x1 + a13 * (y - y1);
+
+		if (xLeft > xRight)
+		{
+			std::swap(xLeft, xRight);
+		}
+
+		DrawLine(Vector2(xLeft, y), Vector2(xRight, y), InColor);
+	}
+
+	for (int y = y2; y <= y3; ++y)
+	{
+		float xLeft = x2 + a23 * (y - y2);
+		float xRight = x1 + a13 * (y - y1);
+
+		if (xLeft > xRight)
+		{
+			std::swap(xLeft, xRight);
+		}
+
+		DrawLine(Vector2(xLeft, y), Vector2(xRight, y), InColor);
+	}
+}
+
 bool WinRenderer::ClipLine(Vector2& InOutStartPos, Vector2& InOutEndPos, const Vector2& InMinPos, const Vector2& InMaxPos)
 {
 	//std::cout << "line to draw: " << InOutStartPos.ToString() << " to " << InOutEndPos.ToString() << "\n";

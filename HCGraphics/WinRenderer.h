@@ -19,6 +19,7 @@ namespace HC
 
 		void DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color InColor);
 		void DrawPoint(const Vector2& InPos, const Color InColor);
+		void DrawTriangle(const Vector2& InPos1, const Vector2& InPos2, const Vector2& InPos3, const Color InColor);
 
 	private:
 		HWND Handle;
