@@ -150,20 +150,23 @@ void WinRenderer::DrawPoint(const Vector2& InPos, const Color InColor)
 
 void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2, const Vertex& InVertex3, const Color InColor)
 {
-	std::array<Vector2, 3> Vertices =
+	std::array<Vertex, 3> Vertices =
 	{
-		ScreenPoint::CartesianToScreen(InVertex1.Position, Width, Height),
-		ScreenPoint::CartesianToScreen(InVertex2.Position, Width, Height),
-		ScreenPoint::CartesianToScreen(InVertex3.Position, Width, Height)
+		InVertex1,
+		InVertex2,
+		InVertex3
 	};
-	std::sort(Vertices.begin(), Vertices.end(), [](const Vector2& InLhs, const Vector2& InRhs) { return InLhs.Y < InRhs.Y; });
+	std::for_each(Vertices.begin(), Vertices.end(), [&](Vertex& InVertex) {
+		InVertex.Position = ScreenPoint::CartesianToScreen(InVertex.Position, Width, Height);
+		});
+	std::sort(Vertices.begin(), Vertices.end(), [](const Vertex& InLhs, const Vertex& InRhs) { return InLhs.Position.Y < InRhs.Position.Y; });
 
-	int32 X1 = Vertices[0].X;
-	int32 Y1 = Vertices[0].Y;
-	int32 X2 = Vertices[1].X;
-	int32 Y2 = Vertices[1].Y;
-	int32 X3 = Vertices[2].X;
-	int32 Y3 = Vertices[2].Y;
+	int32 X1 = Vertices[0].Position.X;
+	int32 Y1 = Vertices[0].Position.Y;
+	int32 X2 = Vertices[1].Position.X;
+	int32 Y2 = Vertices[1].Position.Y;
+	int32 X3 = Vertices[2].Position.X;
+	int32 Y3 = Vertices[2].Position.Y;
 
 	// Degenerate triangle
 	if ((X2 - X1) * (Y3 - Y1) == (X3 - X1) * (Y2 - Y1))
@@ -180,15 +183,17 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 		int32 XLeft = X1 + A12 * (Y - Y1);
 		int32 XRight = X1 + A13 * (Y - Y1);
 
+		float AlphaLeft = Y2 != Y1 ? (Y - Y1) / static_cast<float>(Y2 - Y1) : 0.f;
+		Color ColorLeft = Math::Lerp(Vertices[0].Color, Vertices[1].Color, AlphaLeft);
+		float AlphaRight = Y3 != Y1 ? (Y - Y1) / static_cast<float>(Y3 - Y1) : 1.f;
+		Color ColorRight = Math::Lerp(Vertices[0].Color, Vertices[2].Color, AlphaRight);
+
 		if (XLeft > XRight)
 		{
 			std::swap(XLeft, XRight);
+			std::swap(ColorLeft, ColorRight);
+			std::swap(AlphaLeft, AlphaRight);
 		}
-
-		float AlphaLeft = Y2 != Y1 ? (Y - Y1) / static_cast<float>(Y2 - Y1) : 0.f;
-		Color ColorLeft = Math::Lerp(InVertex1.Color, InVertex2.Color, AlphaLeft);
-		float AlphaRight = Y3 != Y1 ? (Y - Y1) / static_cast<float>(Y3 - Y1) : 1.f;
-		Color ColorRight = Math::Lerp(InVertex1.Color, InVertex3.Color, AlphaRight);
 
 		DrawLine(
 			ScreenPoint::ScreenToCartesian(Vector2(XLeft, Y), Width, Height),
@@ -203,15 +208,17 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 		int32 XLeft = X2 + A23 * static_cast<float>(Y - Y2);
 		int32 XRight = X1 + A13 * static_cast<float>(Y - Y1);
 
+		float AlphaLeft = Y3 != Y2 ? (Y - Y2) / static_cast<float>(Y3 - Y2) : 0.f;
+		Color ColorLeft = Math::Lerp(Vertices[1].Color, Vertices[2].Color, AlphaLeft);
+		float AlphaRight = Y3 != Y1 ? (Y - Y1) / static_cast<float>(Y3 - Y1) : 1.f;
+		Color ColorRight = Math::Lerp(Vertices[0].Color, Vertices[2].Color, (Y - Y1) / static_cast<float>(Y3 - Y1));
+
 		if (XLeft > XRight)
 		{
 			std::swap(XLeft, XRight);
+			std::swap(ColorLeft, ColorRight);
+			std::swap(AlphaLeft, AlphaRight);
 		}
-
-		float AlphaLeft = Y3 != Y2 ? (Y - Y2) / static_cast<float>(Y3 - Y2) : 0.f;
-		Color ColorLeft = Math::Lerp(InVertex2.Color, InVertex3.Color, AlphaLeft);
-		float AlphaRight = Y3 != Y1 ? (Y - Y1) / static_cast<float>(Y3 - Y1) : 1.f;
-		Color ColorRight = Math::Lerp(InVertex1.Color, InVertex3.Color, (Y - Y1) / static_cast<float>(Y3 - Y1));
 
 		DrawLine(
 			ScreenPoint::ScreenToCartesian(Vector2(XLeft, Y), Width, Height),

@@ -39,9 +39,9 @@ private:
 
 	std::array<Vertex, VERTEX_CNT> VertexBuffer =
 	{
-		Vertex(Vector2(0.f, 100.f), Color::Red),
-		Vertex(Vector2(-200.f, -100.f), Color::Green),
-		Vertex(Vector2(200.f, -100.f), Color::Blue),
+		Vertex(Vector2(300.f, 75.f), Color::Red),
+		Vertex(Vector2(-150.f, 180.f), Color::Green),
+		Vertex(Vector2(150.f, -75.f), Color::Blue),
 	};
 
 	std::array < uint32, TRI_CNT * 3> IndexBuffer = {
