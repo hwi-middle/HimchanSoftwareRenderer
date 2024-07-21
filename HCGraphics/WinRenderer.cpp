@@ -66,11 +66,6 @@ void WinRenderer::FillBuffer()
 
 void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color& InColor)
 {
-	DrawLine(InStartPos, InEndPos, [&](float X, float Y) -> Color { return InColor; });
-}
-
-void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const std::function<Color(float X, float Y)> InColorFunc)
-{
 	Vector2 ScreenSize = Vector2(Width, Height);
 	Vector2 HalfScreen = ScreenSize * 0.5f;
 	Vector2 MinScreen = -HalfScreen;
@@ -106,7 +101,7 @@ void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, c
 	{
 		while (X != EndPosScreen.X)
 		{
-			SetPixel(X, Y, InColorFunc(X, Y));
+			SetPixel(X, Y, InColor);
 
 			if (Discriminant < 0)
 			{
@@ -125,7 +120,7 @@ void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, c
 	{
 		while (Y != EndPosScreen.Y)
 		{
-			SetPixel(X, Y, InColorFunc(X, Y));
+			SetPixel(X, Y, InColor);
 
 			if (Discriminant < 0)
 			{
@@ -188,12 +183,25 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 		int32 XStart = X1 + A12 * (Y - Y1);
 		int32 XEnd = X1 + A13 * (Y - Y1);
 
-		DrawLine(
-			ScreenPoint::ScreenToCartesian(Vector2(XStart, Y), Width, Height),
-			ScreenPoint::ScreenToCartesian(Vector2(XEnd, Y), Width, Height),
-			[&](float InX, float InY) -> Color {
-				return Math::Lerp(ColorStart, ColorEnd, (InX - XStart) / static_cast<float>(XEnd - XStart));
-			});
+		bool bIsSwapped = false;
+		if (XStart > XEnd)
+		{
+			std::swap(XStart, XEnd);
+			std::swap(ColorStart, ColorEnd);
+			bIsSwapped = true;
+		}
+
+		XStart = Math::Clamp(XStart, 0, Width - 1);
+		XEnd = Math::Clamp(XEnd, 0, Width - 1);
+		for (int X = XStart; X <= XEnd; ++X)
+		{
+			SetPixel(X, Y, Math::Lerp(ColorStart, ColorEnd, (X - XStart) / static_cast<float>(XEnd - XStart)));
+		}
+
+		if (bIsSwapped)
+		{
+			std::swap(ColorStart, ColorEnd);
+		}
 
 		ColorStart += DeltaColorStart;
 		ColorEnd += DeltaColorEnd;
@@ -210,12 +218,25 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 		int32 XStart = X2 + A23 * static_cast<float>(Y - Y2);
 		int32 XEnd = X1 + A13 * static_cast<float>(Y - Y1);
 
-		DrawLine(
-			ScreenPoint::ScreenToCartesian(Vector2(XStart, Y), Width, Height),
-			ScreenPoint::ScreenToCartesian(Vector2(XEnd, Y), Width, Height),
-			[&](float InX, float InY) -> Color {
-				return Math::Lerp(ColorStart, ColorEnd, (InX - XStart) / static_cast<float>(XEnd - XStart));
-			});
+		bool bIsSwapped = false;
+		if (XStart > XEnd)
+		{
+			std::swap(XStart, XEnd);
+			std::swap(ColorStart, ColorEnd);
+			bIsSwapped = true;
+		}
+
+		XStart = Math::Clamp(XStart, 0, Width - 1);
+		XEnd = Math::Clamp(XEnd, 0, Width - 1);
+		for (int X = XStart; X <= XEnd; ++X)
+		{
+			SetPixel(X, Y, Math::Lerp(ColorStart, ColorEnd, (X - XStart) / static_cast<float>(XEnd - XStart)));
+		}
+
+		if (bIsSwapped)
+		{
+			std::swap(ColorStart, ColorEnd);
+		}
 
 		ColorStart += DeltaColorStart;
 		ColorEnd += DeltaColorEnd;

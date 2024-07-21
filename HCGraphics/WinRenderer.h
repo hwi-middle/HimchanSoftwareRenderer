@@ -18,7 +18,6 @@ namespace HC
 		void FillBuffer();
 
 		void DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color& InColor);
-		void DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const std::function<Color(float X, float Y)> InColorFunc);
 		void DrawPoint(const Vector2& InPos, const Color InColor);
 		void DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2, const Vertex& InVertex3, const Color InColor);
 
