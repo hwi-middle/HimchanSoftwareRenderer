@@ -33,18 +33,32 @@ private:
 	int32 FrameCount = 0;
 	float ElapsedTime = 0;
 
-	static constexpr float SQUARE_HALF_SIZE = 50.f;
-	static constexpr uint32 VERTEX_CNT = 4;
-	static constexpr uint32 TRI_CNT = 1;
+	static constexpr uint32 VERTEX_CNT = 12;
+	static constexpr uint32 TRI_CNT = 4;
 
 	std::array<Vertex, VERTEX_CNT> VertexBuffer =
 	{
-		Vertex(Vector2(300.f, 75.f), Color::Red),
-		Vertex(Vector2(-150.f, 180.f), Color::Green),
-		Vertex(Vector2(150.f, -75.f), Color::Blue),
+		Vertex(Vector2(100.f, 115.f), Color::Red),
+		Vertex(Vector2(-50.f, 150.f), Color::Green),
+		Vertex(Vector2(50.f, 65.f), Color::Blue),
+
+		Vertex(Vector2(-50.f, 50.f), Color::Red),
+		Vertex(Vector2(-150.f, -50.f), Color::Green),
+		Vertex(Vector2(50.f, -50.f), Color::Blue),
+
+		Vertex(Vector2(-50.f, -70.f), Color::Cyan),
+		Vertex(Vector2(-150.f, -170.f), Color::Magenta),
+		Vertex(Vector2(50.f, -170.f), Color::Yellow),
+
+		Vertex(Vector2(0.f, 50.f), Color::Red),
+		Vertex(Vector2(200.f, 50.f), Color::Green),
+		Vertex(Vector2(100.f, -50.f), Color::Blue),
 	};
 
 	std::array < uint32, TRI_CNT * 3> IndexBuffer = {
 	   0, 1, 2,
+	   3, 4, 5,
+	   6, 7, 8,
+	   9, 10, 11
 	};
 };
