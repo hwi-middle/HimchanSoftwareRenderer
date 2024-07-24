@@ -1,4 +1,7 @@
 ﻿#include "pch.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 using namespace HC;
 
 WinRenderer::~WinRenderer()
@@ -37,6 +40,8 @@ bool WinRenderer::Initialize(int32 InWidth, int32 InHeight)
 		return false;
 	}
 
+	InitTextureBuffer();
+
 	return true;
 }
 
@@ -61,7 +66,7 @@ void WinRenderer::SwapBuffer()
 
 void WinRenderer::FillBuffer()
 {
-	memset(ScreenBuffer, 255, Width * Height * sizeof(Color32));
+	memset(ScreenBuffer, 180, Width * Height * sizeof(Color32));
 }
 
 void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color& InColor)
@@ -162,6 +167,9 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 	int32 Y2 = Vertices[1].Position.Y;
 	int32 X3 = Vertices[2].Position.X;
 	int32 Y3 = Vertices[2].Position.Y;
+	Vector2 UV1 = Vertices[0].UV;
+	Vector2 UV2 = Vertices[1].UV;
+	Vector2 UV3 = Vertices[2].UV;
 
 	// Degenerate triangle
 	if ((X2 - X1) * (Y3 - Y1) == (X3 - X1) * (Y2 - Y1))
@@ -173,10 +181,10 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 	float A13 = (X3 - X1) / static_cast<float>(Y3 - Y1);
 	float A23 = Y2 != Y3 ? (X3 - X2) / static_cast<float>(Y3 - Y2) : 0.f;
 
-	Color DeltaColorStart = (Y2 != Y1) ? (Vertices[1].Color - Vertices[0].Color) / static_cast<float>(Y2 - Y1) : Color::White;
-	Color DeltaColorEnd = (Y3 != Y1) ? (Vertices[2].Color - Vertices[0].Color) / static_cast<float>(Y3 - Y1) : Color::White;
-	Color ColorStart = Vertices[0].Color;
-	Color ColorEnd = Vertices[0].Color;
+	Vector2 DeltaColorStart = (Y2 != Y1) ? (UV2 - UV1) / static_cast<float>(Y2 - Y1) : Vector2(0.f, 0.f);
+	Vector2 DeltaColorEnd = (Y3 != Y1) ? (UV3 - UV1) / static_cast<float>(Y3 - Y1) : Vector2(0.f, 0.f);
+	Vector2 UvStart = UV1;
+	Vector2 UvEnd = UV1;
 
 	for (int Y = Y1; Y <= Y2; ++Y)
 	{
@@ -187,7 +195,7 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 		if (XStart > XEnd)
 		{
 			std::swap(XStart, XEnd);
-			std::swap(ColorStart, ColorEnd);
+			std::swap(UvStart, UvEnd);
 			bIsSwapped = true;
 		}
 
@@ -195,23 +203,24 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 		XEnd = Math::Clamp(XEnd, 0, Width - 1);
 		for (int X = XStart; X <= XEnd; ++X)
 		{
-			SetPixel(X, Y, Math::Lerp(ColorStart, ColorEnd, (X - XStart) / static_cast<float>(XEnd - XStart)));
+			Vector2 UV = Math::Lerp(UvStart, UvEnd, (X - XStart) / static_cast<float>(XEnd - XStart));
+			SetPixel(X, Y, SampleTexture(UV));
 		}
 
 		if (bIsSwapped)
 		{
-			std::swap(ColorStart, ColorEnd);
+			std::swap(UvStart, UvEnd);
 		}
 
-		ColorStart += DeltaColorStart;
-		ColorEnd += DeltaColorEnd;
+		UvStart += DeltaColorStart;
+		UvEnd += DeltaColorEnd;
 	}
 
-	DeltaColorStart = (Y3 != Y2) ? (Vertices[2].Color - Vertices[1].Color) / static_cast<float>(Y3 - Y2) : Color(0, 0, 0, 0);
+	DeltaColorStart = (Y3 != Y2) ? (UV3 - UV2) / static_cast<float>(Y3 - Y2) : Vector2(0, 0);
 
 	// 첫 번째 루프를 건너뛰는 경우가 있으므로 다시 계산
-	ColorStart = Vertices[1].Color;
-	ColorEnd = Vertices[0].Color + DeltaColorEnd * (Y2 - Y1);
+	UvStart = UV2;
+	UvEnd = UV1 + DeltaColorEnd * (Y2 - Y1);
 
 	for (int Y = Y2; Y <= Y3; ++Y)
 	{
@@ -222,7 +231,7 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 		if (XStart > XEnd)
 		{
 			std::swap(XStart, XEnd);
-			std::swap(ColorStart, ColorEnd);
+			std::swap(UvStart, UvEnd);
 			bIsSwapped = true;
 		}
 
@@ -230,16 +239,17 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 		XEnd = Math::Clamp(XEnd, 0, Width - 1);
 		for (int X = XStart; X <= XEnd; ++X)
 		{
-			SetPixel(X, Y, Math::Lerp(ColorStart, ColorEnd, (X - XStart) / static_cast<float>(XEnd - XStart)));
+			Vector2 UV = Math::Lerp(UvStart, UvEnd, (X - XStart) / static_cast<float>(XEnd - XStart));
+			SetPixel(X, Y, SampleTexture(UV));
 		}
 
 		if (bIsSwapped)
 		{
-			std::swap(ColorStart, ColorEnd);
+			std::swap(UvStart, UvEnd);
 		}
 
-		ColorStart += DeltaColorStart;
-		ColorEnd += DeltaColorEnd;
+		UvStart += DeltaColorStart;
+		UvEnd += DeltaColorEnd;
 	}
 }
 
@@ -329,5 +339,47 @@ WinRenderer::EViewportRegion WinRenderer::ComputeViewportRegion(const Vector2& I
 	}
 
 	return Result;
+}
+
+void WinRenderer::InitTextureBuffer()
+{
+	FILE* File = nullptr;
+	const std::string FileName = "texture.png";
+	unsigned char* LoadBuffer = stbi_load(FileName.c_str(), &TexWidth, &TexHeight, &TexChannels, 0);
+
+	if (LoadBuffer == nullptr)
+	{
+		std::cout << "Failed to load texture\n";
+		if (stbi_failure_reason())
+		{
+			std::cout << stbi_failure_reason();
+		}
+
+		return;
+	}
+
+	std::cout << "Texture loaded: " << TexWidth << "x" << TexHeight << " " << TexChannels << " channels\n";
+	TextureBuffer = new Color32[TexWidth * TexHeight];
+	for (int i = 0; i < TexWidth * TexHeight; ++i)
+	{
+		TextureBuffer[i].R = LoadBuffer[i * TexChannels];
+		TextureBuffer[i].G = LoadBuffer[i * TexChannels + 1];
+		TextureBuffer[i].B = LoadBuffer[i * TexChannels + 2];
+		TextureBuffer[i].A = 255;
+	}
+
+	stbi_image_free(LoadBuffer);
+}
+
+Color32 WinRenderer::SampleTexture(const Vector2& InUV) const
+{
+	int X = Math::Clamp(static_cast<int>(InUV.X * TexWidth), 0, TexWidth - 1);
+	int Y = Math::Clamp(static_cast<int>(InUV.Y * TexHeight), 0, TexHeight - 1);
+	return TextureBuffer[Y * TexWidth + X];
+}
+
+Color32 WinRenderer::SampleTexture(const Vertex& InVertex) const
+{
+	return SampleTexture(InVertex.UV);
 }
 

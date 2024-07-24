@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <string>
 
 #include "HCGraphics.h"
 

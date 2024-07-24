@@ -12,6 +12,7 @@ namespace HC
 		FORCEINLINE constexpr Color32 operator-(const Color32& InColor) const;
 		FORCEINLINE constexpr Color32 operator*(const Color32& InColor) const;
 		FORCEINLINE constexpr Color32 operator*(float InScalar) const;
+		FORCEINLINE constexpr Color32 operator/(float InScalar) const;
 		FORCEINLINE constexpr Color32& operator*=(float InScalar);
 		FORCEINLINE constexpr Color32& operator/=(float InScalar);
 		FORCEINLINE constexpr Color32& operator+=(const Color32& InColor);
@@ -68,6 +69,16 @@ namespace HC
 			G * InScalar,
 			B * InScalar,
 			A * InScalar
+		);
+	}
+
+	FORCEINLINE constexpr Color32 Color32::operator/(float InScalar) const
+	{
+		return Color32(
+			R / InScalar,
+			G / InScalar,
+			B / InScalar,
+			A / InScalar
 		);
 	}
 
