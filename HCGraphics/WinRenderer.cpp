@@ -344,7 +344,7 @@ WinRenderer::EViewportRegion WinRenderer::ComputeViewportRegion(const Vector2& I
 void WinRenderer::InitTextureBuffer()
 {
 	FILE* File = nullptr;
-	const std::string FileName = "texture.png";
+	const std::string FileName = "test.png";
 	unsigned char* LoadBuffer = stbi_load(FileName.c_str(), &TexWidth, &TexHeight, &TexChannels, 0);
 
 	if (LoadBuffer == nullptr)

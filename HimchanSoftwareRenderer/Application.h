@@ -33,7 +33,7 @@ private:
 	int32 FrameCount = 0;
 	float ElapsedTime = 0;
 
-	static constexpr float SQUARE_HALF_SIZE = 50.f;
+	static constexpr float SQUARE_HALF_SIZE = 160.f;
 	static constexpr uint32 VERTEX_CNT = 4;
 	static constexpr uint32 TRI_CNT = 2;
 
