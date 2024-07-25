@@ -373,8 +373,8 @@ void WinRenderer::InitTextureBuffer()
 
 Color32 WinRenderer::SampleTexture(const Vector2& InUV) const
 {
-	int X = Math::Clamp(static_cast<int>(InUV.X * TexWidth), 0, TexWidth - 1);
-	int Y = Math::Clamp(static_cast<int>(InUV.Y * TexHeight), 0, TexHeight - 1);
+	int X = Math::Clamp(static_cast<int>(InUV.X * TexWidth + 0.5f), 0, TexWidth - 1);
+	int Y = Math::Clamp(static_cast<int>(InUV.Y * TexHeight + 0.5f), 0, TexHeight - 1);
 	return TextureBuffer[Y * TexWidth + X];
 }
 
