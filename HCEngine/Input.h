@@ -85,6 +85,19 @@ namespace HC
 		AXIS_4,
 	};
 
+	struct AxisData
+	{
+		EKeyCode Positive;
+		EKeyCode Negative;
+		EKeyCode AltPositive;
+		EKeyCode AltNegative;
+
+		AxisData(EKeyCode InPositive, EKeyCode InNegative) 
+			: Positive(InPositive), Negative(InNegative), AltPositive(EKeyCode::NONE), AltNegative(EKeyCode::NONE) {}
+		AxisData(EKeyCode InPositive, EKeyCode InNegative, EKeyCode InAltPositive, EKeyCode InAltNegative)
+			: Positive(InPositive), Negative(InNegative), AltPositive(InAltPositive), AltNegative(InAltNegative) {}
+	};;
+
 	class Input
 	{
 	public:
@@ -97,6 +110,7 @@ namespace HC
 	private:
 		std::unordered_set<EKeyCode> CurrentlyPressedKey;
 		std::unordered_set<EKeyCode> PreviouslyPressedKey;
+		static const std::unordered_map<EAxis, AxisData> AxisMap;
 
 		bool GetKeyWasDowned(EKeyCode InKey);
 	};

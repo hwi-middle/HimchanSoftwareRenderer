@@ -34,18 +34,20 @@ void Application::PreUpdate()
 
 void Application::Update()
 {
-	if (InputManager->GetKeyDown(EKeyCode::ESC))
-	{
-		std::cout << "ESC Key Down" << std::endl;
-	}
-	if (InputManager->GetKey(EKeyCode::ESC))
-	{
-		std::cout << "ESC Key" << std::endl;
-	}
-	if (InputManager->GetKeyUp(EKeyCode::ESC))
-	{
-		std::cout << "ESC Key Up" << std::endl;
-	}
+	//if (InputManager->GetKeyDown(EKeyCode::ESC))
+	//{
+	//	std::cout << "ESC Key Down" << std::endl;
+	//}
+	//if (InputManager->GetKey(EKeyCode::ESC))
+	//{
+	//	std::cout << "ESC Key" << std::endl;
+	//}
+	//if (InputManager->GetKeyUp(EKeyCode::ESC))
+	//{
+	//	std::cout << "ESC Key Up" << std::endl;
+	//}
+
+	std::cout << InputManager->GetAxis(EAxis::HORIZONTAL) << ", " << InputManager->GetAxis(EAxis::VERTICAL) << std::endl;
 }
 
 void Application::LateUpdate()
