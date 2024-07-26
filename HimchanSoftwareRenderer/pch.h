@@ -11,6 +11,7 @@
 #include "HCCore.h"
 #include "HCMath.h"
 #include "HCGraphics.h"
+#include "HCEngine.h"
 
 #include "Application.h"
 

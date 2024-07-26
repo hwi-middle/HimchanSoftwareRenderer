@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 
-Application::Application(uint32 InWidth, uint32 InHeight, WinRenderer* InRenderer) : Renderer(InRenderer), Width(InWidth), Height(InHeight)
+Application::Application(uint32 InWidth, uint32 InHeight, WinRenderer* InRenderer,Input* InInputManager) : Renderer(InRenderer), InputManager(InInputManager), Width(InWidth), Height(InHeight)
 {
 	Renderer->Initialize(Width, Height);
 	QueryPerformanceFrequency(&Frequency);
@@ -34,7 +34,18 @@ void Application::PreUpdate()
 
 void Application::Update()
 {
-
+	if (InputManager->GetKeyDown(EKeyCode::ESC))
+	{
+		std::cout << "ESC Key Down" << std::endl;
+	}
+	if (InputManager->GetKey(EKeyCode::ESC))
+	{
+		std::cout << "ESC Key" << std::endl;
+	}
+	if (InputManager->GetKeyUp(EKeyCode::ESC))
+	{
+		std::cout << "ESC Key Up" << std::endl;
+	}
 }
 
 void Application::LateUpdate()
@@ -59,7 +70,8 @@ void Application::Render()
 void Application::PostUpdate()
 {
 	GetRenderer().SwapBuffer();
-
+	GetInputManager().Update();
+	
 	QueryPerformanceCounter(&CurrentTime);
 	DeltaTime = static_cast<float>(CurrentTime.QuadPart - PrevTime.QuadPart) / Frequency.QuadPart;
 	PrevTime = CurrentTime;

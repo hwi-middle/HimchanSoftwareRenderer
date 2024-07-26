@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)HCCore;$(SolutionDir)HCGraphics;$(SolutionDir)HCMath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HCEngine;$(SolutionDir)HCCore;$(SolutionDir)HCGraphics;$(SolutionDir)HCMath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="HimchanSoftwareRenderer.cpp" />
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -140,6 +141,9 @@
   <ItemGroup>
     <ProjectReference Include="..\HCCore\HCCore.vcxproj">
       <Project>{5944eb33-1d82-4607-ac4b-80425f1fd4ae}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\HCEngine\HCEngine.vcxproj">
+      <Project>{3765a352-9bc9-4251-a48e-e4f880b24221}</Project>
     </ProjectReference>
     <ProjectReference Include="..\HCGraphics\HCGraphics.vcxproj">
       <Project>{a6d53a37-c244-45aa-b056-a1cde5bbae20}</Project>

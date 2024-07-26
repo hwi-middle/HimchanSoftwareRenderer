@@ -43,7 +43,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 		NULL, (HMENU)NULL, hInstance, NULL);
 	ShowWindow(hWnd, nCmdShow);
 
-	Application appliction(InitWidth, InitHeight, new WinRenderer());
+	Application appliction(InitWidth, InitHeight, new WinRenderer(), new Input());
 	g_OnResize = std::bind(&Application::Resize, &appliction, std::placeholders::_1, std::placeholders::_2);
 	g_Tick = std::bind(&Application::Tick, &appliction);
 

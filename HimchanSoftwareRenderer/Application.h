@@ -3,13 +3,14 @@
 class Application
 {
 public:
-	Application(uint32 InWidth, uint32 InHeight, WinRenderer* InRenderer);
+	Application(uint32 InWidth, uint32 InHeight, WinRenderer* InRenderer, Input* InInputManager);
 	~Application();
 	void Tick();
 
 	void Resize(uint32 InWidth, uint32 InHeight);
 
 	FORCEINLINE WinRenderer& GetRenderer() const { return *Renderer.get(); }
+	FORCEINLINE Input& GetInputManager() const { return *InputManager.get(); }
 	FORCEINLINE float GetDeltaTime() const { return DeltaTime; }
 	FORCEINLINE float GetFps() const { return Fps; }
 
@@ -23,6 +24,7 @@ private:
 	uint32 Width, Height;
 
 	std::unique_ptr<WinRenderer> Renderer;
+	std::unique_ptr<Input> InputManager;
 
 	LARGE_INTEGER Frequency;
 	LARGE_INTEGER PrevTime;
