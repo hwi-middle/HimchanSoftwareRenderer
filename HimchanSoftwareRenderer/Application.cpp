@@ -66,11 +66,6 @@ void Application::Render()
 		v2.Position += SquarePosition;
 
 		Renderer.DrawTriangle(v0, v1, v2, LineColor);
-		Renderer.DrawLine(v0.Position, v1.Position, LineColor);
-		Renderer.DrawLine(v0.Position, v2.Position, LineColor);
-		Renderer.DrawLine(v1.Position, v2.Position, LineColor);
-
-		//Renderer.DrawTriangle(VertexBuffer[IndexBuffer[bi]], VertexBuffer[IndexBuffer[bi + 1]], VertexBuffer[IndexBuffer[bi + 2]], LineColor);
 	}
 }
 
