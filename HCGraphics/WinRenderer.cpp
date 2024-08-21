@@ -161,15 +161,15 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 		});
 	std::sort(Vertices.begin(), Vertices.end(), [](const Vertex& InLhs, const Vertex& InRhs) { return InLhs.Position.Y < InRhs.Position.Y; });
 
-	int32 X1 = Vertices[0].Position.X;
-	int32 Y1 = Vertices[0].Position.Y;
-	int32 X2 = Vertices[1].Position.X;
-	int32 Y2 = Vertices[1].Position.Y;
-	int32 X3 = Vertices[2].Position.X;
-	int32 Y3 = Vertices[2].Position.Y;
-	Vector2 UV1 = Vertices[0].UV;
-	Vector2 UV2 = Vertices[1].UV;
-	Vector2 UV3 = Vertices[2].UV;
+	const int32 X1 = Vertices[0].Position.X;
+	const int32 Y1 = Vertices[0].Position.Y;
+	const int32 X2 = Vertices[1].Position.X;
+	const int32 Y2 = Vertices[1].Position.Y;
+	const int32 X3 = Vertices[2].Position.X;
+	const int32 Y3 = Vertices[2].Position.Y;
+	const Vector2 UV1 = Vertices[0].UV;
+	const Vector2 UV2 = Vertices[1].UV;
+	const Vector2 UV3 = Vertices[2].UV;
 
 	// Degenerate triangle
 	if ((X2 - X1) * (Y3 - Y1) == (X3 - X1) * (Y2 - Y1))
@@ -181,12 +181,12 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 	float A13 = (X3 - X1) / static_cast<float>(Y3 - Y1);
 	float A23 = Y2 != Y3 ? (X3 - X2) / static_cast<float>(Y3 - Y2) : 0.f;
 
-	Vector2 DeltaColorStart = (Y2 != Y1) ? (UV2 - UV1) / static_cast<float>(Y2 - Y1) : Vector2(0.f, 0.f);
-	Vector2 DeltaColorEnd = (Y3 != Y1) ? (UV3 - UV1) / static_cast<float>(Y3 - Y1) : Vector2(0.f, 0.f);
+	Vector2 DeltaUvStart = (Y2 != Y1) ? (UV2 - UV1) / static_cast<float>(Y2 - Y1) : Vector2(0.f, 0.f);
+	Vector2 DeltaUvEnd = (Y3 != Y1) ? (UV3 - UV1) / static_cast<float>(Y3 - Y1) : Vector2(0.f, 0.f);
 	Vector2 UvStart = UV1;
 	Vector2 UvEnd = UV1;
 
-	for (int Y = Y1; Y <= Y2; ++Y)
+	for (int Y = Y1; Y < Y2; ++Y)
 	{
 		int32 XStart = X1 + A12 * (Y - Y1);
 		int32 XEnd = X1 + A13 * (Y - Y1);
@@ -199,9 +199,10 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 			bIsSwapped = true;
 		}
 
-		XStart = Math::Clamp(XStart, 0, Width - 1);
-		XEnd = Math::Clamp(XEnd, 0, Width - 1);
-		for (int X = XStart; X <= XEnd; ++X)
+		int32 ClipXStart = Math::Clamp(XStart, 0, Width - 1);
+		int32 ClipXEnd = Math::Clamp(XEnd, 0, Width - 1);
+
+		for (int X = ClipXStart; X <= ClipXEnd; ++X)
 		{
 			Vector2 UV = Math::Lerp(UvStart, UvEnd, (X - XStart) / static_cast<float>(XEnd - XStart));
 			SetPixel(X, Y, SampleTexture(UV));
@@ -212,15 +213,15 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 			std::swap(UvStart, UvEnd);
 		}
 
-		UvStart += DeltaColorStart;
-		UvEnd += DeltaColorEnd;
+		UvStart += DeltaUvStart;
+		UvEnd += DeltaUvEnd;
 	}
 
-	DeltaColorStart = (Y3 != Y2) ? (UV3 - UV2) / static_cast<float>(Y3 - Y2) : Vector2(0, 0);
+	DeltaUvStart = (Y3 != Y2) ? (UV3 - UV2) / static_cast<float>(Y3 - Y2) : Vector2(0, 0);
 
 	// 첫 번째 루프를 건너뛰는 경우가 있으므로 다시 계산
 	UvStart = UV2;
-	UvEnd = UV1 + DeltaColorEnd * (Y2 - Y1);
+	UvEnd = UV1 + DeltaUvEnd * (Y2 - Y1);
 
 	for (int Y = Y2; Y <= Y3; ++Y)
 	{
@@ -235,9 +236,10 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 			bIsSwapped = true;
 		}
 
-		XStart = Math::Clamp(XStart, 0, Width - 1);
-		XEnd = Math::Clamp(XEnd, 0, Width - 1);
-		for (int X = XStart; X <= XEnd; ++X)
+		int32 ClipXStart = Math::Clamp(XStart, 0, Width - 1);
+		int32 ClipXEnd = Math::Clamp(XEnd, 0, Width - 1);
+
+		for (int X = ClipXStart; X <= ClipXEnd; ++X)
 		{
 			Vector2 UV = Math::Lerp(UvStart, UvEnd, (X - XStart) / static_cast<float>(XEnd - XStart));
 			SetPixel(X, Y, SampleTexture(UV));
@@ -248,8 +250,8 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 			std::swap(UvStart, UvEnd);
 		}
 
-		UvStart += DeltaColorStart;
-		UvEnd += DeltaColorEnd;
+		UvStart += DeltaUvStart;
+		UvEnd += DeltaUvEnd;
 	}
 }
 
@@ -344,7 +346,7 @@ WinRenderer::EViewportRegion WinRenderer::ComputeViewportRegion(const Vector2& I
 void WinRenderer::InitTextureBuffer()
 {
 	FILE* File = nullptr;
-	const std::string FileName = "test.png";
+	const std::string FileName = "checkerboard.png";
 	unsigned char* LoadBuffer = stbi_load(FileName.c_str(), &TexWidth, &TexHeight, &TexChannels, 0);
 
 	if (LoadBuffer == nullptr)

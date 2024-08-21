@@ -34,25 +34,12 @@ void Application::PreUpdate()
 
 Vector2 SquarePosition = Vector2(0.f, 0.f);
 Vector2 InputVector = Vector2(0.f, 0.f);
-constexpr float Speed = .5f;
+constexpr float Speed = 500.f;
 void Application::Update()
 {
-	//if (InputManager->GetKeyDown(EKeyCode::ESC))
-	//{
-	//	std::cout << "ESC Key Down" << std::endl;
-	//}
-	//if (InputManager->GetKey(EKeyCode::ESC))
-	//{
-	//	std::cout << "ESC Key" << std::endl;
-	//}
-	//if (InputManager->GetKeyUp(EKeyCode::ESC))
-	//{
-	//	std::cout << "ESC Key Up" << std::endl;
-	//}
-
-	std::cout << "Horizontal: " << InputManager->GetAxis(EAxis::HORIZONTAL) << ", Vertical: " << InputManager->GetAxis(EAxis::VERTICAL) << std::endl;
+	//std::cout << "Horizontal: " << InputManager->GetAxis(EAxis::HORIZONTAL) << ", Vertical: " << InputManager->GetAxis(EAxis::VERTICAL) << std::endl;
 	InputVector = Vector2(InputManager->GetAxis(EAxis::HORIZONTAL), InputManager->GetAxis(EAxis::VERTICAL));
-	SquarePosition += InputVector.GetNormalized() * Speed;
+	SquarePosition += InputVector.GetNormalized() * Speed * DeltaTime;
 }
 
 void Application::LateUpdate()
@@ -79,6 +66,10 @@ void Application::Render()
 		v2.Position += SquarePosition;
 
 		Renderer.DrawTriangle(v0, v1, v2, LineColor);
+		Renderer.DrawLine(v0.Position, v1.Position, LineColor);
+		Renderer.DrawLine(v0.Position, v2.Position, LineColor);
+		Renderer.DrawLine(v1.Position, v2.Position, LineColor);
+
 		//Renderer.DrawTriangle(VertexBuffer[IndexBuffer[bi]], VertexBuffer[IndexBuffer[bi + 1]], VertexBuffer[IndexBuffer[bi + 2]], LineColor);
 	}
 }
