@@ -177,9 +177,9 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 		return;
 	}
 
-	float A12 = Y1 != Y2 ? (X2 - X1) / static_cast<float>(Y2 - Y1) : 0.f;
-	float A13 = (X3 - X1) / static_cast<float>(Y3 - Y1);
-	float A23 = Y2 != Y3 ? (X3 - X2) / static_cast<float>(Y3 - Y2) : 0.f;
+	const float A12 = Y1 != Y2 ? (X2 - X1) / static_cast<float>(Y2 - Y1) : 0.f;
+	const float A13 = (X3 - X1) / static_cast<float>(Y3 - Y1);
+	const float A23 = Y2 != Y3 ? (X3 - X2) / static_cast<float>(Y3 - Y2) : 0.f;
 
 	Vector2 DeltaUvStart = (Y2 != Y1) ? (UV2 - UV1) / static_cast<float>(Y2 - Y1) : Vector2(0.f, 0.f);
 	Vector2 DeltaUvEnd = (Y3 != Y1) ? (UV3 - UV1) / static_cast<float>(Y3 - Y1) : Vector2(0.f, 0.f);
@@ -199,8 +199,8 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 			bIsSwapped = true;
 		}
 
-		int32 ClipXStart = Math::Clamp(XStart, 0, Width - 1);
-		int32 ClipXEnd = Math::Clamp(XEnd, 0, Width - 1);
+		const int32 ClipXStart = Math::Clamp(XStart, 0, Width - 1);
+		const int32 ClipXEnd = Math::Clamp(XEnd, 0, Width - 1);
 
 		for (int X = ClipXStart; X <= ClipXEnd; ++X)
 		{
@@ -236,8 +236,8 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 			bIsSwapped = true;
 		}
 
-		int32 ClipXStart = Math::Clamp(XStart, 0, Width - 1);
-		int32 ClipXEnd = Math::Clamp(XEnd, 0, Width - 1);
+		const int32 ClipXStart = Math::Clamp(XStart, 0, Width - 1);
+		const int32 ClipXEnd = Math::Clamp(XEnd, 0, Width - 1);
 
 		for (int X = ClipXStart; X <= ClipXEnd; ++X)
 		{
