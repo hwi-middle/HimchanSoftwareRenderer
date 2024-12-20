@@ -177,21 +177,18 @@ void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2,
 		return;
 	}
 
-	// 화면 밖으로 나간 경우 클리핑
-	bool IsTriangleOutsideViewport = true;
-	for (int i = 0; i < 3; ++i)
-	{
-		if (ClipLine(Vertices[i].Position, Vertices[(i + 1) % 3].Position, Vector2(0, 0), Vector2(Width - 1, Height - 1)))
-		{
-			IsTriangleOutsideViewport = false;
-			break;
-		}
-	}
 
-	if (IsTriangleOutsideViewport)
+	if (Y1 >= Height || Y3 < 0)
 	{
 		return;
 	}
+
+	if ((X1 < 0 && X2 < 0 && X3 < 0) ||
+		(X1 >= Width && X2 >= Width && X3 >= Width))
+	{
+		return;
+	}
+
 
 	const float A12 = Y1 != Y2 ? (X2 - X1) / static_cast<float>(Y2 - Y1) : 0.f;
 	const float A13 = (X3 - X1) / static_cast<float>(Y3 - Y1);
