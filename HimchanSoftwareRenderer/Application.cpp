@@ -113,7 +113,18 @@ void Application::Render()
         for (size_t ti = 0; ti < triangles; ++ti)
         {
             size_t si = ti * 3;
+
             std::vector<Vertex> sub(tvs.begin() + si, tvs.begin() + si + 3);
+
+            Vector3 e1 = (sub[1].Position - sub[0].Position).ToVector3();
+            Vector3 e2 = (sub[2].Position - sub[0].Position).ToVector3();
+            Vector3 normal = Vector3::Cross(e1, e2);
+            Vector3 viewDir = Vector3::UnitZ;
+            if (Vector3::Dot(normal, viewDir) < 0)
+            {
+                continue;
+            }
+
             Renderer.DrawLine(sub[0].Position.ToVector2(), sub[1].Position.ToVector2(), LineColor);
             Renderer.DrawLine(sub[0].Position.ToVector2(), sub[2].Position.ToVector2(), LineColor);
             Renderer.DrawLine(sub[1].Position.ToVector2(), sub[2].Position.ToVector2(), LineColor);
