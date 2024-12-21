@@ -37,6 +37,7 @@ namespace HC
 		FORCEINLINE constexpr Vector4(const Vector3& InV, const float InW) : X(InV.X), Y(InV.Y), Z(InV.Z), W(InW) {}
 
 		FORCEINLINE constexpr Vector2 ToVector2() const;
+		FORCEINLINE constexpr Vector3 ToVector3() const;
 
 		FORCEINLINE constexpr float operator[](const uint8 InIndex) const;
 		FORCEINLINE constexpr Vector4 operator-() const;
@@ -66,6 +67,10 @@ namespace HC
 		return Vector2(X, Y);
 	}
 
+	FORCEINLINE constexpr Vector3 Vector4::ToVector3() const
+	{
+		return Vector3(X, Y, Z);
+	}
 
 	FORCEINLINE constexpr float Vector4::operator[](const uint8 InIndex) const
 	{

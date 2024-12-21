@@ -36,7 +36,7 @@ void Transform::Rotate(float InYaw, float InPitch, float InRoll)
 	float cr = Math::Cos(Roll);
 	float sr = Math::Sin(Roll);
 
-	Right = Vector3(cy * cr + sy * sp * sr, cp * sr, -sy * cr + cy * sp * sr);
-	Up = Vector3(-cy * sr + sy * sp * cr, cp * cr, sy * sr + cy * sp * cr);
-	Forward = Vector3(sy * cp, -sp, cy * cp);
+    Right = Vector3(cy * cr - sy * sp * sr, cp * sr, -sy * cr + cy * sp * sr);
+    Up = Vector3(-cy * sr - sy * sp * cr, cp * cr, sy * sr + cy * sp * cr);
+    Forward = Vector3(sy * cp, sp, cy * cp);
 }

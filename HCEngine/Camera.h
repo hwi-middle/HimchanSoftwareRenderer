@@ -8,6 +8,7 @@ namespace HC
 		Camera() = default;
 
 		FORCEINLINE Matrix4x4 GetViewMatrix() const;
+		FORCEINLINE Transform& GetTransform() { return TransformComponent; }
 
 	private:
 		Transform TransformComponent;
