@@ -9,6 +9,7 @@ namespace HC
 		static constexpr float TwoPI = 2 * PI;
 		static constexpr float HalfPI = 0.5 * PI;
 		static constexpr float InvPI = 1 / PI;
+		static constexpr float KindaSmallNumber = 1.e-4f;
 
 		static constexpr float Rad2Deg = PI / 180.f;
 		static constexpr float Deg2Rad = 180.f / PI;
@@ -56,6 +57,18 @@ namespace HC
 		{
 			InAlpha = Clamp(InAlpha, 0.f, 1.f);
 			return Square(InAlpha) * (-2 * InAlpha + 3) * (InMax - InMin) + InMin;
+		}
+
+		FORCEINLINE static constexpr float FMod(const float x, const float y)
+		{
+			// 0에 대한 나머지 연산은 정의되지 않음
+			if (y <= KindaSmallNumber)
+			{
+				return 0.f;
+			}
+
+			float quotient = static_cast<int>(x / y);
+			return x - y * quotient;
 		}
 
 		template <class T>

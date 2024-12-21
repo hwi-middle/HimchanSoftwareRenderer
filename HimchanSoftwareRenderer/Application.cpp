@@ -2,6 +2,7 @@
 
 Application::Application(uint32 InWidth, uint32 InHeight, WinRenderer* InRenderer, Input* InInputManager) : Renderer(InRenderer), InputManager(InInputManager), Width(InWidth), Height(InHeight)
 {
+    MainCamera = std::make_unique<Camera>();
 	Renderer->Initialize(Width, Height);
 	QueryPerformanceFrequency(&Frequency);
 	QueryPerformanceCounter(&PrevTime);
@@ -37,9 +38,6 @@ Vector2 InputVector = Vector2(0.f, 0.f);
 constexpr float Speed = 500.f;
 void Application::Update()
 {
-	//std::cout << "Horizontal: " << InputManager->GetAxis(EAxis::HORIZONTAL) << ", Vertical: " << InputManager->GetAxis(EAxis::VERTICAL) << std::endl;
-	InputVector = Vector2(InputManager->GetAxis(EAxis::HORIZONTAL), InputManager->GetAxis(EAxis::VERTICAL));
-	SquarePosition += InputVector.GetNormalized() * Speed * DeltaTime;
 }
 
 void Application::LateUpdate()
@@ -48,25 +46,79 @@ void Application::LateUpdate()
 
 void Application::Render()
 {
-	GetRenderer().DrawLine(Vector2(-(int)Width, 0), Vector2(Width, 0), Color::Red);
-	GetRenderer().DrawLine(Vector2(0, -(int)Height), Vector2(0, Height), Color::Green);
-
 	auto& Renderer = GetRenderer();
-	Color LineColor = Color::Blue;
+    auto& Cam = GetMainCamera();
+    Transform TempTransform;
+	Color LineColor = Color::Black;
 
-	for (uint32 ti = 0; ti < TRI_CNT; ++ti)
-	{
-		uint32 bi = ti * 3;
-		Vertex v0 = VertexBuffer[IndexBuffer[bi]];
-		Vertex v1 = VertexBuffer[IndexBuffer[bi + 1]];
-		Vertex v2 = VertexBuffer[IndexBuffer[bi + 2]];
+    static constexpr float CUBE_HALF_SIZE = 0.5f;
+    static constexpr uint32 VERTEX_CNT = 8;
+    static constexpr uint32 TRI_CNT = 12;
 
-		v0.Position += SquarePosition;
-		v1.Position += SquarePosition;
-		v2.Position += SquarePosition;
+    Vertex VertexBuffer[VERTEX_CNT] = {
+        // Front face
+        Vertex(Vector4(-CUBE_HALF_SIZE, -CUBE_HALF_SIZE,  CUBE_HALF_SIZE, 1.f), Color::Red, Vector2(0.f, 1.f)),
+        Vertex(Vector4(-CUBE_HALF_SIZE,  CUBE_HALF_SIZE,  CUBE_HALF_SIZE, 1.f), Color::Red, Vector2(0.f, 0.f)),
+        Vertex(Vector4(CUBE_HALF_SIZE,  CUBE_HALF_SIZE,  CUBE_HALF_SIZE, 1.f), Color::Red, Vector2(1.f, 0.f)),
+        Vertex(Vector4(CUBE_HALF_SIZE, -CUBE_HALF_SIZE,  CUBE_HALF_SIZE, 1.f), Color::Red, Vector2(1.f, 1.f)),
 
-		Renderer.DrawTriangle(v0, v1, v2, LineColor);
-	}
+        // Back face
+        Vertex(Vector4(-CUBE_HALF_SIZE, -CUBE_HALF_SIZE, -CUBE_HALF_SIZE, 1.f), Color::Blue, Vector2(1.f, 1.f)),
+        Vertex(Vector4(-CUBE_HALF_SIZE,  CUBE_HALF_SIZE, -CUBE_HALF_SIZE, 1.f), Color::Blue, Vector2(1.f, 0.f)),
+        Vertex(Vector4(CUBE_HALF_SIZE,  CUBE_HALF_SIZE, -CUBE_HALF_SIZE, 1.f), Color::Blue, Vector2(0.f, 0.f)),
+        Vertex(Vector4(CUBE_HALF_SIZE, -CUBE_HALF_SIZE, -CUBE_HALF_SIZE, 1.f), Color::Blue, Vector2(0.f, 1.f))
+    };
+
+    uint32 IndexBuffer[TRI_CNT * 3] = {
+        // Front face
+        0, 1, 2,
+        0, 2, 3,
+
+        // Back face
+        4, 6, 5,
+        4, 7, 6,
+
+        // Left face
+        4, 5, 1,
+        4, 1, 0,
+
+        // Right face
+        3, 2, 6,
+        3, 6, 7,
+
+        // Top face
+        1, 5, 6,
+        1, 6, 2,
+
+        // Bottom face
+        4, 0, 3,
+        4, 3, 7
+    };
+
+    TempTransform.SetPosition(Vector3(100,-100,10));
+    TempTransform.Rotate(45, 45, 0);
+    TempTransform.SetScale(Vector3(100.f, 100.f, 100.f));
+    Matrix4x4 FinalMatrix = Cam.GetViewMatrix() * TempTransform.GetModelingMatrix();
+    for (auto& v : VertexBuffer)
+    {
+        v.Position = FinalMatrix * v.Position;
+    }
+
+    for (int ti = 0; ti < TRI_CNT; ++ti)
+    {
+        int bi0 = ti * 3, bi1 = ti * 3 + 1, bi2 = ti * 3 + 2;
+        std::vector<Vertex> tvs = { VertexBuffer[IndexBuffer[bi0]] , VertexBuffer[IndexBuffer[bi1]] , VertexBuffer[IndexBuffer[bi2]] };
+
+        size_t triangles = tvs.size() / 3;
+        for (size_t ti = 0; ti < triangles; ++ti)
+        {
+            size_t si = ti * 3;
+            std::vector<Vertex> sub(tvs.begin() + si, tvs.begin() + si + 3);
+            Renderer.DrawLine(sub[0].Position.ToVector2(), sub[1].Position.ToVector2(), LineColor);
+            Renderer.DrawLine(sub[0].Position.ToVector2(), sub[2].Position.ToVector2(), LineColor);
+            Renderer.DrawLine(sub[1].Position.ToVector2(), sub[2].Position.ToVector2(), LineColor);
+        }
+    }
 }
 
 void Application::PostUpdate()

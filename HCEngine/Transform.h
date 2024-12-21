@@ -5,14 +5,20 @@ namespace HC
 	class Transform
 	{
 	public:
-		Transform() = default;
+		Transform() :Yaw(0), Pitch(0), Roll(0) {};
 
 		FORCEINLINE Matrix4x4 GetModelingMatrix() const;
 
+		FORCEINLINE const void SetPosition(const Vector3& InPos);
 		FORCEINLINE const Vector3& GetPosition() const;
+
+		void Rotate(float InYaw, float InPitch, float InRoll);
 		FORCEINLINE const Vector3& GetLocalX() const;
 		FORCEINLINE const Vector3& GetLocalY() const;
 		FORCEINLINE const Vector3& GetLocalZ() const;
+
+		FORCEINLINE const void SetScale(const Vector3& InV);
+		FORCEINLINE const Vector3& GetScale() const;
 
 	private:
 		Vector3 Position;
@@ -33,8 +39,13 @@ namespace HC
 			Vector4(Right * Scale.X, 0.f),
 			Vector4(Up * Scale.Y, 0.f),
 			Vector4(Forward * Scale.Z, 0.f),
-			Vector4(Position, 1)
+			Vector4(Position, 1.f)
 		);
+	}
+
+	FORCEINLINE const void Transform::SetPosition(const Vector3& InPos)
+	{
+		Position = InPos;
 	}
 
 	FORCEINLINE const Vector3& Transform::GetPosition() const
@@ -55,6 +66,16 @@ namespace HC
 	FORCEINLINE const Vector3& Transform::GetLocalZ() const
 	{
 		return Forward;
+	}
+
+	FORCEINLINE const void Transform::SetScale(const Vector3& InV)
+	{
+		Scale = InV;
+	}
+
+	FORCEINLINE const Vector3& Transform::GetScale() const
+	{
+		return Scale;
 	}
 }
 

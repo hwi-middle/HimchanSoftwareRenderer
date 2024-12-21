@@ -11,6 +11,7 @@ public:
 
 	FORCEINLINE WinRenderer& GetRenderer() const { return *Renderer.get(); }
 	FORCEINLINE Input& GetInputManager() const { return *InputManager.get(); }
+	FORCEINLINE Camera& GetMainCamera() const { return *MainCamera.get(); }
 	FORCEINLINE float GetDeltaTime() const { return DeltaTime; }
 	FORCEINLINE float GetFps() const { return Fps; }
 
@@ -25,6 +26,7 @@ private:
 
 	std::unique_ptr<WinRenderer> Renderer;
 	std::unique_ptr<Input> InputManager;
+	std::unique_ptr<Camera> MainCamera;
 
 	LARGE_INTEGER Frequency;
 	LARGE_INTEGER PrevTime;
@@ -34,20 +36,4 @@ private:
 	float Fps = 0;
 	int32 FrameCount = 0;
 	float ElapsedTime = 0;
-
-	static constexpr float SQUARE_HALF_SIZE = 80.f;
-	static constexpr uint32 VERTEX_CNT = 4;
-	static constexpr uint32 TRI_CNT = 2;
-
-	Vertex VertexBuffer[VERTEX_CNT] = {
-		Vertex(Vector2(-SQUARE_HALF_SIZE, -SQUARE_HALF_SIZE), Color::Red, Vector2(0.f, 1.f)),
-		Vertex(Vector2(-SQUARE_HALF_SIZE, SQUARE_HALF_SIZE), Color::Red, Vector2(0.f, 0.f)),
-		Vertex(Vector2(SQUARE_HALF_SIZE, SQUARE_HALF_SIZE), Color::Red, Vector2(1.f, 0.f)),
-		Vertex(Vector2(SQUARE_HALF_SIZE, -SQUARE_HALF_SIZE), Color::Red, Vector2(1.f, 1.f))
-	};
-
-	uint32 IndexBuffer[TRI_CNT * 3] = {
-		0, 1, 2,
-		0, 2, 3
-	};
 };

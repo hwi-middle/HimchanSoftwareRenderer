@@ -34,8 +34,9 @@ namespace HC
 		FORCEINLINE constexpr Vector4() = default;
 		FORCEINLINE explicit constexpr Vector4(const float InX, const float InY, const float InZ, const float InW) : X(InX), Y(InY), Z(InZ), W(InW) {}
 		FORCEINLINE explicit constexpr Vector4(const Vector2& InV, const float InZ, const float InW) : X(InV.X), Y(InV.Y), Z(InZ), W(InW) { }
-		FORCEINLINE constexpr Vector4(const Vector3& InV, const float InW) : X(InV.X), Y(InV.Y), Z(InV.Z), W(InW) { }
+		FORCEINLINE constexpr Vector4(const Vector3& InV, const float InW) : X(InV.X), Y(InV.Y), Z(InV.Z), W(InW) {}
 
+		FORCEINLINE constexpr Vector2 ToVector2() const;
 
 		FORCEINLINE constexpr float operator[](const uint8 InIndex) const;
 		FORCEINLINE constexpr Vector4 operator-() const;
@@ -59,6 +60,12 @@ namespace HC
 
 		[[nodiscard]] std::string ToString() const;
 	};
+
+	FORCEINLINE constexpr Vector2 Vector4::ToVector2() const
+	{
+		return Vector2(X, Y);
+	}
+
 
 	FORCEINLINE constexpr float Vector4::operator[](const uint8 InIndex) const
 	{
