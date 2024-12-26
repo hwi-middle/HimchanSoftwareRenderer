@@ -12,7 +12,10 @@ namespace HC
 		FORCEINLINE const void SetPosition(const Vector3& InPos);
 		FORCEINLINE const Vector3& GetPosition() const;
 
-		void Rotate(float InYaw, float InPitch, float InRoll);
+		void SetRotation(float InYaw, float InPitch, float InRoll);
+		void AddYawRoation(float InYaw);
+		void AddPitchRoation(float InPitch);
+		void AddRollRoation(float InRoll);
 		FORCEINLINE const Vector3& GetLocalX() const;
 		FORCEINLINE const Vector3& GetLocalY() const;
 		FORCEINLINE const Vector3& GetLocalZ() const;
@@ -21,6 +24,8 @@ namespace HC
 		FORCEINLINE const Vector3& GetScale() const;
 
 	private:
+		void UpdateRotation();
+
 		Vector3 Position;
 		Vector3 Scale;
 

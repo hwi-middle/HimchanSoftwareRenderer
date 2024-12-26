@@ -1,13 +1,36 @@
 ﻿#include "pch.h"
 #include "Transform.h"
 
-void Transform::Rotate(float InYaw, float InPitch, float InRoll)
+void Transform::SetRotation(float InYaw, float InPitch, float InRoll)
 {
 	// 회전 값 적용
 	Yaw += InYaw;
 	Pitch += InPitch;
 	Roll += InRoll;
 
+	UpdateRotation();
+}
+
+void Transform::AddYawRoation(float InYaw)
+{
+	Yaw += InYaw;
+	UpdateRotation();
+}
+
+void Transform::AddPitchRoation(float InPitch)
+{
+	Pitch += InPitch;
+	UpdateRotation();
+}
+
+void Transform::AddRollRoation(float InRoll)
+{
+	Roll += InRoll;
+	UpdateRotation();
+}
+
+void Transform::UpdateRotation()
+{
 	// 범위 제한
 	Yaw = Math::FMod(Yaw, 360.f);
 	Pitch = Math::FMod(Pitch, 360.f);
@@ -36,7 +59,7 @@ void Transform::Rotate(float InYaw, float InPitch, float InRoll)
 	float cr = Math::Cos(Roll);
 	float sr = Math::Sin(Roll);
 
-    Right = Vector3(cy * cr - sy * sp * sr, cp * sr, -sy * cr + cy * sp * sr);
-    Up = Vector3(-cy * sr - sy * sp * cr, cp * cr, sy * sr + cy * sp * cr);
-    Forward = Vector3(sy * cp, sp, cy * cp);
+	Right = Vector3(cy * cr - sy * sp * sr, cp * sr, -sy * cr + cy * sp * sr);
+	Up = Vector3(-cy * sr - sy * sp * cr, cp * cr, sy * sr + cy * sp * cr);
+	Forward = Vector3(sy * cp, sp, cy * cp);
 }

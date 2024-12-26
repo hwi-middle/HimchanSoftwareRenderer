@@ -1,11 +1,17 @@
 ﻿#include "pch.h"
 
+constexpr float Speed = 10.f;
+Transform TempTransform;
+
 Application::Application(uint32 InWidth, uint32 InHeight, WinRenderer* InRenderer, Input* InInputManager) : Renderer(InRenderer), InputManager(InInputManager), Width(InWidth), Height(InHeight)
 {
     MainCamera = std::make_unique<Camera>();
 	Renderer->Initialize(Width, Height);
 	QueryPerformanceFrequency(&Frequency);
 	QueryPerformanceCounter(&PrevTime);
+    TempTransform.SetPosition(Vector3(100, -100, 10));
+    TempTransform.SetRotation(45, 45, 0);
+    TempTransform.SetScale(Vector3(100.f, 100.f, 100.f));
 }
 
 Application::~Application()
@@ -33,11 +39,10 @@ void Application::PreUpdate()
 	GetRenderer().FillBuffer();
 }
 
-Vector2 SquarePosition = Vector2(0.f, 0.f);
-Vector2 InputVector = Vector2(0.f, 0.f);
-constexpr float Speed = 500.f;
 void Application::Update()
 {
+    TempTransform.AddPitchRoation(InputManager->GetAxis(EAxis::VERTICAL) * Speed * DeltaTime);
+    TempTransform.AddYawRoation(InputManager->GetAxis(EAxis::HORIZONTAL) * Speed * DeltaTime);
 }
 
 void Application::LateUpdate()
@@ -48,7 +53,6 @@ void Application::Render()
 {
 	auto& Renderer = GetRenderer();
     auto& Cam = GetMainCamera();
-    Transform TempTransform;
 	Color LineColor = Color::Black;
 
     static constexpr float CUBE_HALF_SIZE = 0.5f;
@@ -96,9 +100,6 @@ void Application::Render()
     };
 
     Cam.GetTransform().SetPosition(Vector3(100, -100, 0));
-    TempTransform.SetPosition(Vector3(100,-100,10));
-    TempTransform.Rotate(45, 45, 0);
-    TempTransform.SetScale(Vector3(100.f, 100.f, 100.f));
     Matrix4x4 FinalMatrix = Cam.GetViewMatrix() * TempTransform.GetModelingMatrix();
     for (auto& v : VertexBuffer)
     {
@@ -126,6 +127,8 @@ void Application::Render()
             {
                 continue;
             }
+
+            Renderer.DrawTriangle(sub[0], sub[1], sub[2], LineColor);
 
             Renderer.DrawLine(sub[0].Position.ToVector2(), sub[1].Position.ToVector2(), LineColor);
             Renderer.DrawLine(sub[0].Position.ToVector2(), sub[2].Position.ToVector2(), LineColor);
