@@ -14,7 +14,6 @@ std::function<void(void)> g_Tick;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
-	HWND hWnd;
 	MSG Message;
 	WNDCLASS WndClass;
 	g_hInst = hInstance;
@@ -30,22 +29,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	WndClass.style = CS_HREDRAW | CS_VREDRAW;
 	RegisterClass(&WndClass);
 
-	uint32 InitWidth = 640;
-	uint32 InitHeight = 480;
-	RECT windowRect = { 0, 0, InitWidth, InitHeight };
+	uint32 initWidth = 640;
+	uint32 initHeight = 480;
+	RECT windowRect = { 0, 0, initWidth, initHeight };
 	AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
-	const uint32 ActualWindowWidth = windowRect.right - windowRect.left;
-	const uint32 ActualWindowHeight = windowRect.bottom - windowRect.top;
+	const uint32 actualWindowWidth = windowRect.right - windowRect.left;
+	const uint32 actualWindowHeight = windowRect.bottom - windowRect.top;
 
-	hWnd = CreateWindow(g_lpszClass, g_lpszClass, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, ActualWindowWidth, ActualWindowHeight,
-		NULL, (HMENU)NULL, hInstance, NULL);
+	HWND hWnd = CreateWindow(g_lpszClass, g_lpszClass, WS_OVERLAPPEDWINDOW,
+	                         CW_USEDEFAULT, CW_USEDEFAULT, actualWindowWidth, actualWindowHeight,
+	                         NULL, (HMENU)NULL, hInstance, NULL);
 	ShowWindow(hWnd, nCmdShow);
 
-	Application appliction(InitWidth, InitHeight, new WinRenderer(), new Input());
-	g_OnResize = std::bind(&Application::Resize, &appliction, std::placeholders::_1, std::placeholders::_2);
-	g_Tick = std::bind(&Application::Tick, &appliction);
+	Application application(initWidth, initHeight, new WinRenderer(), new Input());
+	g_OnResize = std::bind(&Application::Resize, &application, std::placeholders::_1, std::placeholders::_2);
+	g_Tick = std::bind(&Application::Tick, &application);
 
 	while (true)
 	{
@@ -60,12 +59,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 			DispatchMessage(&Message);
 		}
 
-		appliction.Tick();
-		_stprintf_s(g_title, _T("Himchan Software Renderer (%.2f fps)"), appliction.GetFps());
+		application.Tick();
+		_stprintf_s(g_title, _T("Himchan Software Renderer (%.2f fps)"), application.GetFps());
 		SetWindowText(hWnd, g_title);
 	}
 
-	return (int)Message.wParam;
+	return static_cast<int>(Message.wParam);
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
@@ -74,11 +73,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_SIZE:
 	{
-		uint32 Width = LOWORD(lParam);
-		uint32 Height = HIWORD(lParam);
+		const uint32 width = LOWORD(lParam);
+		const uint32 height = HIWORD(lParam);
 		if (g_OnResize)
 		{
-			g_OnResize(Width, Height);
+			g_OnResize(width, height);
 		}
 
 		return 0;

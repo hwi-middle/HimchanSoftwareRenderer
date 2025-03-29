@@ -3,12 +3,12 @@
 constexpr float Speed = 5.f;
 Transform TempTransform;
 
-Application::Application(uint32 InWidth, uint32 InHeight, WinRenderer* InRenderer, Input* InInputManager) : Renderer(InRenderer), InputManager(InInputManager), Width(InWidth), Height(InHeight)
+Application::Application(uint32 inWidth, uint32 inHeight, WinRenderer* inRenderer, Input* inInputManager) : mRenderer(inRenderer), mInputManager(inInputManager), mWidth(inWidth), mHeight(inHeight)
 {
-    MainCamera = std::make_unique<Camera>();
-	Renderer->Initialize(Width, Height);
-	QueryPerformanceFrequency(&Frequency);
-	QueryPerformanceCounter(&PrevTime);
+    mMainCamera = std::make_unique<Camera>();
+	mRenderer->Initialize(mWidth, mHeight);
+	QueryPerformanceFrequency(&mFrequency);
+	QueryPerformanceCounter(&mPrevTime);
     TempTransform.SetPosition(Vector3(100, -100, 10));
     TempTransform.SetScale(Vector3(100.f, 100.f, 100.f));
 }
@@ -19,36 +19,36 @@ Application::~Application()
 
 void Application::Tick()
 {
-	PreUpdate();
-	Update();
-	Render();
-	LateUpdate();
-	PostUpdate();
+	preUpdate();
+	update();
+	render();
+	lateUpdate();
+	postUpdate();
 }
 
-void Application::Resize(uint32 InWidth, uint32 InHeight)
+void Application::Resize(uint32 inWidth, uint32 inHeight)
 {
-	Width = InWidth;
-	Height = InHeight;
-	Renderer->Resize(Width, Height);
+	mWidth = inWidth;
+	mHeight = inHeight;
+	mRenderer->Resize(mWidth, mHeight);
 }
 
-void Application::PreUpdate()
+void Application::preUpdate()
 {
 	GetRenderer().FillBuffer();
 }
 
-void Application::Update()
+void Application::update()
 {
-    TempTransform.AddPitchRoation(InputManager->GetAxis(EAxis::VERTICAL) * Speed * DeltaTime);
-    TempTransform.AddYawRoation(InputManager->GetAxis(EAxis::HORIZONTAL) * Speed * DeltaTime);
+    TempTransform.AddPitchRoation(mInputManager->GetAxis(EAxis::VERTICAL) * Speed * mDeltaTime);
+    TempTransform.AddYawRoation(mInputManager->GetAxis(EAxis::HORIZONTAL) * Speed * mDeltaTime);
 }
 
-void Application::LateUpdate()
+void Application::lateUpdate()
 {
 }
 
-void Application::Render()
+void Application::render()
 {
 	auto& Renderer = GetRenderer();
     auto& Cam = GetMainCamera();
@@ -161,14 +161,14 @@ void Application::Render()
     }
 }
 
-void Application::PostUpdate()
+void Application::postUpdate()
 {
 	GetRenderer().SwapBuffer();
 	GetInputManager().Update();
 
-	QueryPerformanceCounter(&CurrentTime);
-	DeltaTime = static_cast<float>(CurrentTime.QuadPart - PrevTime.QuadPart) / Frequency.QuadPart;
-	PrevTime = CurrentTime;
-	Fps = 1.0f / DeltaTime;
+	QueryPerformanceCounter(&mCurrentTime);
+	mDeltaTime = static_cast<float>(mCurrentTime.QuadPart - mPrevTime.QuadPart) / mFrequency.QuadPart;
+	mPrevTime = mCurrentTime;
+	mFps = 1.0f / mDeltaTime;
 }
 

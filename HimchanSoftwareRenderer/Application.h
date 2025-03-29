@@ -3,37 +3,36 @@
 class Application
 {
 public:
-	Application(uint32 InWidth, uint32 InHeight, WinRenderer* InRenderer, Input* InInputManager);
+	Application(uint32 inWidth, uint32 inHeight, WinRenderer* inRenderer, Input* inInputManager);
 	~Application();
 	void Tick();
 
-	void Resize(uint32 InWidth, uint32 InHeight);
+	void Resize(uint32 inWidth, uint32 inHeight);
 
-	FORCEINLINE WinRenderer& GetRenderer() const { return *Renderer.get(); }
-	FORCEINLINE Input& GetInputManager() const { return *InputManager.get(); }
-	FORCEINLINE Camera& GetMainCamera() const { return *MainCamera.get(); }
-	FORCEINLINE float GetDeltaTime() const { return DeltaTime; }
-	FORCEINLINE float GetFps() const { return Fps; }
+	FORCEINLINE WinRenderer& GetRenderer() const { return *mRenderer.get(); }
+	FORCEINLINE Input& GetInputManager() const { return *mInputManager.get(); }
+	FORCEINLINE Camera& GetMainCamera() const { return *mMainCamera.get(); }
+	FORCEINLINE float GetDeltaTime() const { return mDeltaTime; }
+	FORCEINLINE float GetFps() const { return mFps; }
 
 private:
-	void PreUpdate();
-	void Update();
-	void LateUpdate();
-	void Render();
-	void PostUpdate();
+	void preUpdate();
+	void update();
+	void lateUpdate();
+	void render();
+	void postUpdate();
 
-	uint32 Width, Height;
+	uint32 mWidth;
+	uint32 mHeight;
 
-	std::unique_ptr<WinRenderer> Renderer;
-	std::unique_ptr<Input> InputManager;
-	std::unique_ptr<Camera> MainCamera;
+	std::unique_ptr<WinRenderer> mRenderer;
+	std::unique_ptr<Input> mInputManager;
+	std::unique_ptr<Camera> mMainCamera;
 
-	LARGE_INTEGER Frequency;
-	LARGE_INTEGER PrevTime;
-	LARGE_INTEGER CurrentTime;
-	float DeltaTime = 0;
+	LARGE_INTEGER mFrequency;
+	LARGE_INTEGER mPrevTime;
+	LARGE_INTEGER mCurrentTime;
+	float mDeltaTime = 0;
 
-	float Fps = 0;
-	int32 FrameCount = 0;
-	float ElapsedTime = 0;
+	float mFps = 0;
 };
