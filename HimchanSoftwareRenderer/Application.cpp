@@ -146,7 +146,7 @@ void Application::render()
             Vector3 e2 = (sub[2].Position - sub[0].Position).ToVector3();
             Vector3 normal = Vector3::Cross(e1, e2);
             normal.Normalize();
-            Vector3 viewDir = Vector3::UnitZ;
+            Vector3 viewDir = Vector3::unit_z;
             if (Vector3::Dot(normal, viewDir) >= 0)
             {
                 continue;

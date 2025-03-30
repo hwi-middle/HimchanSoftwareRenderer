@@ -22,9 +22,9 @@ namespace HC
 		const Vector3 position = TransformComponent.GetPosition();
 
 		return Matrix4x4(
-			Vector4(Vector3(viewX.X, viewY.X, viewZ.X), 0.f),
-			Vector4(Vector3(viewX.Y, viewY.Y, viewZ.Y), 0.f),
-			Vector4(Vector3(viewX.Z, viewY.Z, viewZ.Z), 0.f),
+			Vector4(Vector3(viewX.x, viewY.x, viewZ.x), 0.f),
+			Vector4(Vector3(viewX.y, viewY.y, viewZ.y), 0.f),
+			Vector4(Vector3(viewX.z, viewY.z, viewZ.z), 0.f),
 			Vector4(Vector3::Dot(-viewX, position), Vector3::Dot(-viewY, position), Vector3::Dot(-viewZ,position), 1.f)
 		);
 	}

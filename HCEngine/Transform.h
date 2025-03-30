@@ -29,9 +29,9 @@ namespace HC
 		Vector3 Position;
 		Vector3 Scale;
 
-		Vector3 Right = Vector3::UnitX;
-		Vector3 Up = Vector3::UnitY;
-		Vector3 Forward = Vector3::UnitZ;
+		Vector3 Right = Vector3::unit_x;
+		Vector3 Up = Vector3::unit_y;
+		Vector3 Forward = Vector3::unit_z;
 
 		float Yaw;
 		float Pitch;
@@ -41,9 +41,9 @@ namespace HC
 	FORCEINLINE Matrix4x4 Transform::GetModelingMatrix() const
 	{
 		return Matrix4x4(
-			Vector4(Right * Scale.X, 0.f),
-			Vector4(Up * Scale.Y, 0.f),
-			Vector4(Forward * Scale.Z, 0.f),
+			Vector4(Right * Scale.x, 0.f),
+			Vector4(Up * Scale.y, 0.f),
+			Vector4(Forward * Scale.z, 0.f),
 			Vector4(Position, 1.f)
 		);
 	}

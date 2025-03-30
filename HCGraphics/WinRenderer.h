@@ -8,10 +8,10 @@ namespace HC
 		WinRenderer() = default;
 		~WinRenderer();
 
-		bool Initialize(int32 InWidth, int32 InHeight);
+		bool Initialize(int32 inWidth, int32 inHeight);
 		void Release();
 
-		void Resize(int32 InWidth, int32 InHeight);
+		void Resize(int32 inWidth, int32 inHeight);
 
 		void SwapBuffer();
 		void FillBuffer();
@@ -21,22 +21,27 @@ namespace HC
 		void DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2, const Vertex& InVertex3, const Color InColor);
 
 	private:
-		HWND Handle;
-		HDC ScreenDC, MemDC;
-		HBITMAP OriginalBitmap, MemBitmap;
-		Color32* ScreenBuffer;
+		HWND mHandle;
+		HDC mScreenDc;
+		HDC mMemDc;
+		HBITMAP mOriginalBitmap;
+		HBITMAP mMemBitmap;
+		Color32* mScreenBuffer;
 
-		int32 Width, Height;
+		int32 mWidth;
+		int32 mHeight;
 
-		Color32* TextureBuffer;
-		int TexWidth, TexHeight, TexChannels;
+		Color32* mTextureBuffer;
+		int mTexWidth;
+		int mTexHeight;
+		int mTexChannels;
 
 
-		FORCEINLINE bool IsInScreen(const int32 InX, const int32 InY) const;
-		FORCEINLINE void SetPixel(int32 InX, int32 InY, const Color& InColor);
-		FORCEINLINE void SetPixel(int32 InX, int32 InY, const Color32& InColor);
+		FORCEINLINE bool isInScreen(const int32 InX, const int32 InY) const;
+		FORCEINLINE void setPixel(int32 InX, int32 InY, const Color& InColor);
+		FORCEINLINE void setPixel(int32 InX, int32 InY, const Color32& InColor);
 
-		enum EViewportRegion : uint8
+		enum eEViewportRegion : uint8
 		{
 			INSIDE_VIEWPORT = 0b0000,
 			LEFT = 0b0001,
@@ -45,39 +50,39 @@ namespace HC
 			TOP = 0b1000
 		};
 
-		bool ClipLine(Vector2& InOutStartPos, Vector2& InOutEndPos, const Vector2& InMinPos, const Vector2& InMaxPos);
-		EViewportRegion ComputeViewportRegion(const Vector2& InPos, const Vector2& InMinPos, const Vector2& InMaxPos);
+		bool clipLine(Vector2& InOutStartPos, Vector2& InOutEndPos, const Vector2& InMinPos, const Vector2& InMaxPos);
+		eEViewportRegion ComputeViewportRegion(const Vector2& InPos, const Vector2& InMinPos, const Vector2& InMaxPos);
 
-		void InitTextureBuffer();
-		Color32 SampleTexture(const Vector2& InUV) const;
-		Color32 SampleTexture(const Vertex& InVertex) const;
+		void initTextureBuffer();
+		Color32 sampleTexture(const Vector2& InUV) const;
+		Color32 sampleTexture(const Vertex& InVertex) const;
 	};
 
-	FORCEINLINE void WinRenderer::SetPixel(int32 InX, int32 InY, const Color& InColor)
+	FORCEINLINE void WinRenderer::setPixel(int32 InX, int32 InY, const Color& InColor)
 	{
-		if (!IsInScreen(InX, InY))
+		if (!isInScreen(InX, InY))
 		{
 			return;
 		}
 
-		int Index = InY * Width + InX;
-		ScreenBuffer[Index] = InColor.ToColor32();
+		int Index = InY * mWidth + InX;
+		mScreenBuffer[Index] = InColor.ToColor32();
 	}
 
-	FORCEINLINE void WinRenderer::SetPixel(int32 InX, int32 InY, const Color32& InColor)
+	FORCEINLINE void WinRenderer::setPixel(int32 InX, int32 InY, const Color32& InColor)
 	{
-		if (!IsInScreen(InX, InY))
+		if (!isInScreen(InX, InY))
 		{
 			return;
 		}
 
-		int Index = InY * Width + InX;
-		ScreenBuffer[Index] = InColor;
+		int Index = InY * mWidth + InX;
+		mScreenBuffer[Index] = InColor;
 	}
 
-	FORCEINLINE bool WinRenderer::IsInScreen(const int32 InX, const int32 InY) const
+	FORCEINLINE bool WinRenderer::isInScreen(const int32 InX, const int32 InY) const
 	{
-		if ((InX < 0 || InX >= Width) || (InY < 0 || InY >= Height))
+		if ((InX < 0 || InX >= mWidth) || (InY < 0 || InY >= mHeight))
 		{
 			return false;
 		}
