@@ -40,8 +40,8 @@ void Application::preUpdate()
 
 void Application::update()
 {
-    TempTransform.AddPitchRoation(mInputManager->GetAxis(EAxis::VERTICAL) * Speed * mDeltaTime);
-    TempTransform.AddYawRoation(mInputManager->GetAxis(EAxis::HORIZONTAL) * Speed * mDeltaTime);
+    TempTransform.AddPitchRotation(mInputManager->GetAxis(eEAxis::VERTICAL) * Speed * mDeltaTime);
+    TempTransform.AddYawRotation(mInputManager->GetAxis(eEAxis::HORIZONTAL) * Speed * mDeltaTime);
 }
 
 void Application::lateUpdate()

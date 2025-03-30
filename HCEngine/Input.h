@@ -2,7 +2,7 @@
 
 namespace HC
 {
-	enum class EKeyCode
+	enum class eEKeyCode
 	{
 		NONE = 0,
 		A = 0x41,
@@ -74,7 +74,7 @@ namespace HC
 		DOWN_ARROW = VK_DOWN,
 	};
 
-	enum class EAxis
+	enum class eEAxis
 	{
 		NONE,
 		VERTICAL,
@@ -87,31 +87,31 @@ namespace HC
 
 	struct AxisData
 	{
-		EKeyCode Positive;
-		EKeyCode Negative;
-		EKeyCode AltPositive;
-		EKeyCode AltNegative;
+		eEKeyCode positive;
+		eEKeyCode negative;
+		eEKeyCode altPositive;
+		eEKeyCode altNegative;
 
-		AxisData(EKeyCode InPositive, EKeyCode InNegative) 
-			: Positive(InPositive), Negative(InNegative), AltPositive(EKeyCode::NONE), AltNegative(EKeyCode::NONE) {}
-		AxisData(EKeyCode InPositive, EKeyCode InNegative, EKeyCode InAltPositive, EKeyCode InAltNegative)
-			: Positive(InPositive), Negative(InNegative), AltPositive(InAltPositive), AltNegative(InAltNegative) {}
+		AxisData(eEKeyCode inPositive, eEKeyCode inNegative) 
+			: positive(inPositive), negative(inNegative), altPositive(eEKeyCode::NONE), altNegative(eEKeyCode::NONE) {}
+		AxisData(eEKeyCode inPositive, eEKeyCode inNegative, eEKeyCode inAltPositive, eEKeyCode inAltNegative)
+			: positive(inPositive), negative(inNegative), altPositive(inAltPositive), altNegative(inAltNegative) {}
 	};;
 
 	class Input
 	{
 	public:
-		bool GetKeyDown(EKeyCode InKey);
-		bool GetKey(EKeyCode InKey);
-		bool GetKeyUp(EKeyCode InKey);
-		float GetAxis(EAxis InAxis);
+		bool GetKeyDown(eEKeyCode inKey);
+		bool GetKey(eEKeyCode inKey);
+		bool GetKeyUp(eEKeyCode inKey);
+		float GetAxis(eEAxis inAxis);
 		void Update();
 
 	private:
-		std::unordered_set<EKeyCode> CurrentlyPressedKey;
-		std::unordered_set<EKeyCode> PreviouslyPressedKey;
-		static const std::unordered_map<EAxis, AxisData> AxisMap;
+		std::unordered_set<eEKeyCode> mCurrentlyPressedKey;
+		std::unordered_set<eEKeyCode> mPreviouslyPressedKey;
+		static const std::unordered_map<eEAxis, AxisData> axis_map;
 
-		bool GetKeyWasDowned(EKeyCode InKey);
+		bool getKeyWasDowned(eEKeyCode inKey);
 	};
 }

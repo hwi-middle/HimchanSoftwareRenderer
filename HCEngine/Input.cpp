@@ -2,67 +2,67 @@
 
 constexpr int PRESS = 0x8000;
 
-const std::unordered_map<EAxis, AxisData> Input::AxisMap =
+const std::unordered_map<eEAxis, AxisData> Input::axis_map =
 {
 	{ 
-		EAxis::HORIZONTAL,
+		eEAxis::HORIZONTAL,
 		{ 
-			EKeyCode::RIGHT_ARROW, 
-			EKeyCode::LEFT_ARROW, 
-			EKeyCode::D, 
-			EKeyCode::A
+			eEKeyCode::RIGHT_ARROW, 
+			eEKeyCode::LEFT_ARROW, 
+			eEKeyCode::D, 
+			eEKeyCode::A
 		} 
 	},
 	{
-		EAxis::VERTICAL,
+		eEAxis::VERTICAL,
 		{
-			EKeyCode::UP_ARROW,
-			EKeyCode::DOWN_ARROW,
-			EKeyCode::W,
-			EKeyCode::S
+			eEKeyCode::UP_ARROW,
+			eEKeyCode::DOWN_ARROW,
+			eEKeyCode::W,
+			eEKeyCode::S
 		}
 	}
 };
 
-bool Input::GetKeyDown(EKeyCode InKey)
+bool Input::GetKeyDown(eEKeyCode inKey)
 {
-	int CurrentState = GetAsyncKeyState(static_cast<int>(InKey));
-	bool bIsDown = (CurrentState & PRESS) != 0;
-	bool bWasDown = GetKeyWasDowned(InKey);
+	int currentState = GetAsyncKeyState(static_cast<int>(inKey));
+	bool bIsDown = (currentState & PRESS) != 0;
+	bool bWasDown = getKeyWasDowned(inKey);
 	if (bIsDown)
 	{
-		CurrentlyPressedKey.insert(InKey);
+		mCurrentlyPressedKey.insert(inKey);
 	}
 
 	return bIsDown && !bWasDown;
 }
 
-bool Input::GetKey(EKeyCode InKey)
+bool Input::GetKey(eEKeyCode inKey)
 {
-	int CurrentState = GetAsyncKeyState(static_cast<int>(InKey));
-	bool bIsDown = (CurrentState & PRESS) != 0;
+	int currentState = GetAsyncKeyState(static_cast<int>(inKey));
+	bool bIsDown = (currentState & PRESS) != 0;
 	if (bIsDown)
 	{
-		CurrentlyPressedKey.insert(InKey);
+		mCurrentlyPressedKey.insert(inKey);
 	}
 
 	return bIsDown;
 }
 
-bool Input::GetKeyUp(EKeyCode InKey)
+bool Input::GetKeyUp(eEKeyCode inKey)
 {
-	int CurrentState = GetAsyncKeyState(static_cast<int>(InKey));
-	bool bIsUp = (CurrentState & PRESS) == 0;
-	bool bWasDown = GetKeyWasDowned(InKey);
+	int currentState = GetAsyncKeyState(static_cast<int>(inKey));
+	bool bIsUp = (currentState & PRESS) == 0;
+	bool bWasDown = getKeyWasDowned(inKey);
 
 	return bIsUp && bWasDown;
 }
 
-float Input::GetAxis(EAxis InAxis)
+float Input::GetAxis(const eEAxis inAxis)
 {
-	const AxisData& AxisData = AxisMap.at(InAxis);
-	bool bPositive = GetKey(AxisData.Positive) || GetKey(AxisData.AltPositive);
-	bool bNegative = GetKey(AxisData.Negative) || GetKey(AxisData.AltNegative);
+	const AxisData& axisData = axis_map.at(inAxis);
+	bool bPositive = GetKey(axisData.positive) || GetKey(axisData.altPositive);
+	bool bNegative = GetKey(axisData.negative) || GetKey(axisData.altNegative);
 
 	if (bPositive && bNegative)
 	{
@@ -82,11 +82,11 @@ float Input::GetAxis(EAxis InAxis)
 
 void Input::Update()
 {
-	PreviouslyPressedKey = CurrentlyPressedKey;
-	CurrentlyPressedKey.clear();
+	mPreviouslyPressedKey = mCurrentlyPressedKey;
+	mCurrentlyPressedKey.clear();
 }
 
-bool Input::GetKeyWasDowned(EKeyCode InKey)
+bool Input::getKeyWasDowned(eEKeyCode inKey)
 {
-	return PreviouslyPressedKey.find(InKey) != PreviouslyPressedKey.end();
+	return mPreviouslyPressedKey.find(inKey) != mPreviouslyPressedKey.end();
 }
