@@ -7,20 +7,20 @@ namespace HC
 	public:
 
 		FORCEINLINE constexpr Color() = default;
-		FORCEINLINE explicit constexpr Color(float InR, float InG, float InB, float InA = 1.f) : R(InR), G(InG), B(InB), A(InA) {}
-		FORCEINLINE explicit constexpr Color(Color32& InColor)
+		FORCEINLINE explicit constexpr Color(float inR, float inG, float inB, float inA = 1.f) : r(inR), g(inG), b(inB), a(inA) {}
+		FORCEINLINE explicit constexpr Color(Color32& inColor)
 		{
-			constexpr float OneOver255 = 1.f / 255.f;
-			R = float(InColor.R) * OneOver255;
-			G = float(InColor.G) * OneOver255;
-			B = float(InColor.B) * OneOver255;
-			A = float(InColor.A) * OneOver255;
+			constexpr float oneOver255 = 1.f / 255.f;
+			r = float(inColor.r) * oneOver255;
+			g = float(inColor.g) * oneOver255;
+			b = float(inColor.b) * oneOver255;
+			a = float(inColor.a) * oneOver255;
 		}
 
-		float R = 0.f;
-		float G = 0.f;
-		float B = 0.f;
-		float A = 1.f;
+		float r = 0.f;
+		float g = 0.f;
+		float b = 0.f;
+		float a = 1.f;
 
 		static const Color Black;
 		static const Color Gray;
@@ -35,130 +35,130 @@ namespace HC
 
 		FORCEINLINE constexpr Color32 ToColor32() const;
 
-		FORCEINLINE constexpr Color operator+(const Color& InColor) const;
-		FORCEINLINE constexpr Color operator-(const Color& InColor) const;
-		FORCEINLINE constexpr Color operator*(const Color& InColor) const;
-		FORCEINLINE constexpr Color operator*(float InScalar) const;
-		FORCEINLINE constexpr Color operator/(float InScalar) const;
-		FORCEINLINE constexpr Color& operator*=(float InScalar);
-		FORCEINLINE constexpr Color& operator/=(float InScalar);
-		FORCEINLINE constexpr Color& operator+=(const Color& InColor);
-		FORCEINLINE constexpr Color& operator-=(const Color& InColor);
+		FORCEINLINE constexpr Color operator+(const Color& inColor) const;
+		FORCEINLINE constexpr Color operator-(const Color& inColor) const;
+		FORCEINLINE constexpr Color operator*(const Color& inColor) const;
+		FORCEINLINE constexpr Color operator*(float inScalar) const;
+		FORCEINLINE constexpr Color operator/(float inScalar) const;
+		FORCEINLINE constexpr Color& operator*=(float inScalar);
+		FORCEINLINE constexpr Color& operator/=(float inScalar);
+		FORCEINLINE constexpr Color& operator+=(const Color& inColor);
+		FORCEINLINE constexpr Color& operator-=(const Color& inColor);
 
-		FORCEINLINE constexpr bool operator==(const Color& InColor) const;
-		FORCEINLINE constexpr bool operator!=(const Color& InColor) const;
+		FORCEINLINE constexpr bool operator==(const Color& inColor) const;
+		FORCEINLINE constexpr bool operator!=(const Color& inColor) const;
 
 	};
 
 	FORCEINLINE constexpr Color32 Color::ToColor32() const
 	{
 		return Color32(
-			(uint8)(0.5f + Math::Clamp(R, 0.f, 1.f) * 255.f),
-			(uint8)(0.5f + Math::Clamp(G, 0.f, 1.f) * 255.f),
-			(uint8)(0.5f + Math::Clamp(B, 0.f, 1.f) * 255.f),
-			(uint8)(0.5f + Math::Clamp(A, 0.f, 1.f) * 255.f)
+			(uint8)(0.5f + Math::Clamp(r, 0.f, 1.f) * 255.f),
+			(uint8)(0.5f + Math::Clamp(g, 0.f, 1.f) * 255.f),
+			(uint8)(0.5f + Math::Clamp(b, 0.f, 1.f) * 255.f),
+			(uint8)(0.5f + Math::Clamp(a, 0.f, 1.f) * 255.f)
 		);
 	}
 
-	FORCEINLINE constexpr Color Color::operator+(const Color& InColor) const
+	FORCEINLINE constexpr Color Color::operator+(const Color& inColor) const
 	{
 		return Color(
-			R + InColor.R,
-			G + InColor.G,
-			B + InColor.B,
-			A + InColor.A
+			r + inColor.r,
+			g + inColor.g,
+			b + inColor.b,
+			a + inColor.a
 		);
 	}
 
-	FORCEINLINE constexpr Color Color::operator-(const Color& InColor) const
+	FORCEINLINE constexpr Color Color::operator-(const Color& inColor) const
 	{
 		return Color(
-			R - InColor.R,
-			G - InColor.G,
-			B - InColor.B,
-			A - InColor.A
+			r - inColor.r,
+			g - inColor.g,
+			b - inColor.b,
+			a - inColor.a
 		);
 	}
 
-	FORCEINLINE constexpr Color Color::operator*(const Color& InColor) const
+	FORCEINLINE constexpr Color Color::operator*(const Color& inColor) const
 	{
 		return Color(
-			R * InColor.R,
-			G * InColor.G,
-			B * InColor.B,
-			A * InColor.A
+			r * inColor.r,
+			g * inColor.g,
+			b * inColor.b,
+			a * inColor.a
 		);
 	}
 
-	FORCEINLINE constexpr Color Color::operator*(float InScalar) const
+	FORCEINLINE constexpr Color Color::operator*(float inScalar) const
 	{
 		return Color(
-			R * InScalar,
-			G * InScalar,
-			B * InScalar,
-			A * InScalar
+			r * inScalar,
+			g * inScalar,
+			b * inScalar,
+			a * inScalar
 		);
 	}
 
-	FORCEINLINE constexpr Color Color::operator/(float InScalar) const
+	FORCEINLINE constexpr Color Color::operator/(float inScalar) const
 	{
 		return Color(
-			R / InScalar,
-			G / InScalar,
-			B / InScalar,
-			A / InScalar
+			r / inScalar,
+			g / inScalar,
+			b / inScalar,
+			a / inScalar
 		);
 	}
 
-	FORCEINLINE constexpr Color& Color::operator*=(float InScale)
+	FORCEINLINE constexpr Color& Color::operator*=(float inScale)
 	{
-		R *= InScale;
-		G *= InScale;
-		B *= InScale;
-		A *= InScale;
+		r *= inScale;
+		g *= inScale;
+		b *= inScale;
+		a *= inScale;
 		return *this;
 	}
 
-	FORCEINLINE constexpr Color& Color::operator/=(float InScale)
+	FORCEINLINE constexpr Color& Color::operator/=(float inScale)
 	{
-		R /= InScale;
-		G /= InScale;
-		B /= InScale;
-		A /= InScale;
+		r /= inScale;
+		g /= inScale;
+		b /= inScale;
+		a /= inScale;
 		return *this;
 	}
 
-	FORCEINLINE constexpr Color& Color::operator+=(const Color& InColor)
+	FORCEINLINE constexpr Color& Color::operator+=(const Color& inColor)
 	{
-		R += InColor.R;
-		G += InColor.G;
-		B += InColor.B;
-		A += InColor.A;
+		r += inColor.r;
+		g += inColor.g;
+		b += inColor.b;
+		a += inColor.a;
 		return *this;
 	}
 
-	FORCEINLINE constexpr Color& Color::operator-=(const Color& InColor)
+	FORCEINLINE constexpr Color& Color::operator-=(const Color& inColor)
 	{
-		R -= InColor.R;
-		G -= InColor.G;
-		B -= InColor.B;
-		A -= InColor.A;
+		r -= inColor.r;
+		g -= inColor.g;
+		b -= inColor.b;
+		a -= inColor.a;
 		return *this;
 	}
 
-	FORCEINLINE constexpr bool Color::operator==(const Color& InColor) const
+	FORCEINLINE constexpr bool Color::operator==(const Color& inColor) const
 	{
-		return R == InColor.R
-			&& G == InColor.G
-			&& B == InColor.B
-			&& A == InColor.A;
+		return r == inColor.r
+			&& g == inColor.g
+			&& b == inColor.b
+			&& a == inColor.a;
 	}
 
-	FORCEINLINE constexpr bool Color::operator!=(const Color& InColor) const
+	FORCEINLINE constexpr bool Color::operator!=(const Color& inColor) const
 	{
-		return R != InColor.R
-			|| G != InColor.G
-			|| B != InColor.B
-			|| A != InColor.A;
+		return r != inColor.r
+			|| g != inColor.g
+			|| b != inColor.b
+			|| a != inColor.a;
 	}
 }

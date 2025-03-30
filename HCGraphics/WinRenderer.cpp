@@ -8,7 +8,7 @@ WinRenderer::~WinRenderer()
 {
 }
 
-bool WinRenderer::Initialize(int32 inWidth, int32 inHeight)
+bool WinRenderer::initialize(int32 inWidth, int32 inHeight)
 {
 	mWidth = inWidth;
 	mHeight = inHeight;
@@ -56,7 +56,7 @@ void WinRenderer::Release()
 void WinRenderer::Resize(int32 inWidth, int32 inHeight)
 {
 	Release();
-	Initialize(inWidth, inHeight);
+	initialize(inWidth, inHeight);
 }
 
 void WinRenderer::SwapBuffer()
@@ -69,300 +69,300 @@ void WinRenderer::FillBuffer()
 	memset(mScreenBuffer, 180, mWidth * mHeight * sizeof(Color32));
 }
 
-void WinRenderer::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, const Color& InColor)
+void WinRenderer::DrawLine(const Vector2& inStartPos, const Vector2& inEndPos, const Color& inColor)
 {
-	Vector2 ScreenSize = Vector2(mWidth, mHeight);
-	Vector2 HalfScreen = ScreenSize * 0.5f;
-	Vector2 MinScreen = -HalfScreen;
-	Vector2 MaxScreen = HalfScreen;
-	Vector2 ClippedStartPos = InStartPos;
-	Vector2 ClippedEndPos = InEndPos;
+	Vector2 screenSize = Vector2(mWidth, mHeight);
+	Vector2 halfScreen = screenSize * 0.5f;
+	Vector2 minScreen = -halfScreen;
+	Vector2 maxScreen = halfScreen;
+	Vector2 clippedStartPos = inStartPos;
+	Vector2 clippedEndPos = inEndPos;
 
-	if (!clipLine(ClippedStartPos, ClippedEndPos, MinScreen, MaxScreen))
+	if (!clipLine(clippedStartPos, clippedEndPos, minScreen, maxScreen))
 	{
 		return;
 	}
 
-	Vector2 StartPosScreen = ScreenPoint::CartesianToScreen(ClippedStartPos, ScreenSize.x, ScreenSize.y);
-	Vector2 EndPosScreen = ScreenPoint::CartesianToScreen(ClippedEndPos, ScreenSize.x, ScreenSize.y);
+	Vector2 startPosScreen = ScreenPoint::CartesianToScreen(clippedStartPos, screenSize.x, screenSize.y);
+	Vector2 endPosScreen = ScreenPoint::CartesianToScreen(clippedEndPos, screenSize.x, screenSize.y);
 
-	int Width = EndPosScreen.x - StartPosScreen.x;
-	int Height = EndPosScreen.y - StartPosScreen.y;
+	int width = endPosScreen.x - startPosScreen.x;
+	int height = endPosScreen.y - startPosScreen.y;
 
-	bool bIsGradualScope = Math::Abs(Width) >= Math::Abs(Height);
-	int DeltaX = (Width >= 0) ? 1 : -1;
-	int DeltaY = (Height >= 0) ? 1 : -1;
-	int Fw = DeltaX * Width;
-	int Fh = DeltaY * Height;
+	bool bIsGradualScope = Math::Abs(width) >= Math::Abs(height);
+	int deltaX = (width >= 0) ? 1 : -1;
+	int deltaY = (height >= 0) ? 1 : -1;
+	int fw = deltaX * width;
+	int fh = deltaY * height;
 
-	int Discriminant = bIsGradualScope ? Fh * 2 - Fw : 2 * Fw - Fh;
-	int DeltaWhenDiscriminantIsNegative = bIsGradualScope ? 2 * Fh : 2 * Fw;
-	int DeltaWhenDiscriminantIsPositive = bIsGradualScope ? 2 * (Fh - Fw) : 2 * (Fw - Fh);
+	int discriminant = bIsGradualScope ? fh * 2 - fw : 2 * fw - fh;
+	int deltaWhenDiscriminantIsNegative = bIsGradualScope ? 2 * fh : 2 * fw;
+	int deltaWhenDiscriminantIsPositive = bIsGradualScope ? 2 * (fh - fw) : 2 * (fw - fh);
 
-	int X = StartPosScreen.x;
-	int Y = StartPosScreen.y;
+	int x = startPosScreen.x;
+	int y = startPosScreen.y;
 
 	if (bIsGradualScope)
 	{
-		while (X != EndPosScreen.x)
+		while (x != endPosScreen.x)
 		{
-			setPixel(X, Y, InColor);
+			setPixel(x, y, inColor);
 
-			if (Discriminant < 0)
+			if (discriminant < 0)
 			{
-				Discriminant += DeltaWhenDiscriminantIsNegative;
+				discriminant += deltaWhenDiscriminantIsNegative;
 			}
 			else
 			{
-				Discriminant += DeltaWhenDiscriminantIsPositive;
-				Y += DeltaY;
+				discriminant += deltaWhenDiscriminantIsPositive;
+				y += deltaY;
 			}
 
-			X += DeltaX;
+			x += deltaX;
 		}
 	}
 	else
 	{
-		while (Y != EndPosScreen.y)
+		while (y != endPosScreen.y)
 		{
-			setPixel(X, Y, InColor);
+			setPixel(x, y, inColor);
 
-			if (Discriminant < 0)
+			if (discriminant < 0)
 			{
-				Discriminant += DeltaWhenDiscriminantIsNegative;
+				discriminant += deltaWhenDiscriminantIsNegative;
 			}
 			else
 			{
-				Discriminant += DeltaWhenDiscriminantIsPositive;
-				X += DeltaX;
+				discriminant += deltaWhenDiscriminantIsPositive;
+				x += deltaX;
 			}
 
-			Y += DeltaY;
+			y += deltaY;
 		}
 	}
 }
 
-void WinRenderer::DrawPoint(const Vector2& InPos, const Color InColor)
+void WinRenderer::DrawPoint(const Vector2& inPos, const Color inColor)
 {
-	Vector2 res = ScreenPoint::CartesianToScreen(Vector2(InPos.x, InPos.y), mWidth, mHeight);
-	setPixel(res.x, res.y, InColor);
+	Vector2 res = ScreenPoint::CartesianToScreen(Vector2(inPos.x, inPos.y), mWidth, mHeight);
+	setPixel(res.x, res.y, inColor);
 }
 
-void WinRenderer::DrawTriangle(const Vertex& InVertex1, const Vertex& InVertex2, const Vertex& InVertex3, const Color InColor)
+void WinRenderer::DrawTriangle(const Vertex& inVertex1, const Vertex& inVertex2, const Vertex& inVertex3, const Color inColor)
 {
-	std::array<Vertex, 3> Vertices =
+	std::array<Vertex, 3> vertices =
 	{
-		InVertex1,
-		InVertex2,
-		InVertex3
+		inVertex1,
+		inVertex2,
+		inVertex3
 	};
-	std::for_each(Vertices.begin(), Vertices.end(), [&](Vertex& InVertex) {
-		InVertex.Position = Vector4(ScreenPoint::CartesianToScreen(InVertex.Position.ToVector2(), mWidth, mHeight), 0, 0);
+	std::for_each(vertices.begin(), vertices.end(), [&](Vertex& inVertex) {
+		inVertex.position = Vector4(ScreenPoint::CartesianToScreen(inVertex.position.ToVector2(), mWidth, mHeight), 0, 0);
 		});
-	std::sort(Vertices.begin(), Vertices.end(), [](const Vertex& InLhs, const Vertex& InRhs) { return InLhs.Position.y < InRhs.Position.y; });
+	std::sort(vertices.begin(), vertices.end(), [](const Vertex& inLhs, const Vertex& inRhs) { return inLhs.position.y < inRhs.position.y; });
 
-	const int32 X1 = Vertices[0].Position.x;
-	const int32 Y1 = Vertices[0].Position.y;
-	const int32 X2 = Vertices[1].Position.x;
-	const int32 Y2 = Vertices[1].Position.y;
-	const int32 X3 = Vertices[2].Position.x;
-	const int32 Y3 = Vertices[2].Position.y;
-	const Vector2 UV1 = Vertices[0].UV;
-	const Vector2 UV2 = Vertices[1].UV;
-	const Vector2 UV3 = Vertices[2].UV;
+	const int32 x1 = vertices[0].position.x;
+	const int32 y1 = vertices[0].position.y;
+	const int32 x2 = vertices[1].position.x;
+	const int32 y2 = vertices[1].position.y;
+	const int32 x3 = vertices[2].position.x;
+	const int32 y3 = vertices[2].position.y;
+	const Vector2 uv1 = vertices[0].uv;
+	const Vector2 uv2 = vertices[1].uv;
+	const Vector2 uv3 = vertices[2].uv;
 
 	// Degenerate triangle
-	if ((X2 - X1) * (Y3 - Y1) == (X3 - X1) * (Y2 - Y1))
+	if ((x2 - x1) * (y3 - y1) == (x3 - x1) * (y2 - y1))
 	{
 		return;
 	}
 
 
-	if (Y1 >= mHeight || Y3 < 0)
+	if (y1 >= mHeight || y3 < 0)
 	{
 		return;
 	}
 
-	if ((X1 < 0 && X2 < 0 && X3 < 0) ||
-		(X1 >= mWidth && X2 >= mWidth && X3 >= mWidth))
+	if ((x1 < 0 && x2 < 0 && x3 < 0) ||
+		(x1 >= mWidth && x2 >= mWidth && x3 >= mWidth))
 	{
 		return;
 	}
 
 
-	const float A12 = Y1 != Y2 ? (X2 - X1) / static_cast<float>(Y2 - Y1) : 0.f;
-	const float A13 = (X3 - X1) / static_cast<float>(Y3 - Y1);
-	const float A23 = Y2 != Y3 ? (X3 - X2) / static_cast<float>(Y3 - Y2) : 0.f;
+	const float a12 = y1 != y2 ? (x2 - x1) / static_cast<float>(y2 - y1) : 0.f;
+	const float a13 = (x3 - x1) / static_cast<float>(y3 - y1);
+	const float a23 = y2 != y3 ? (x3 - x2) / static_cast<float>(y3 - y2) : 0.f;
 
-	Vector2 DeltaUvStart = (Y2 != Y1) ? (UV2 - UV1) / static_cast<float>(Y2 - Y1) : Vector2(0.f, 0.f);
-	Vector2 DeltaUvEnd = (Y3 != Y1) ? (UV3 - UV1) / static_cast<float>(Y3 - Y1) : Vector2(0.f, 0.f);
-	Vector2 UvStart = UV1;
-	Vector2 UvEnd = UV1;
+	Vector2 deltaUvStart = (y2 != y1) ? (uv2 - uv1) / static_cast<float>(y2 - y1) : Vector2(0.f, 0.f);
+	Vector2 deltaUvEnd = (y3 != y1) ? (uv3 - uv1) / static_cast<float>(y3 - y1) : Vector2(0.f, 0.f);
+	Vector2 uvStart = uv1;
+	Vector2 uvEnd = uv1;
 
-	for (int Y = Y1; Y < Y2; ++Y)
+	for (int y = y1; y < y2; ++y)
 	{
-		int32 XStart = X1 + A12 * (Y - Y1);
-		int32 XEnd = X1 + A13 * (Y - Y1);
+		int32 xStart = x1 + a12 * (y - y1);
+		int32 xEnd = x1 + a13 * (y - y1);
 
 		bool bIsSwapped = false;
-		if (XStart > XEnd)
+		if (xStart > xEnd)
 		{
-			std::swap(XStart, XEnd);
-			std::swap(UvStart, UvEnd);
+			std::swap(xStart, xEnd);
+			std::swap(uvStart, uvEnd);
 			bIsSwapped = true;
 		}
 
-		const int32 ClipXStart = Math::Clamp(XStart, 0, mWidth - 1);
-		const int32 ClipXEnd = Math::Clamp(XEnd, 0, mWidth - 1);
+		const int32 clipXStart = Math::Clamp(xStart, 0, mWidth - 1);
+		const int32 clipXEnd = Math::Clamp(xEnd, 0, mWidth - 1);
 
-		for (int X = ClipXStart; X <= ClipXEnd; ++X)
+		for (int x = clipXStart; x <= clipXEnd; ++x)
 		{
-			Vector2 UV = Math::Lerp(UvStart, UvEnd, (X - XStart) / static_cast<float>(XEnd - XStart));
-			setPixel(X, Y, sampleTexture(UV));
+			Vector2 uv = Math::Lerp(uvStart, uvEnd, (x - xStart) / static_cast<float>(xEnd - xStart));
+			setPixel(x, y, sampleTexture(uv));
 		}
 
 		if (bIsSwapped)
 		{
-			std::swap(UvStart, UvEnd);
+			std::swap(uvStart, uvEnd);
 		}
 
-		UvStart += DeltaUvStart;
-		UvEnd += DeltaUvEnd;
+		uvStart += deltaUvStart;
+		uvEnd += deltaUvEnd;
 	}
 
-	DeltaUvStart = (Y3 != Y2) ? (UV3 - UV2) / static_cast<float>(Y3 - Y2) : Vector2(0, 0);
+	deltaUvStart = (y3 != y2) ? (uv3 - uv2) / static_cast<float>(y3 - y2) : Vector2(0, 0);
 
 	// 첫 번째 루프를 건너뛰는 경우가 있으므로 다시 계산
-	UvStart = UV2;
-	UvEnd = UV1 + DeltaUvEnd * (Y2 - Y1);
+	uvStart = uv2;
+	uvEnd = uv1 + deltaUvEnd * (y2 - y1);
 
-	for (int Y = Y2; Y <= Y3; ++Y)
+	for (int y = y2; y <= y3; ++y)
 	{
-		int32 XStart = X2 + A23 * static_cast<float>(Y - Y2);
-		int32 XEnd = X1 + A13 * static_cast<float>(Y - Y1);
+		int32 xStart = x2 + a23 * static_cast<float>(y - y2);
+		int32 xEnd = x1 + a13 * static_cast<float>(y - y1);
 
 		bool bIsSwapped = false;
-		if (XStart > XEnd)
+		if (xStart > xEnd)
 		{
-			std::swap(XStart, XEnd);
-			std::swap(UvStart, UvEnd);
+			std::swap(xStart, xEnd);
+			std::swap(uvStart, uvEnd);
 			bIsSwapped = true;
 		}
 
-		const int32 ClipXStart = Math::Clamp(XStart, 0, mWidth - 1);
-		const int32 ClipXEnd = Math::Clamp(XEnd, 0, mWidth - 1);
+		const int32 clipXStart = Math::Clamp(xStart, 0, mWidth - 1);
+		const int32 clipXEnd = Math::Clamp(xEnd, 0, mWidth - 1);
 
-		for (int X = ClipXStart; X <= ClipXEnd; ++X)
+		for (int x = clipXStart; x <= clipXEnd; ++x)
 		{
-			Vector2 UV = Math::Lerp(UvStart, UvEnd, (X - XStart) / static_cast<float>(XEnd - XStart));
-			setPixel(X, Y, sampleTexture(UV));
+			Vector2 uv = Math::Lerp(uvStart, uvEnd, (x - xStart) / static_cast<float>(xEnd - xStart));
+			setPixel(x, y, sampleTexture(uv));
 		}
 
 		if (bIsSwapped)
 		{
-			std::swap(UvStart, UvEnd);
+			std::swap(uvStart, uvEnd);
 		}
 
-		UvStart += DeltaUvStart;
-		UvEnd += DeltaUvEnd;
+		uvStart += deltaUvStart;
+		uvEnd += deltaUvEnd;
 	}
 }
 
-bool WinRenderer::clipLine(Vector2& InOutStartPos, Vector2& InOutEndPos, const Vector2& InMinPos, const Vector2& InMaxPos)
+bool WinRenderer::clipLine(Vector2& inOutStartPos, Vector2& inOutEndPos, const Vector2& inMinPos, const Vector2& inMaxPos)
 {
-	//std::cout << "line to draw: " << InOutStartPos.ToString() << " to " << InOutEndPos.ToString() << "\n";
+	//std::cout << "line to draw: " << inOutStartPos.ToString() << " to " << inOutEndPos.ToString() << "\n";
 
-	eEViewportRegion StartRegion = ComputeViewportRegion(InOutStartPos, InMinPos, InMaxPos);
-	eEViewportRegion EndRegion = ComputeViewportRegion(InOutEndPos, InMinPos, InMaxPos);
+	eEViewportRegion startRegion = computeViewportRegion(inOutStartPos, inMinPos, inMaxPos);
+	eEViewportRegion endRegion = computeViewportRegion(inOutEndPos, inMinPos, inMaxPos);
 
 	while (true)
 	{
-		if (!(StartRegion | EndRegion))
+		if (!(startRegion | endRegion))
 		{
-			//std::cout << "no need to clip now: " << InOutStartPos.ToString() << " to " << InOutEndPos.ToString() << "\n";
+			//std::cout << "no need to clip now: " << inOutStartPos.ToString() << " to " << inOutEndPos.ToString() << "\n";
 			return true;
 		}
-		else if (StartRegion & EndRegion)
+		else if (startRegion & endRegion)
 		{
-			//std::cout << "whole line is not inside viewport: " << InOutStartPos.ToString() << " to " << InOutEndPos.ToString() << "\n";
+			//std::cout << "whole line is not inside viewport: " << inOutStartPos.ToString() << " to " << inOutEndPos.ToString() << "\n";
 			return false;
 		}
 		else
 		{
 			//std::cout << "clipped!\n";
 
-			eEViewportRegion RegionToClip = Math::Max(StartRegion, EndRegion);
-			Vector2 ClippedPos;
+			eEViewportRegion regionToClip = Math::Max(startRegion, endRegion);
+			Vector2 clippedPos;
 
-			float Width = (InOutEndPos.x - InOutStartPos.x);
-			float Height = (InOutEndPos.y - InOutStartPos.y);
+			float width = (inOutEndPos.x - inOutStartPos.x);
+			float height = (inOutEndPos.y - inOutStartPos.y);
 
-			if (RegionToClip & LEFT)
+			if (regionToClip & LEFT)
 			{
-				ClippedPos.x = InMinPos.x;
-				ClippedPos.y = Height / Width * (ClippedPos.x - InOutStartPos.x) + InOutStartPos.y;
+				clippedPos.x = inMinPos.x;
+				clippedPos.y = height / width * (clippedPos.x - inOutStartPos.x) + inOutStartPos.y;
 			}
-			else if (RegionToClip & RIGHT)
+			else if (regionToClip & RIGHT)
 			{
-				ClippedPos.x = InMaxPos.x;
-				ClippedPos.y = Height / Width * (ClippedPos.x - InOutStartPos.x) + InOutStartPos.y;
+				clippedPos.x = inMaxPos.x;
+				clippedPos.y = height / width * (clippedPos.x - inOutStartPos.x) + inOutStartPos.y;
 			}
-			else if (RegionToClip & TOP)
+			else if (regionToClip & TOP)
 			{
-				ClippedPos.x = Width / Height * (ClippedPos.y - InOutStartPos.y) + InOutStartPos.x;
-				ClippedPos.y = InMaxPos.y;
+				clippedPos.x = width / height * (clippedPos.y - inOutStartPos.y) + inOutStartPos.x;
+				clippedPos.y = inMaxPos.y;
 			}
-			else if (RegionToClip & BOTTOM)
+			else if (regionToClip & BOTTOM)
 			{
-				ClippedPos.x = Width / Height * (ClippedPos.y - InOutStartPos.y) + InOutStartPos.x;
-				ClippedPos.y = InMinPos.y;
+				clippedPos.x = width / height * (clippedPos.y - inOutStartPos.y) + inOutStartPos.x;
+				clippedPos.y = inMinPos.y;
 			}
 
-			if (RegionToClip == StartRegion)
+			if (regionToClip == startRegion)
 			{
-				InOutStartPos = ClippedPos;
-				StartRegion = ComputeViewportRegion(InOutStartPos, InMinPos, InMaxPos);
+				inOutStartPos = clippedPos;
+				startRegion = computeViewportRegion(inOutStartPos, inMinPos, inMaxPos);
 			}
 			else
 			{
-				InOutEndPos = ClippedPos;
-				EndRegion = ComputeViewportRegion(InOutEndPos, InMinPos, InMaxPos);
+				inOutEndPos = clippedPos;
+				endRegion = computeViewportRegion(inOutEndPos, inMinPos, inMaxPos);
 			}
 		}
 	}
 }
 
-WinRenderer::eEViewportRegion WinRenderer::ComputeViewportRegion(const Vector2& InPos, const Vector2& InMinPos, const Vector2& InMaxPos)
+WinRenderer::eEViewportRegion WinRenderer::computeViewportRegion(const Vector2& inPos, const Vector2& inMinPos, const Vector2& inMaxPos)
 {
-	eEViewportRegion Result = eEViewportRegion::INSIDE_VIEWPORT;
-	if (InPos.x < InMinPos.x)
+	eEViewportRegion result = eEViewportRegion::INSIDE_VIEWPORT;
+	if (inPos.x < inMinPos.x)
 	{
-		Result = static_cast<eEViewportRegion>(Result | eEViewportRegion::LEFT);
+		result = static_cast<eEViewportRegion>(result | eEViewportRegion::LEFT);
 	}
-	else if (InPos.x > InMaxPos.x)
+	else if (inPos.x > inMaxPos.x)
 	{
-		Result = static_cast<eEViewportRegion>(Result | eEViewportRegion::RIGHT);
-	}
-
-	if (InPos.y < InMinPos.y)
-	{
-		Result = static_cast<eEViewportRegion>(Result | eEViewportRegion::BOTTOM);
-	}
-	else if (InPos.y > InMaxPos.y)
-	{
-		Result = static_cast<eEViewportRegion>(Result | eEViewportRegion::TOP);
+		result = static_cast<eEViewportRegion>(result | eEViewportRegion::RIGHT);
 	}
 
-	return Result;
+	if (inPos.y < inMinPos.y)
+	{
+		result = static_cast<eEViewportRegion>(result | eEViewportRegion::BOTTOM);
+	}
+	else if (inPos.y > inMaxPos.y)
+	{
+		result = static_cast<eEViewportRegion>(result | eEViewportRegion::TOP);
+	}
+
+	return result;
 }
 
 void WinRenderer::initTextureBuffer()
 {
-	FILE* File = nullptr;
-	const std::string FileName = "checkerboard.png";
-	unsigned char* LoadBuffer = stbi_load(FileName.c_str(), &mTexWidth, &mTexHeight, &mTexChannels, 0);
+	FILE* file = nullptr;
+	const std::string fileName = "checkerboard.png";
+	unsigned char* loadBuffer = stbi_load(fileName.c_str(), &mTexWidth, &mTexHeight, &mTexChannels, 0);
 
-	if (LoadBuffer == nullptr)
+	if (loadBuffer == nullptr)
 	{
 		std::cout << "Failed to load texture\n";
 		if (stbi_failure_reason())
@@ -377,24 +377,24 @@ void WinRenderer::initTextureBuffer()
 	mTextureBuffer = new Color32[mTexWidth * mTexHeight];
 	for (int i = 0; i < mTexWidth * mTexHeight; ++i)
 	{
-		mTextureBuffer[i].R = LoadBuffer[i * mTexChannels];
-		mTextureBuffer[i].G = LoadBuffer[i * mTexChannels + 1];
-		mTextureBuffer[i].B = LoadBuffer[i * mTexChannels + 2];
-		mTextureBuffer[i].A = 255;
+		mTextureBuffer[i].r = loadBuffer[i * mTexChannels];
+		mTextureBuffer[i].g = loadBuffer[i * mTexChannels + 1];
+		mTextureBuffer[i].b = loadBuffer[i * mTexChannels + 2];
+		mTextureBuffer[i].a = 255;
 	}
 
-	stbi_image_free(LoadBuffer);
+	stbi_image_free(loadBuffer);
 }
 
-Color32 WinRenderer::sampleTexture(const Vector2& InUV) const
+Color32 WinRenderer::sampleTexture(const Vector2& inUv) const
 {
-	int X = Math::Clamp(static_cast<int>(InUV.x * mTexWidth + 0.5f), 0, mTexWidth - 1);
-	int Y = Math::Clamp(static_cast<int>(InUV.y * mTexHeight + 0.5f), 0, mTexHeight - 1);
+	int X = Math::Clamp(static_cast<int>(inUv.x * mTexWidth + 0.5f), 0, mTexWidth - 1);
+	int Y = Math::Clamp(static_cast<int>(inUv.y * mTexHeight + 0.5f), 0, mTexHeight - 1);
 	return mTextureBuffer[Y * mTexWidth + X];
 }
 
-Color32 WinRenderer::sampleTexture(const Vertex& InVertex) const
+Color32 WinRenderer::sampleTexture(const Vertex& inVertex) const
 {
-	return sampleTexture(InVertex.UV);
+	return sampleTexture(inVertex.uv);
 }
 

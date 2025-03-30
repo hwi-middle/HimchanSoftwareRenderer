@@ -6,7 +6,7 @@ Transform TempTransform;
 Application::Application(uint32 inWidth, uint32 inHeight, WinRenderer* inRenderer, Input* inInputManager) : mRenderer(inRenderer), mInputManager(inInputManager), mWidth(inWidth), mHeight(inHeight)
 {
     mMainCamera = std::make_unique<Camera>();
-	mRenderer->Initialize(mWidth, mHeight);
+	mRenderer->initialize(mWidth, mHeight);
 	QueryPerformanceFrequency(&mFrequency);
 	QueryPerformanceCounter(&mPrevTime);
     TempTransform.SetPosition(Vector3(100, -100, 10));
@@ -127,7 +127,7 @@ void Application::render()
     Matrix4x4 FinalMatrix = Cam.GetViewMatrix() * TempTransform.GetModelingMatrix();
     for (auto& v : VertexBuffer)
     {
-        v.Position = FinalMatrix * v.Position;
+        v.position = FinalMatrix * v.position;
     }
 
     for (int ti = 0; ti < TRI_CNT; ++ti)
@@ -142,8 +142,8 @@ void Application::render()
 
             std::vector<Vertex> sub(tvs.begin() + si, tvs.begin() + si + 3);
 
-            Vector3 e1 = (sub[1].Position - sub[0].Position).ToVector3();
-            Vector3 e2 = (sub[2].Position - sub[0].Position).ToVector3();
+            Vector3 e1 = (sub[1].position - sub[0].position).ToVector3();
+            Vector3 e2 = (sub[2].position - sub[0].position).ToVector3();
             Vector3 normal = Vector3::Cross(e1, e2);
             normal.Normalize();
             Vector3 viewDir = Vector3::unit_z;
@@ -154,9 +154,9 @@ void Application::render()
 
             Renderer.DrawTriangle(sub[0], sub[1], sub[2], Color::Clear);
 
-            Renderer.DrawLine(sub[0].Position.ToVector2(), sub[1].Position.ToVector2(), Color::Red);
-            Renderer.DrawLine(sub[0].Position.ToVector2(), sub[2].Position.ToVector2(), Color::Red);
-            Renderer.DrawLine(sub[1].Position.ToVector2(), sub[2].Position.ToVector2(), Color::Red);
+            Renderer.DrawLine(sub[0].position.ToVector2(), sub[1].position.ToVector2(), Color::Red);
+            Renderer.DrawLine(sub[0].position.ToVector2(), sub[2].position.ToVector2(), Color::Red);
+            Renderer.DrawLine(sub[1].position.ToVector2(), sub[2].position.ToVector2(), Color::Red);
         }
     }
 }
