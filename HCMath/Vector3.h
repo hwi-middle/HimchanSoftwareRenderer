@@ -4,123 +4,123 @@ namespace HC
 {
 	struct Vector3
 	{
-		static constexpr uint8 Dimension = 3;
+		static constexpr uint8 dimension = 3;
 
 		union
 		{
 			struct
 			{
-				float X;
-				float Y;
-				float Z;
+				float x;
+				float y;
+				float z;
 			};
 
-			std::array<float, Dimension> Components = { 0.f, 0.f, 0.f };
+			std::array<float, dimension> components = { 0.f, 0.f, 0.f };
 		};
 
-		static const Vector3 UnitX;
-		static const Vector3 UnitY;
-		static const Vector3 UnitZ;
-		static const Vector3 Zero;
-		static const Vector3 One;
+		static const Vector3 unit_x;
+		static const Vector3 unit_y;
+		static const Vector3 unit_z;
+		static const Vector3 zero;
+		static const Vector3 one;
 
 		FORCEINLINE constexpr Vector3() = default;
-		FORCEINLINE explicit constexpr Vector3(const float InX, const float InY, const float InZ) : X(InX), Y(InY), Z(InZ) {}
+		FORCEINLINE explicit constexpr Vector3(const float inX, const float inY, const float inZ) : x(inX), y(inY), z(inZ) {}
 
-		FORCEINLINE constexpr float operator[](const uint8 InIndex) const;
+		FORCEINLINE constexpr float operator[](const uint8 inIndex) const;
 		FORCEINLINE constexpr Vector3 operator-() const;
-		FORCEINLINE constexpr Vector3 operator+(const Vector3& InVector) const;
-		FORCEINLINE constexpr Vector3 operator-(const Vector3& InVector) const;
-		FORCEINLINE constexpr Vector3 operator*(const Vector3& InVector) const;
-		FORCEINLINE constexpr Vector3 operator*(const float InScalar) const;
-		FORCEINLINE constexpr Vector3 operator/(const Vector3& InVector) const;
-		FORCEINLINE constexpr Vector3 operator/(const float InScalar) const;
-		FORCEINLINE constexpr Vector3& operator+=(const Vector3& InVector);
-		FORCEINLINE constexpr Vector3& operator-=(const Vector3& InVector);
-		FORCEINLINE constexpr Vector3& operator*=(const Vector3& InVector);
-		FORCEINLINE constexpr Vector3& operator/=(const Vector3& InVector);
+		FORCEINLINE constexpr Vector3 operator+(const Vector3& inVector) const;
+		FORCEINLINE constexpr Vector3 operator-(const Vector3& inVector) const;
+		FORCEINLINE constexpr Vector3 operator*(const Vector3& inVector) const;
+		FORCEINLINE constexpr Vector3 operator*(const float inScalar) const;
+		FORCEINLINE constexpr Vector3 operator/(const Vector3& inVector) const;
+		FORCEINLINE constexpr Vector3 operator/(const float inScalar) const;
+		FORCEINLINE constexpr Vector3& operator+=(const Vector3& inVector);
+		FORCEINLINE constexpr Vector3& operator-=(const Vector3& inVector);
+		FORCEINLINE constexpr Vector3& operator*=(const Vector3& inVector);
+		FORCEINLINE constexpr Vector3& operator/=(const Vector3& inVector);
 
 		[[nodiscard]] FORCEINLINE float GetMagnitude() const;
 		[[nodiscard]] FORCEINLINE constexpr float GetSquaredMagnitude() const;
 		FORCEINLINE void Normalize();
 		[[nodiscard]] FORCEINLINE Vector3 GetNormalized() const;
 
-		FORCEINLINE static constexpr float Dot(const Vector3& InVector1, const Vector3& InVector2);
-		FORCEINLINE static constexpr Vector3 Cross(const Vector3& InVector1, const Vector3& InVector2);
+		FORCEINLINE static constexpr float Dot(const Vector3& inVector1, const Vector3& inVector2);
+		FORCEINLINE static constexpr Vector3 Cross(const Vector3& inVector1, const Vector3& inVector2);
 
 		[[nodiscard]] std::string ToString() const;
 	};
 
-	FORCEINLINE constexpr float Vector3::operator[](const uint8 InIndex) const
+	FORCEINLINE constexpr float Vector3::operator[](const uint8 inIndex) const
 	{
-		assert(InIndex < Dimension);
-		return Components[InIndex];
+		assert(inIndex < dimension);
+		return components[inIndex];
 	}
 
 	FORCEINLINE constexpr Vector3 Vector3::operator-() const
 	{
-		return Vector3(-X, -Y, -Z);
+		return Vector3(-x, -y, -z);
 	}
 
-	FORCEINLINE constexpr Vector3 Vector3::operator+(const Vector3& InVector) const
+	FORCEINLINE constexpr Vector3 Vector3::operator+(const Vector3& inVector) const
 	{
-		return Vector3(X + InVector.X, Y + InVector.Y, Z + InVector.Z);
+		return Vector3(x + inVector.x, y + inVector.y, z + inVector.z);
 	}
 
-	FORCEINLINE constexpr Vector3 Vector3::operator-(const Vector3& InVector) const
+	FORCEINLINE constexpr Vector3 Vector3::operator-(const Vector3& inVector) const
 	{
-		return Vector3(X - InVector.X, Y - InVector.Y, Z - InVector.Z);
+		return Vector3(x - inVector.x, y - inVector.y, z - inVector.z);
 	}
 
-	FORCEINLINE constexpr Vector3 Vector3::operator*(const Vector3& InVector) const
+	FORCEINLINE constexpr Vector3 Vector3::operator*(const Vector3& inVector) const
 	{
-		return Vector3(X * InVector.X, Y * InVector.Y, Z * InVector.Z);
+		return Vector3(x * inVector.x, y * inVector.y, z * inVector.z);
 	}
 
-	FORCEINLINE constexpr Vector3 Vector3::operator*(const float InScalar) const
+	FORCEINLINE constexpr Vector3 Vector3::operator*(const float inScalar) const
 	{
-		return Vector3(X * InScalar, Y * InScalar, Z * InScalar);
+		return Vector3(x * inScalar, y * inScalar, z * inScalar);
 	}
 
-	FORCEINLINE constexpr Vector3 Vector3::operator/(const Vector3& InVector) const
+	FORCEINLINE constexpr Vector3 Vector3::operator/(const Vector3& inVector) const
 	{
-		return Vector3(X / InVector.X, Y / InVector.Y, Z / InVector.Z);
+		return Vector3(x / inVector.x, y / inVector.y, z / inVector.z);
 	}
 
-	FORCEINLINE constexpr Vector3 Vector3::operator/(const float InScalar) const
+	FORCEINLINE constexpr Vector3 Vector3::operator/(const float inScalar) const
 	{
-		return Vector3(X / InScalar, Y / InScalar, Z / InScalar);
+		return Vector3(x / inScalar, y / inScalar, z / inScalar);
 	}
 
-	FORCEINLINE constexpr Vector3& Vector3::operator+=(const Vector3& InVector)
+	FORCEINLINE constexpr Vector3& Vector3::operator+=(const Vector3& inVector)
 	{
-		X += InVector.X;
-		Y += InVector.Y;
-		Z += InVector.Z;
+		x += inVector.x;
+		y += inVector.y;
+		z += inVector.z;
 		return *this;
 	}
 
-	FORCEINLINE constexpr Vector3& Vector3::operator-=(const Vector3& InVector)
+	FORCEINLINE constexpr Vector3& Vector3::operator-=(const Vector3& inVector)
 	{
-		X -= InVector.X;
-		Y -= InVector.Y;
-		Z -= InVector.Z;
+		x -= inVector.x;
+		y -= inVector.y;
+		z -= inVector.z;
 		return *this;
 	}
 
-	FORCEINLINE constexpr Vector3& Vector3::operator*=(const Vector3& InVector)
+	FORCEINLINE constexpr Vector3& Vector3::operator*=(const Vector3& inVector)
 	{
-		X *= InVector.X;
-		Y *= InVector.Y;
-		Z *= InVector.Z;
+		x *= inVector.x;
+		y *= inVector.y;
+		z *= inVector.z;
 		return *this;
 	}
 
-	FORCEINLINE constexpr Vector3& Vector3::operator/=(const Vector3& InVector)
+	FORCEINLINE constexpr Vector3& Vector3::operator/=(const Vector3& inVector)
 	{
-		X /= InVector.X;
-		Y /= InVector.Y;
-		Z /= InVector.Z;
+		x /= inVector.x;
+		y /= inVector.y;
+		z /= inVector.z;
 		return *this;
 	}
 
@@ -131,7 +131,7 @@ namespace HC
 
 	FORCEINLINE constexpr float Vector3::GetSquaredMagnitude() const
 	{
-		return X * X + Y * Y + Z * Z;
+		return x * x + y * y + z * z;
 	}
 
 	FORCEINLINE void Vector3::Normalize()
@@ -141,26 +141,26 @@ namespace HC
 
 	FORCEINLINE Vector3 Vector3::GetNormalized() const
 	{
-		return Vector3(X, Y, Z) * Math::GetInvSqrt(GetSquaredMagnitude());
+		return Vector3(x, y, z) * Math::GetInvSqrt(GetSquaredMagnitude());
 	}
 
 	FORCEINLINE std::string Vector3::ToString() const
 	{
 		std::ostringstream ss;
-		ss << "(" << X << ", " << Y << ", " << Z << ")";
+		ss << "(" << x << ", " << y << ", " << z << ")";
 		return ss.str();
 	}
 
-	FORCEINLINE constexpr float Vector3::Dot(const Vector3& InVector1, const Vector3& InVector2)
+	FORCEINLINE constexpr float Vector3::Dot(const Vector3& inVector1, const Vector3& inVector2)
 	{
-		return InVector1.X * InVector2.X + InVector1.Y * InVector2.Y + InVector1.Z * InVector2.Z;
+		return inVector1.x * inVector2.x + inVector1.y * inVector2.y + inVector1.z * inVector2.z;
 	}
 
-	FORCEINLINE constexpr Vector3 Vector3::Cross(const Vector3& InVector1, const Vector3& InVector2)
+	FORCEINLINE constexpr Vector3 Vector3::Cross(const Vector3& inVector1, const Vector3& inVector2)
 	{
 		return Vector3(
-			InVector1.Y * InVector2.Z - InVector1.Z * InVector2.Y,
-			InVector1.Z * InVector2.X - InVector1.X * InVector2.Z,
-			InVector1.X * InVector2.Y - InVector1.Y * InVector2.X);
+			inVector1.y * inVector2.z - inVector1.z * inVector2.y,
+			inVector1.z * inVector2.x - inVector1.x * inVector2.z,
+			inVector1.x * inVector2.y - inVector1.y * inVector2.x);
 	}
 }

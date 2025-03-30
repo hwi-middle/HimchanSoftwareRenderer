@@ -14,49 +14,49 @@ namespace HC
 		static constexpr float Rad2Deg = PI / 180.f;
 		static constexpr float Deg2Rad = 180.f / PI;
 
-		FORCEINLINE static constexpr float GetInvSqrt(const float InValue)
+		FORCEINLINE static constexpr float GetInvSqrt(const float inValue)
 		{
-			constexpr uint8 NewtonRaphsonIteration = 3;
-			const float ThreeHalfs = 1.5f;
+			constexpr uint8 newtonRaphsonIteration = 3;
 
-			float X2 = InValue * 0.5f;
-			float Y = InValue;
-			int32 I = *(int32*)&Y;
-			I = 0x5f3759df - (I >> 1);
-			Y = *(float*)&I;
+			float x2 = inValue * 0.5f;
+			float y = inValue;
+			int32 i = *(int32*)&y;
+			i = 0x5f3759df - (i >> 1);
+			y = *(float*)&i;
 
-			for (uint8 Iter = 0; Iter < NewtonRaphsonIteration; ++Iter)
+			for (uint8 iter = 0; iter < newtonRaphsonIteration; ++iter)
 			{
-				Y = Y * (ThreeHalfs - (X2 * Y * Y));
+				constexpr float threeHalfs = 1.5f;
+				y = y * (threeHalfs - (x2 * y * y));
 			}
 
-			return Y;
+			return y;
 		}
 
 		template <class T>
-		FORCEINLINE static constexpr T Abs(const T& InValue)
+		FORCEINLINE static constexpr T Abs(const T& inValue)
 		{
-			return (InValue > (T)0) ? InValue : -InValue;
+			return (inValue > (T)0) ? inValue : -inValue;
 		}
 
 		template <class T>
-		FORCEINLINE static constexpr T Square(const T& InValue)
+		FORCEINLINE static constexpr T Square(const T& inValue)
 		{
-			return InValue * InValue;
+			return inValue * inValue;
 		}
 
 		template <class T>
-		FORCEINLINE static constexpr T Lerp(const T& InFrom, const T& InTo, float InAlpha)
+		FORCEINLINE static constexpr T Lerp(const T& inFrom, const T& inTo, float inAlpha)
 		{
-			InAlpha = Clamp(InAlpha, 0.f, 1.f);
-			return InFrom * (1 - InAlpha) + InTo * InAlpha;
+			inAlpha = Clamp(inAlpha, 0.f, 1.f);
+			return inFrom * (1 - inAlpha) + inTo * inAlpha;
 		}
 
 		template <class T>
-		FORCEINLINE static constexpr T SmoothStep(const T& InMin, const T& InMax, float InAlpha)
+		FORCEINLINE static constexpr T SmoothStep(const T& inMin, const T& inMax, float inAlpha)
 		{
-			InAlpha = Clamp(InAlpha, 0.f, 1.f);
-			return Square(InAlpha) * (-2 * InAlpha + 3) * (InMax - InMin) + InMin;
+			inAlpha = Clamp(inAlpha, 0.f, 1.f);
+			return Square(inAlpha) * (-2 * inAlpha + 3) * (inMax - inMin) + inMin;
 		}
 
 		FORCEINLINE static constexpr float FMod(const float x, const float y)
@@ -67,96 +67,96 @@ namespace HC
 				return 0.f;
 			}
 
-			float quotient = static_cast<int>(x / y);
+			float quotient = static_cast<float>(static_cast<int>(x / y));
 			return x - y * quotient;
 		}
 
 		template <class T>
-		FORCEINLINE static constexpr T Clamp(const T& InValue, float InMin, float InMax)
+		FORCEINLINE static constexpr T Clamp(const T& inValue, float inMin, float inMax)
 		{
-			return (InValue < InMin) ? (InMin) : (InValue < InMax ? InValue : InMax);
+			return (inValue < inMin) ? (inMin) : (inValue < inMax ? inValue : inMax);
 		}
 
 		template <class T>
-		FORCEINLINE static constexpr T Max(const T& A, const T& B)
+		FORCEINLINE static constexpr T Max(const T& a, const T& b)
 		{
-			return A > B ? A : B;
+			return a > b ? a : b;
 		}
 
 		template <class T>
-		FORCEINLINE static constexpr T Min(const T& A, const T& B)
+		FORCEINLINE static constexpr T Min(const T& a, const T& b)
 		{
-			return A < B ? A : B;
+			return a < b ? a : b;
 		}
 
-		FORCEINLINE static float Sin(const float InValue)
+		FORCEINLINE static float Sin(const float inValue)
 		{
-			return sinf(InValue);
+			return sinf(inValue);
 		}
 
-		FORCEINLINE static double Sin(const double InValue)
+		FORCEINLINE static double Sin(const double inValue)
 		{
-			return sin(InValue);
+			return sin(inValue);
 		}
 
-		FORCEINLINE static float Asin(const float InValue)
+		FORCEINLINE static float Asin(const float inValue)
 		{
-			return asinf(InValue);
+			return asinf(inValue);
 		}
 
-		FORCEINLINE static double Asin(const double InValue)
+		FORCEINLINE static double Asin(const double inValue)
 		{
-			return asin(InValue);
+			return asin(inValue);
 		}
 
-		FORCEINLINE static float Cos(const float InValue)
+		FORCEINLINE static float Cos(const float inValue)
 		{
-			return cosf(InValue);
+			return cosf(inValue);
 		}
 
-		FORCEINLINE static double Cos(const double InValue)
+		FORCEINLINE static double Cos(const double inValue)
 		{
-			return cos(InValue);
+			return cos(inValue);
 		}
 
-		FORCEINLINE static float Acos(const float InValue)
+		FORCEINLINE static float Acos(const float inValue)
 		{
-			return acosf(InValue);
+			return acosf(inValue);
 		}
 
-		FORCEINLINE static double Acos(const double InValue)
+		FORCEINLINE static double Acos(const double inValue)
 		{
-			return acos(InValue);
+			return acos(inValue);
 		}
 
-		FORCEINLINE static float Tan(const float InValue)
+		FORCEINLINE static float Tan(const float inValue)
 		{
-			return tanf(InValue);
+			return tanf(inValue);
 		}
 
-		FORCEINLINE static double Tan(const double InValue)
+		FORCEINLINE static double Tan(const double inValue)
 		{
-			return tan(InValue);
+			return tan(inValue);
 		}
 
-		FORCEINLINE static float Atan(const float InValue)
+		FORCEINLINE static float Atan(const float inValue)
 		{
-			return atanf(InValue);
+			return atanf(inValue);
 		}
 
-		FORCEINLINE static double Atan(const double InValue)
+		FORCEINLINE static double Atan(const double inValue)
 		{
-			return atan(InValue);
+			return atan(inValue);
 		}
 
-		FORCEINLINE static float Atan2(const float InY, const float InX)
+		FORCEINLINE static float Atan2(const float inY, const float inX)
 		{
-			return atan2f(InY, InX);
+			return atan2f(inY, inX);
 		}
 
-		FORCEINLINE static double Atan2(const double InY, const double InX)
+		FORCEINLINE static double Atan2(const double inY, const double inX)
 		{
-			return atan2(InY, InX);
+			return atan2(inY, inX);
 		}
 	};
 }
