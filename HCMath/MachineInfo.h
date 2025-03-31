@@ -2,7 +2,6 @@
 class MachineInfo
 {
 public:
-	MachineInfo();
 	~MachineInfo() = default;
 	MachineInfo(const MachineInfo&) = delete;
 	MachineInfo& operator=(const MachineInfo&) = delete;
@@ -12,6 +11,7 @@ public:
 	FORCEINLINE bool IsSseSupport() const { return mbIsSseSupport; }
 
 private:
+	MachineInfo();
 	bool mbIsSseSupport;
 };
 
