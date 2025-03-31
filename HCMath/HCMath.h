@@ -4,6 +4,7 @@
 #include <intrin.h>
 #include <xmmintrin.h>
 #include <bit>
+#include <sstream>
 
 #include "HCCore.h"
 #include "MachineInfo.h"

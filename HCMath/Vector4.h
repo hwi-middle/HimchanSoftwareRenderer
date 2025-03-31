@@ -1,9 +1,5 @@
 ﻿#pragma once
-
-#include <sstream>
-
 #include "pch.h"
-#include "MathUtil.h"
 
 namespace HC
 {
