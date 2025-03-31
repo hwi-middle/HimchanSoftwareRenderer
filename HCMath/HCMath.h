@@ -1,8 +1,12 @@
 ﻿#pragma once
 #include <array>
 #include <assert.h>
+#include <intrin.h>
+#include <xmmintrin.h>
+#include <bit>
 
 #include "HCCore.h"
+#include "MachineInfo.h"
 #include "MathUtil.h"
 
 #include "Vector2.h"
@@ -14,5 +18,6 @@
 #include "Matrix4x4.h"
 
 #include "ScreenPoint.h"
+
 
 using namespace HC;

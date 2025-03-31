@@ -6,23 +6,34 @@ namespace HC
 	struct Math
 	{
 		static constexpr float PI = 3.1415926535897932f;
-		static constexpr float TwoPI = 2 * PI;
-		static constexpr float HalfPI = 0.5 * PI;
-		static constexpr float InvPI = 1 / PI;
-		static constexpr float KindaSmallNumber = 1.e-4f;
+		static constexpr float TWO_PI = 2 * PI;
+		static constexpr float HALF_PI = 0.5 * PI;
+		static constexpr float INV_PI = 1 / PI;
+		static constexpr float KINDA_SMALL_NUMBER = 1.e-4f;
 
-		static constexpr float Rad2Deg = PI / 180.f;
-		static constexpr float Deg2Rad = 180.f / PI;
+		static constexpr float RAD_2DEG = PI / 180.f;
+		static constexpr float DEG2_RAD = 180.f / PI;
 
-		FORCEINLINE static constexpr float GetInvSqrt(const float inValue)
+		static float GetInvSqrt(const float inValue)
 		{
+			if (MachineInfo::GetInstance()->IsSseSupport())
+			{
+				const __m128 one = _mm_set_ss(1.0f);
+				const __m128 val = _mm_set_ss(inValue);
+				const __m128 sqrtVal = _mm_sqrt_ss(val);
+				const __m128 res = _mm_div_ss(one, sqrtVal);
+				float ret;
+				_mm_store_ss(&ret, res);
+				return ret;
+			}
+
 			constexpr uint8 newtonRaphsonIteration = 3;
 
-			float x2 = inValue * 0.5f;
+			const float x2 = inValue * 0.5f;
 			float y = inValue;
-			int32 i = *(int32*)&y;
+			int i = *std::bit_cast<int*>(&y);
 			i = 0x5f3759df - (i >> 1);
-			y = *(float*)&i;
+			y = *std::bit_cast<float*>(&i);
 
 			for (uint8 iter = 0; iter < newtonRaphsonIteration; ++iter)
 			{
@@ -62,7 +73,7 @@ namespace HC
 		FORCEINLINE static constexpr float FMod(const float x, const float y)
 		{
 			// 0에 대한 나머지 연산은 정의되지 않음
-			if (y <= KindaSmallNumber)
+			if (y <= KINDA_SMALL_NUMBER)
 			{
 				return 0.f;
 			}
