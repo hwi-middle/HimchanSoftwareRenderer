@@ -2,6 +2,7 @@
 
 #ifdef _DEBUG
 #pragma comment(linker,"/entry:WinMainCRTStartup /subsystem:console")
+#pragma warning(disable : 28251) // console을 subsystem으로 지정하면서 발생하는 경고
 #endif
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -31,7 +32,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 
 	uint32 initWidth = 640;
 	uint32 initHeight = 480;
-	RECT windowRect = { 0, 0, initWidth, initHeight };
+	RECT windowRect = { 0, 0, static_cast<LONG>(initWidth), static_cast<LONG>(initHeight) };
 	AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
 	const uint32 actualWindowWidth = windowRect.right - windowRect.left;

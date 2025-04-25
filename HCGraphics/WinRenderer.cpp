@@ -83,8 +83,8 @@ void WinRenderer::DrawLine(const Vector2& inStartPos, const Vector2& inEndPos, c
 		return;
 	}
 
-	Vector2 startPosScreen = ScreenPoint::CartesianToScreen(clippedStartPos, screenSize.x, screenSize.y);
-	Vector2 endPosScreen = ScreenPoint::CartesianToScreen(clippedEndPos, screenSize.x, screenSize.y);
+	ScreenPoint startPosScreen = ScreenPoint::CartesianToScreen(clippedStartPos, screenSize.x, screenSize.y);
+	ScreenPoint endPosScreen = ScreenPoint::CartesianToScreen(clippedEndPos, screenSize.x, screenSize.y);
 
 	int width = endPosScreen.x - startPosScreen.x;
 	int height = endPosScreen.y - startPosScreen.y;
@@ -144,7 +144,7 @@ void WinRenderer::DrawLine(const Vector2& inStartPos, const Vector2& inEndPos, c
 
 void WinRenderer::DrawPoint(const Vector2& inPos, const Color inColor)
 {
-	Vector2 res = ScreenPoint::CartesianToScreen(Vector2(inPos.x, inPos.y), mWidth, mHeight);
+	ScreenPoint res = ScreenPoint::CartesianToScreen(Vector2(inPos.x, inPos.y), mWidth, mHeight);
 	setPixel(res.x, res.y, inColor);
 }
 
@@ -157,7 +157,7 @@ void WinRenderer::DrawTriangle(const Vertex& inVertex1, const Vertex& inVertex2,
 		inVertex3
 	};
 	std::for_each(vertices.begin(), vertices.end(), [&](Vertex& inVertex) {
-		inVertex.position = Vector4(ScreenPoint::CartesianToScreen(inVertex.position.ToVector2(), mWidth, mHeight), 0, 0);
+		inVertex.position = Vector4(ScreenPoint::ToVector2(ScreenPoint::CartesianToScreen(inVertex.position.ToVector2(), mWidth, mHeight)), 0, 0);
 		});
 	std::sort(vertices.begin(), vertices.end(), [](const Vertex& inLhs, const Vertex& inRhs) { return inLhs.position.y < inRhs.position.y; });
 
@@ -375,6 +375,7 @@ void WinRenderer::initTextureBuffer()
 
 	std::cout << "Texture loaded: " << mTexWidth << "x" << mTexHeight << " " << mTexChannels << " channels\n";
 	mTextureBuffer = new Color32[mTexWidth * mTexHeight];
+	assert(mTextureBuffer != nullptr);
 	for (int i = 0; i < mTexWidth * mTexHeight; ++i)
 	{
 		mTextureBuffer[i].r = loadBuffer[i * mTexChannels];
