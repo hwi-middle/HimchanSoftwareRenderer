@@ -3,7 +3,8 @@
 constexpr float Speed = 5.f;
 Transform TempTransform;
 
-Application::Application(uint32 inWidth, uint32 inHeight, WinRenderer* inRenderer, Input* inInputManager) : mRenderer(inRenderer), mInputManager(inInputManager), mWidth(inWidth), mHeight(inHeight)
+Application::Application(uint32 inWidth, uint32 inHeight, WinRenderer* inRenderer, Input* inInputManager) 
+    : mRenderer(inRenderer), mInputManager(inInputManager), mWidth(inWidth), mHeight(inHeight)
 {
     mMainCamera = std::make_unique<Camera>();
 	mRenderer->initialize(mWidth, mHeight);

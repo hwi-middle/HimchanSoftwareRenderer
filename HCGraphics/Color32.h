@@ -65,38 +65,38 @@ namespace HC
 	FORCEINLINE constexpr Color32 Color32::operator*(float inScalar) const
 	{
 		return Color32(
-			r * inScalar,
-			g * inScalar,
-			b * inScalar,
-			a * inScalar
+			static_cast<HC::byte>(static_cast<float>(r) * inScalar),
+			static_cast<HC::byte>(static_cast<float>(g) * inScalar),
+			static_cast<HC::byte>(static_cast<float>(b) * inScalar),
+			static_cast<HC::byte>(static_cast<float>(a) * inScalar)
 		);
 	}
 
 	FORCEINLINE constexpr Color32 Color32::operator/(float inScalar) const
 	{
 		return Color32(
-			r / inScalar,
-			g / inScalar,
-			b / inScalar,
-			a / inScalar
+			static_cast<HC::byte>(static_cast<float>(r) / inScalar),
+			static_cast<HC::byte>(static_cast<float>(g) / inScalar),
+			static_cast<HC::byte>(static_cast<float>(b) / inScalar),
+			static_cast<HC::byte>(static_cast<float>(a) / inScalar)
 		);
 	}
 
 	FORCEINLINE constexpr Color32& Color32::operator*=(float inScale)
 	{
-		r *= inScale;
-		g *= inScale;
-		b *= inScale;
-		a *= inScale;
+		r = static_cast<HC::byte>(static_cast<float>(r) * inScale);
+		g = static_cast<HC::byte>(static_cast<float>(g) * inScale);
+		b = static_cast<HC::byte>(static_cast<float>(b) * inScale);
+		a = static_cast<HC::byte>(static_cast<float>(a) * inScale);
 		return *this;
 	}
 
 	FORCEINLINE constexpr Color32& Color32::operator/=(float inScale)
 	{
-		r /= inScale;
-		g /= inScale;
-		b /= inScale;
-		a /= inScale;
+		r = static_cast<HC::byte>(static_cast<float>(r) / inScale);
+		g = static_cast<HC::byte>(static_cast<float>(g) / inScale);
+		b = static_cast<HC::byte>(static_cast<float>(b) / inScale);
+		a = static_cast<HC::byte>(static_cast<float>(a) / inScale);
 		return *this;
 	}
 

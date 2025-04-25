@@ -83,7 +83,7 @@ namespace HC
 		}
 
 		template <class T>
-		FORCEINLINE static constexpr T Clamp(const T& inValue, float inMin, float inMax)
+		FORCEINLINE static constexpr T Clamp(const T& inValue, T inMin, T inMax)
 		{
 			return (inValue < inMin) ? (inMin) : (inValue < inMax ? inValue : inMax);
 		}
