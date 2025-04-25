@@ -71,7 +71,7 @@ void WinRenderer::FillBuffer()
 
 void WinRenderer::DrawLine(const Vector2& inStartPos, const Vector2& inEndPos, const Color& inColor)
 {
-	Vector2 screenSize = Vector2(mWidth, mHeight);
+	Vector2 screenSize = Vector2(static_cast<float>(mWidth), static_cast<float>(mHeight));
 	Vector2 halfScreen = screenSize * 0.5f;
 	Vector2 minScreen = -halfScreen;
 	Vector2 maxScreen = halfScreen;
@@ -83,8 +83,8 @@ void WinRenderer::DrawLine(const Vector2& inStartPos, const Vector2& inEndPos, c
 		return;
 	}
 
-	ScreenPoint startPosScreen = ScreenPoint::CartesianToScreen(clippedStartPos, screenSize.x, screenSize.y);
-	ScreenPoint endPosScreen = ScreenPoint::CartesianToScreen(clippedEndPos, screenSize.x, screenSize.y);
+	ScreenPoint startPosScreen = ScreenPoint::CartesianToScreen(clippedStartPos, mWidth, mHeight);
+	ScreenPoint endPosScreen = ScreenPoint::CartesianToScreen(clippedEndPos, mWidth, mHeight);
 
 	int width = endPosScreen.x - startPosScreen.x;
 	int height = endPosScreen.y - startPosScreen.y;
@@ -161,12 +161,12 @@ void WinRenderer::DrawTriangle(const Vertex& inVertex1, const Vertex& inVertex2,
 		});
 	std::sort(vertices.begin(), vertices.end(), [](const Vertex& inLhs, const Vertex& inRhs) { return inLhs.position.y < inRhs.position.y; });
 
-	const int32 x1 = vertices[0].position.x;
-	const int32 y1 = vertices[0].position.y;
-	const int32 x2 = vertices[1].position.x;
-	const int32 y2 = vertices[1].position.y;
-	const int32 x3 = vertices[2].position.x;
-	const int32 y3 = vertices[2].position.y;
+	const int32 x1 = static_cast<int32>(vertices[0].position.x);
+	const int32 y1 = static_cast<int32>(vertices[0].position.y);
+	const int32 x2 = static_cast<int32>(vertices[1].position.x);
+	const int32 y2 = static_cast<int32>(vertices[1].position.y);
+	const int32 x3 = static_cast<int32>(vertices[2].position.x);
+	const int32 y3 = static_cast<int32>(vertices[2].position.y);
 	const Vector2 uv1 = vertices[0].uv;
 	const Vector2 uv2 = vertices[1].uv;
 	const Vector2 uv3 = vertices[2].uv;
@@ -199,10 +199,10 @@ void WinRenderer::DrawTriangle(const Vertex& inVertex1, const Vertex& inVertex2,
 	Vector2 uvStart = uv1;
 	Vector2 uvEnd = uv1;
 
-	for (int y = y1; y < y2; ++y)
+	for (int32 y = y1; y < y2; ++y)
 	{
-		int32 xStart = x1 + a12 * (y - y1);
-		int32 xEnd = x1 + a13 * (y - y1);
+		int32 xStart = x1 + static_cast<int32>(a12 * (y - y1));
+		int32 xEnd = x1 + static_cast<int32>(a13 * (y - y1));
 
 		bool bIsSwapped = false;
 		if (xStart > xEnd)
@@ -234,12 +234,12 @@ void WinRenderer::DrawTriangle(const Vertex& inVertex1, const Vertex& inVertex2,
 
 	// 첫 번째 루프를 건너뛰는 경우가 있으므로 다시 계산
 	uvStart = uv2;
-	uvEnd = uv1 + deltaUvEnd * (y2 - y1);
+	uvEnd = uv1 + deltaUvEnd * static_cast<float>(y2 - y1);
 
 	for (int y = y2; y <= y3; ++y)
 	{
-		int32 xStart = x2 + a23 * static_cast<float>(y - y2);
-		int32 xEnd = x1 + a13 * static_cast<float>(y - y1);
+		int32 xStart = x2 + static_cast<int32>(a23 * (y - y2));
+		int32 xEnd = x1 + static_cast<int32>(a13 * (y - y1));
 
 		bool bIsSwapped = false;
 		if (xStart > xEnd)
